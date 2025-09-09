@@ -1,11 +1,9 @@
 import React from 'react';
 
-const BlogSlug: React.FC<{
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}> = async ({ params, searchParams }) => {
-  const { slug } = await params;
-  const { name, age } = await searchParams;
+const BlogSlug = async (props: PageProps<'/blog/[slug]'>) => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  const { slug } = await props.params;
+  const { name, age } = await props.searchParams;
 
   return (
     <div>
