@@ -1,6 +1,7 @@
 import React from 'react';
 
-const BlogLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const BlogLayout = async (props: LayoutProps<'/blog'>) => {
+  const children = props.children;
   return <main>{children}</main>;
 };
 
