@@ -5,9 +5,9 @@ import { FcBriefcase } from 'react-icons/fc';
 import { auth } from '@/lib/firebase';
 import { sendEmailVerification } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
-import { useEmailVerification } from '@/hooks/useEmailVerification';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useEmailVerification } from '@/hooks';
 
 const VerifyEmail = () => {
   const router = useRouter();
