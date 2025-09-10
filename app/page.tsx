@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import HoverPrefetchLink from './ui/hover-prefetch-link';
+import HoverPrefetchLink from '../components/ui/hover-prefetch-link';
 
 export default function Home() {
   const router = useRouter();
