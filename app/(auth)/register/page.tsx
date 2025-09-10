@@ -18,6 +18,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithPopup,
+} from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const formSchema = z
   .object({
@@ -37,6 +46,8 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
+  const router = useRouter();
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,8 +59,27 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('data', data);
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      console.log('User registered:', userCredential.user);
+      await sendEmailVerification(userCredential.user);
+      router.push('/verify-email');
+    } catch (error) {
+      console.error('Register error:', error);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log('User Info:', result.user);
+      toast.success('Login successfully');
+      // TODO: handle user info in database
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -111,7 +141,7 @@ const RegisterPage = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button variant="outline" className="flex-1">
+        <Button variant="outline" className="flex-1" onClick={handleGoogleLogin}>
           <FcGoogle />
           Sign in with Google
         </Button>

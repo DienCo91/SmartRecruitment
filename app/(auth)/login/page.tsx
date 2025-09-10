@@ -1,5 +1,5 @@
 'use client';
-
+import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
@@ -10,6 +10,9 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { z } from 'zod';
 import TextField from '../components/TextField';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
@@ -19,6 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,8 +31,36 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Form data:', data);
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+
+      console.log('User', user);
+
+      if (!user.emailVerified) {
+        router.push('/verify-email');
+        return;
+      }
+
+      toast.success('Login successfully');
+
+      // TODO: handle user info in database
+    } catch (error) {
+      console.error('Login error:', JSON.stringify(error));
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log('User Info:', result.user);
+      toast.success('Login successfully');
+      // TODO: handle user info in database
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -72,7 +104,7 @@ const LoginPage = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button variant="outline" className="flex-1">
+        <Button variant="outline" className="flex-1" onClick={handleGoogleLogin}>
           <FcGoogle />
           Sign in with Google
         </Button>
