@@ -25,10 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <header>this is the header home</header>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased `}>
         {children}
-        <footer>this is the footer home</footer>
         <Toaster richColors theme="light" />
       </body>
     </html>
