@@ -42,6 +42,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-blue-primary: var(--blue-primary);
+  --color-grey-primary:var(--grey-primary);
 }
 
 :root {
@@ -52,7 +53,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: #0A65CC;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -78,6 +79,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --blue-primary:#0A65CC;
+  --grey-primary:#F1F2F4;
 }
 
 .dark {
@@ -154,3 +156,27 @@
     opacity: 1;
   }
 }
+.ql-toolbar {
+  @apply rounded-t-md border border-gray-300;
+}
+
+.ql-container {
+  @apply min-h-[180px] rounded-b-md border border-gray-300;
+}
+
+.ql-editor {
+  @apply min-h-[180px] max-h-[400px] overflow-y-auto;
+}
+
+@keyframes ping-small {
+  75%, 100% {
+    transform: scale(1.5); 
+    opacity: 0;
+  }
+}
+
+.animate-ping-small {
+  animation: ping-small 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+

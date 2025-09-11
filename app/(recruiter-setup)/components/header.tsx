@@ -1,0 +1,23 @@
+'use client';
+import LogoApp from '@/components/ui/logo-app';
+import { Progress } from '@/components/ui/progress';
+import { useProgressAccountSetup } from '@/contexts';
+import React from 'react';
+
+const HeaderAccountSetup = () => {
+  const { progress } = useProgressAccountSetup();
+  return (
+    <div className="flex justify-between mt-[30px]">
+      <LogoApp />
+      <div className="min-w-[240px]">
+        <div className="flex justify-between text-[14px] text-[#767F8C]">
+          <span>Setup Process</span>
+          <span className="text-primary">{progress}% Complete</span>
+        </div>
+        <Progress value={progress} className="w-full mt-[6px] bg-[#E7F0FA] " />
+      </div>
+    </div>
+  );
+};
+
+export default React.memo(HeaderAccountSetup);
