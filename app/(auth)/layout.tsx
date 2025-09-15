@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import { FcBriefcase } from 'react-icons/fc';
 import { Briefcase, Building2 } from 'lucide-react';
+import LogoApp from '@/components/ui/logo-app';
 
 type StatItem = {
   icon: React.ReactNode;
@@ -33,10 +34,7 @@ const AuthLayout = async (props: LayoutProps<'/'>) => {
     <div className="min-h-screen relative flex justify-center">
       <div className="w-[80%]">
         <div className="relative w-full h-screen space-y-6 flex justify-center xl:justify-start items-center">
-          <div className="absolute left-0 top-[16px] flex items-center">
-            <FcBriefcase className="mr-2 w-[40px] h-[40px]" />
-            <h1 className="text-[24px] font-[600]">My Job</h1>
-          </div>
+          <LogoApp className="absolute left-0 top-[16px] flex items-center" />
           <div className="w-[300px] md:w-[400px] relative">{props.children}</div>
         </div>
         <div className="hidden xl:block">
