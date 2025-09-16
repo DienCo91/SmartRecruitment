@@ -20,7 +20,7 @@ const UploadInfo: React.FC<IUploadInfo> = ({ title, desc, className, classNameDr
           classNameDropWrap
         )}
       >
-        <Upload className="w-[48px] h-[48px] text-[#b0b4ba]" />
+        <Upload className="w-[48px] h-[56px] text-[#b0b4ba]" />
         <div className="text-[14px]">
           <span className="font-[500]">Browse photo </span>
           <span>or drop here</span>

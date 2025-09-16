@@ -1,9 +1,8 @@
 import { AppImage } from '@/common';
+import LogoApp from '@/components/ui/logo-app';
+import { Briefcase, Building2 } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
-import { FcBriefcase } from 'react-icons/fc';
-import { Briefcase, Building2 } from 'lucide-react';
-import LogoApp from '@/components/ui/logo-app';
 
 type StatItem = {
   icon: React.ReactNode;
