@@ -1,3 +1,5 @@
+export * from './router';
+
 export enum Size {
   XS = 'xs',
   SM = 'sm',

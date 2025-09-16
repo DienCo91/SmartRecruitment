@@ -7,17 +7,17 @@ import { useMemo } from 'react';
 
 interface Props {
   isFullscreen?: boolean;
-  size?: Size;
+  dotSize?: Size;
   dotColor?: string;
 }
 
 export function LoadingDot({
   isFullscreen = false,
-  size = Size.SM,
+  dotSize = Size.SM,
   dotColor = 'bg-blue-700',
 }: Props) {
   const sizeDot = useMemo(() => {
-    switch (size) {
+    switch (dotSize) {
       case Size.XS:
         return 'size-[4px]';
       case Size.SM:
@@ -29,12 +29,12 @@ export function LoadingDot({
       case Size['2XL']:
         return 'size-[48px]';
     }
-  }, [size]);
+  }, [dotSize]);
 
   return (
     <div
       className={cn(
-        'p-4 h-4 w-4 flex items-center justify-center',
+        'p-4 h-4 w-4 flex items-center justify-center bg-black/10',
         isFullscreen ? 'h-screen w-screen' : ''
       )}
     >
