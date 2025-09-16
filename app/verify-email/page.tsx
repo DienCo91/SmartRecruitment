@@ -20,7 +20,7 @@ const VerifyEmail = () => {
       router.replace('/login');
       toast.success('Email verified successfully');
     }
-  }, [isVerify]);
+  }, [isVerify, router]);
 
   const handleResend = async () => {
     if (!auth.currentUser) return;
