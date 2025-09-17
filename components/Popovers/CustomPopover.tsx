@@ -22,7 +22,10 @@ export function CustomPopover({
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent align={align} className={cn('bg-[#384878] shadow border-none', className)}>
+      <PopoverContent
+        align={align}
+        className={cn('bg-[#384878] shadow-xs shadow-blue-400 border-none', className)}
+      >
         {children}
       </PopoverContent>
     </Popover>

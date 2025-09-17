@@ -44,6 +44,8 @@
     "country-data-list": "^1.5.5",
     "country-region-data": "^3.1.0",
     "date-fns": "^3.6.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "firebase": "^12.2.1",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",

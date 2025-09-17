@@ -1,8 +1,11 @@
 'use client';
 
+import { Ads } from '@/components/client/Ads/Ads';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { JobCard } from '@/components/client/Cards/JobCard';
 import { FilterJob } from '@/components/client/Filters/FilterJob';
+import { HotJobs } from '@/components/client/HotJobs/HotJobs';
+import { PopularTags } from '@/components/client/Tags/PopularTags';
 import * as _ from 'lodash';
 
 const HomePage = () => {
@@ -10,17 +13,15 @@ const HomePage = () => {
     <div className="relative">
       <FilterJob />
       <div className="grid grid-cols-12 mt-[50px]">
-        <GlassCard
-          title="Việc làm hot"
-          className="col-span-8"
-          footer={<div className="absolute right-3">1/2</div>}
-        >
-          <div className="flex flex-col">
-            {_.range(0, 5, 1).map((_, i) => (
-              <JobCard key={i} />
-            ))}
-          </div>
-        </GlassCard>
+        {/* Left card */}
+        <div className="col-span-8 mr-3">
+          <HotJobs />
+        </div>
+        {/* Right card */}
+        <div className="col-span-4">
+          <PopularTags />
+          <Ads />
+        </div>
       </div>
     </div>
   );

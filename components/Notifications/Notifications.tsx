@@ -28,7 +28,7 @@ export function Notifications() {
   );
 
   return (
-    <CustomPopover trigger={trigger} align="end" className="w-[350px] shadow-md shadow-blue-500/50">
+    <CustomPopover trigger={trigger} align="end" className="w-[400px] shadow-md shadow-blue-500/50">
       <Tabs defaultValue="unread">
         <TabsList className="bg-blue-900">
           <TabsTrigger value="unread" className="data-[state=inactive]:text-white">

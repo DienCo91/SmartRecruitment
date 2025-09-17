@@ -40,9 +40,9 @@ export function GlassCard({
         className
       )}
     >
-      <CardHeader>
+      <CardHeader className="gap-0">
         <div className="flex justify-between">
-          <CardTitle className="text-lg">
+          <CardTitle className="text-lg ml-0">
             {icon && <span className="mr-2">{icon}</span>}
             {title}
           </CardTitle>

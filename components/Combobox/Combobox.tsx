@@ -65,7 +65,7 @@ export function Combobox({
         className="p-0"
       >
         <Command className="bg-transparent">
-          <CommandInput placeholder="Search..." />
+          <CommandInput placeholder="Search..." className="text-neutral-300" />
           <CommandList>
             <CommandEmpty>No options.</CommandEmpty>
             <CommandGroup className="p-0">
