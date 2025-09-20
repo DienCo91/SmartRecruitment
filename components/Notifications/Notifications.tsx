@@ -29,23 +29,27 @@ export function Notifications() {
 
   return (
     <CustomPopover trigger={trigger} align="end" className="w-[400px] shadow-md shadow-blue-500/50">
+      <div className="text-neutral-300 font-semibold text-lg mb-2">Thông báo</div>
       <Tabs defaultValue="unread">
-        <TabsList className="bg-blue-900">
-          <TabsTrigger value="unread" className="data-[state=inactive]:text-white">
-            Chưa đọc
-          </TabsTrigger>
-          <TabsTrigger value="read" className="data-[state=inactive]:text-white">
-            Đã đọc
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex justify-between items-center text-neutral-300">
+          <TabsList className="bg-blue-900">
+            <TabsTrigger value="unread" className="data-[state=inactive]:text-white">
+              Chưa đọc
+            </TabsTrigger>
+            <TabsTrigger value="read" className="data-[state=inactive]:text-white">
+              Đã đọc
+            </TabsTrigger>
+          </TabsList>
+          <span className="text-xs hover:cursor-pointer"> Đánh dấu tất cả là đã đọc</span>
+        </div>
         <Separator />
         <TabsContent value="unread">
-          {_.range(0, 7, 1).map((_, i) => (
+          {_.range(0, 6, 1).map((_, i) => (
             <NotificationCard key={i} />
           ))}
         </TabsContent>
         <TabsContent value="read">
-          {_.range(0, 7, 1).map((_, i) => (
+          {_.range(0, 6, 1).map((_, i) => (
             <NotificationCard key={i} />
           ))}
         </TabsContent>

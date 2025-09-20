@@ -12,7 +12,7 @@ export function CustomInput({ startIcon, endIcon, error, className, ...props }: 
     <div className="w-full">
       <div
         className={cn(
-          'flex items-center rounded-sm border bg-white/30 px-3 py-2 shadow-sm transition focus-within:ring-1 focus-within:ring-blue-500',
+          'flex text-neutral-300 items-center rounded-sm border bg-white/30 px-3 py-2 shadow-sm transition focus-within:ring-1 focus-within:ring-blue-500',
           error ? 'border-red-500' : 'border-gray-300',
           className
         )}
@@ -21,7 +21,7 @@ export function CustomInput({ startIcon, endIcon, error, className, ...props }: 
 
         <input
           {...props}
-          className="'flex-1 w-full bg-transparent outline-none placeholder-gray-400 text-sm'"
+          className="flex-1 w-full bg-transparent outline-none placeholder-gray-400 text-sm"
         />
 
         {endIcon && <span className="ml-2 text-gray-400">{endIcon}</span>}
