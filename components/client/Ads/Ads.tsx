@@ -22,7 +22,7 @@ export function Ads() {
     },
   ];
   return (
-    <GlassCard title="" className="mt-3">
+    <GlassCard title="" className="mt-5">
       <Carousel
         opts={{
           loop: true,
