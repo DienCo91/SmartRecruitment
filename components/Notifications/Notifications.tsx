@@ -8,8 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { NotificationCard } from './NotificationCard';
 import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useState } from 'react';
+import { LoadingCircle } from '../Loadings/LoadingCircle';
 
 export function Notifications() {
+  const [notifications, setNotifications] = useState<number[]>(_.range(0, 6, 1));
+  const getNoti = async () => {
+    setTimeout(() => setNotifications(prev => [...prev, ..._.range(0, 6, 1)]), 2000);
+  };
+
   const trigger = (
     <Button
       variant="ghost"
@@ -33,25 +41,49 @@ export function Notifications() {
       <Tabs defaultValue="unread">
         <div className="flex justify-between items-center text-neutral-300">
           <TabsList className="bg-blue-900/20">
+            <TabsTrigger value="all" className="data-[state=inactive]:text-white">
+              Tất cả
+            </TabsTrigger>
             <TabsTrigger value="unread" className="data-[state=inactive]:text-white">
               Chưa đọc
             </TabsTrigger>
-            <TabsTrigger value="read" className="data-[state=inactive]:text-white">
-              Đã đọc
-            </TabsTrigger>
           </TabsList>
-          <span className="text-xs hover:cursor-pointer"> Đánh dấu tất cả là đã đọc</span>
+          <span className="text-xs hover:cursor-pointer hover:text-blue-300">
+            Đánh dấu tất cả là đã đọc
+          </span>
         </div>
         <Separator />
-        <TabsContent value="unread">
-          {_.range(0, 6, 1).map((_, i) => (
-            <NotificationCard key={i} />
-          ))}
+        <TabsContent value="all">
+          <div id="scrollableAllNoti" className="h-[400px] overflow-y-auto">
+            <InfiniteScroll
+              scrollableTarget="scrollableAllNoti"
+              dataLength={notifications.length}
+              next={getNoti}
+              hasMore={true}
+              loader={<LoadingCircle />}
+              endMessage={<p className="text-xs font-medium">Bạn đã đọc hết thông báo rồi.</p>}
+            >
+              {notifications.map((item, i) => (
+                <NotificationCard key={i} />
+              ))}
+            </InfiniteScroll>
+          </div>
         </TabsContent>
-        <TabsContent value="read">
-          {_.range(0, 6, 1).map((_, i) => (
-            <NotificationCard key={i} />
-          ))}
+        <TabsContent value="unread">
+          <div id="scrollableUnreadNoti" className="h-[400px] overflow-y-auto">
+            <InfiniteScroll
+              scrollableTarget="scrollableUnreadNoti"
+              dataLength={notifications.length}
+              next={getNoti}
+              hasMore={true}
+              loader={<LoadingCircle />}
+              endMessage={<p className="text-xs font-medium">Bạn đã đọc hết thông báo rồi.</p>}
+            >
+              {notifications.map((item, i) => (
+                <NotificationCard key={i} />
+              ))}
+            </InfiniteScroll>
+          </div>
         </TabsContent>
       </Tabs>
     </CustomPopover>

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { GlassCard } from '../Cards/GlassCard';
 import { BlogCard } from './BlogCard';
 
