@@ -32,7 +32,7 @@ export function NavBar() {
   return (
     <div
       className="flex sticky top-0 left-0 w-full items-center justify-between h-13 
-                  font-semibold text-sm bg-[#1d2954] shadow-xl z-[999] text-neutral-200"
+                  font-semibold text-sm bg-[#1d2954] shadow-xl z-[10] text-neutral-200"
     >
       <div className="flex w-full max-w-7xl mx-auto items-center justify-between">
         <div className="flex gap-5 items-center">

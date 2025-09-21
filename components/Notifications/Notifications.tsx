@@ -32,7 +32,7 @@ export function Notifications() {
       <div className="text-neutral-300 font-semibold text-lg mb-2">Thông báo</div>
       <Tabs defaultValue="unread">
         <div className="flex justify-between items-center text-neutral-300">
-          <TabsList className="bg-blue-900">
+          <TabsList className="bg-blue-900/20">
             <TabsTrigger value="unread" className="data-[state=inactive]:text-white">
               Chưa đọc
             </TabsTrigger>
