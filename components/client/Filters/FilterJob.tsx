@@ -110,7 +110,7 @@ export function FilterJob() {
     setFilters(prev => ({ ...prev, [key]: value }));
 
   return (
-    <div className="mt-[50px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
+    <div className="mt-[20px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
       <CustomInput
         startIcon={<SearchIcon size={18} />}
         placeholder="Vị trí tuyển dụng, tên công ty"

@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { LoadingCircle } from '../Loadings/LoadingCircle';
 
 export function Notifications() {
-  const [notifications, setNotifications] = useState<number[]>(_.range(0, 6, 1));
+  const [notifications, setNotifications] = useState<number[]>(_.range(0, 8, 1));
   const getNoti = async () => {
     setTimeout(() => setNotifications(prev => [...prev, ..._.range(0, 6, 1)]), 2000);
   };
