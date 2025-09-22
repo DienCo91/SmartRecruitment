@@ -48,8 +48,8 @@ export function Ads() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-1/3 top-full size-4" />
-        <CarouselNext className="right-1/3 top-full size-4" />
+        <CarouselPrevious className="left-[5px] top-1/2 bg-transparent" />
+        <CarouselNext className="right-[5px] top-1/2 bg-transparent" />
       </Carousel>
     </GlassCard>
   );
