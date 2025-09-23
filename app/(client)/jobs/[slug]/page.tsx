@@ -1,5 +1,6 @@
 'use client';
 
+import { CustomButton } from '@/components/Buttons/CustomButton';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CompanyOverView } from '@/components/client/Company/CompanyOverview';
 import { JobContent } from '@/components/client/Jobs/JobContent';
@@ -7,7 +8,6 @@ import { JobHeader } from '@/components/client/Jobs/JobHeader';
 import { JobOverView } from '@/components/client/Jobs/JobOverView';
 import { Jobtags } from '@/components/client/Jobs/JobTags';
 import { RelatedJob } from '@/components/client/Jobs/RelatedJob';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { mockedJob } from '@/constants/mockedData';
 import { Job } from '@/types/job';
@@ -29,13 +29,13 @@ const JobDetailPage = () => {
       action={
         <>
           <div className="flex items-center">
-            <Button variant="ghost" className="hover:bg-transparent hover:text-red-500">
+            <CustomButton className="hover:bg-transparent hover:text-red-500">
               <HeartIcon className="size-6" fill="red" />
-            </Button>
-            <Button variant="outline" className="bg-white/30 hover:bg-white/20 hover:text-gray-200">
+            </CustomButton>
+            <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
               Apply now
               <ArrowRightIcon />
-            </Button>
+            </CustomButton>
           </div>
           <p className="text-sm mt-3">
             Job expired in:{' '}

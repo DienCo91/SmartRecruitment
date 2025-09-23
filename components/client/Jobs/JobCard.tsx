@@ -1,12 +1,12 @@
 // import { BaseProps } from "@/types";
 
+import { CustomButton } from '@/components/Buttons/CustomButton';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { CalendarIcon, HeartIcon, MapPinIcon, WalletIcon } from 'lucide-react';
-import { CustomImage } from '../Images/CustomImage';
-import Link from 'next/link';
 import { Router } from '@/constants';
+import { ArrowRightIcon, CalendarIcon, HeartIcon, MapPinIcon, WalletIcon } from 'lucide-react';
+import Link from 'next/link';
+import { CustomImage } from '../Images/CustomImage';
 
 // interface Props extends BaseProps {
 //   job: unknown;
@@ -64,13 +64,14 @@ export function JobCard() {
               1 năm kinh nghiệm
             </Badge>
           </div>
-          <div>
-            <Button variant="ghost" className="hover:bg-transparent hover:text-red-500">
-              <HeartIcon size={14} fill="red" />
-            </Button>
-            <Button variant="outline" className="bg-white/30 hover:bg-white/20 hover:text-gray-200">
-              Ứng tuyển
-            </Button>
+          <div className="flex items-center">
+            <CustomButton className="hover:bg-transparent hover:text-red-500">
+              <HeartIcon className="size-6" fill="red" />
+            </CustomButton>
+            <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
+              Apply now
+              <ArrowRightIcon />
+            </CustomButton>
           </div>
         </div>
       </div>
