@@ -86,7 +86,10 @@ const LoginPage = () => {
           />
 
           <div className="w-full text-right">
-            <Link href="/register" className="text-blue-primary hover:underline text-[14px]">
+            <Link
+              href={'/forgot-password'}
+              className="text-blue-primary hover:underline text-[14px] "
+            >
               Forgot password
             </Link>
           </div>
