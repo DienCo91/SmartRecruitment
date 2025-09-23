@@ -46,8 +46,8 @@ export const mockedJob: Job = {
   is_featured: true,
   job_type: JobType.FullTime,
   location_id: 0,
-  min_salary: 2_000_000,
-  max_salary: 50_000_000,
+  min_salary: 2_000,
+  max_salary: 5_000,
   salary_type: SalaryType.Monthly,
   slug: 'chuyen-vien-kinh-doanh-giai-phap-thanh-toan-tu-van-tin-dung-doanh-nghiep',
   status: StatusJob.Active,
@@ -61,4 +61,5 @@ Hội tụ gần 3000 nhân tài cùng khát vọng đưa sản phẩm công ngh
 Xây dựng niềm tin với 350.000 khách hàng là đơn vị HCSN, doanh nghiệp, 3.5 triệu khách hàng cá nhân tại Việt Nam và 22 quốc gia\
 Hơn 100 giải thưởng trong ngành CNTT trong nước và quốc tế',
   company: mockedCompany,
+  posted_at: new Date(),
 };

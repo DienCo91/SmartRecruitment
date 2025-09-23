@@ -4,7 +4,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { CalendarIcon, HeartIcon, MapPinIcon, WalletIcon } from 'lucide-react';
-import Image from 'next/image';
+import { CustomImage } from '../Images/CustomImage';
+import Link from 'next/link';
+import { Router } from '@/constants';
 
 // interface Props extends BaseProps {
 //   job: unknown;
@@ -14,21 +16,19 @@ import Image from 'next/image';
 export function JobCard() {
   return (
     <div className="flex mt-3 gap-3 bg-white/5 p-3 rounded-xl shadow-sm hover:bg-white/15 hover:shadow-lg">
-      <div className="w-20 h-20 relative rounded-md overflow-hidden bg-white shadow-sm shadow-blue-900">
-        <Image
-          src="https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/UdiO7Pguf3akX65drUOKRz0N5dcyKWWr_1737604772____3a6bc78024143aefa7a42eaf3e57e674.png"
-          alt="thumbnail"
-          fill
-          className="object-contain p-1"
-        />
-      </div>
+      <CustomImage src="" alt="" className="w-[80px]" />
 
       {/* Thông tin job */}
       <div className="flex-1 flex-col w-full">
         <div className="flex relative justify-between items-center">
-          <span className="font-semibold text-neutral-300 hover:text-blue-400 hover:cursor-pointer">
-            Senior Front-End Developer (Angular)
-          </span>
+          <Link
+            href={Router.JOB.DETAIL(
+              'chuyen-vien-kinh-doanh-giai-phap-thanh-toan-tu-van-tin-dung-doanh-nghiep'
+            )}
+            className="font-semibold text-neutral-300 hover:text-blue-400 hover:cursor-pointer w-[550px] line-clamp-2"
+          >
+            Chuyên Viên Kinh Doanh Giải Pháp Thanh Toán / Tư Vấn Tín Dụng Doanh Nghiệp
+          </Link>
           <div className="absolute flex gap-1 right-0">
             <Badge variant="destructive" className="bg-red-800 block">
               Nổi bật

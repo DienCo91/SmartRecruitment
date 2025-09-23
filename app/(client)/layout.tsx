@@ -12,7 +12,7 @@ const ClientLayout = async ({
       <div className="flex flex-col h-full">
         <Suspense fallback={<LoadingDoubleCircle />}>
           <NavBar />
-          <div className="flex-1 overflow-y-auto overflow-x-hidden mt-5">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden">
             <div className="w-full max-w-7xl mx-auto text-neutral-300">{children}</div>
           </div>
         </Suspense>

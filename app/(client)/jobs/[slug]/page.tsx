@@ -1,26 +1,31 @@
 'use client';
 
 import { GlassCard } from '@/components/client/Cards/GlassCard';
+import { CompanyOverView } from '@/components/client/Company/CompanyOverview';
+import { JobContent } from '@/components/client/Jobs/JobContent';
 import { JobHeader } from '@/components/client/Jobs/JobHeader';
+import { JobOverView } from '@/components/client/Jobs/JobOverView';
+import { Jobtags } from '@/components/client/Jobs/JobTags';
+import { RelatedJob } from '@/components/client/Jobs/RelatedJob';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { mockedJob } from '@/constants/mockedData';
 import { Job } from '@/types/job';
-import { ArrowRightIcon, HeartIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { use, useState } from 'react';
-import { Separator } from '@/components/ui/separator';
-import { JobContent } from '@/components/client/Jobs/JobContent';
+import { ArrowRightIcon, HeartIcon } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
-const JobDetailPage = ({ params }: { params: Promise<{ slug: string }> }) => {
-  const { slug } = use(params);
+const JobDetailPage = () => {
+  const { slug } = useParams();
 
   const [job, setJob] = useState<Job>(mockedJob);
-  console.log(job);
+  console.log(slug);
 
   return (
     <GlassCard
-      className="mt-5"
-      title={<JobHeader job={job} />}
+      className="mt-10 hover:bg-transparent"
+      title={<JobHeader {...job} />}
       action={
         <>
           <div className="flex items-center">
@@ -40,15 +45,23 @@ const JobDetailPage = ({ params }: { params: Promise<{ slug: string }> }) => {
       }
     >
       <div className="grid grid-cols-12 gap-3">
-        <div className="col-span-8">
-          <Separator />
-          {job.description && <JobContent title="Description" content={job.description} />}
+        <div className="col-span-7">
+          <Separator className="bg-gray-500" />
+          {job.description && <JobContent title="Job Description" content={job.description} />}
           {job.responsibilities && (
             <JobContent title="Responsibilities" content={job.responsibilities} />
           )}
+          {/* {job.tags &&  */}
+          <Jobtags />
+          {/* } */}
         </div>
-        <div className="col-span-4">hahah</div>
+        <div className="col-span-5 space-y-5">
+          <JobOverView {...job} />
+          <CompanyOverView company={job.company} />
+        </div>
       </div>
+      <Separator className="my-5 bg-gray-500" />
+      <RelatedJob />
     </GlassCard>
   );
 };

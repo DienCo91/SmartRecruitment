@@ -25,7 +25,7 @@ export interface Job {
   // Ví dụ: 'ON_PLATFORM'
   // apply_url_or_email (VARCHAR): Link/Email để ứng tuyển (nếu không phải trên platform).
   // is_deleted (BOOLEAN): Cờ xóa mềm.
-  // posted_at (DATETIME): Thời điểm đăng tin.
+  posted_at: Date;
   // created_date (DATETIME): Thời điểm tạo.
   // last_modified_date (DATETIME): Thời điểm cập nhật cuối.
 

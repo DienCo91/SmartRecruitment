@@ -15,13 +15,27 @@ export enum SalaryType {
   Hourly = 'HOURLY',
 }
 
+export const salaryType = {
+  [SalaryType.Hourly]: 'hour',
+  [SalaryType.Monthly]: 'month',
+  [SalaryType.Yearly]: 'year',
+};
+
 export enum EducationLevel {
   HighSchool = 'HIGH_SCHOOL',
 }
 
+export const educationLevel = {
+  [EducationLevel.HighSchool]: 'High school',
+};
+
 export enum ExperienceLevel {
   Fresher = 'FRESHER',
 }
+
+export const experienceLevel = {
+  [ExperienceLevel.Fresher]: 'Fresher',
+};
 
 export enum JobType {
   FullTime = 'FULL_TIME',
@@ -34,8 +48,8 @@ export enum StatusJob {
 }
 
 export const jobType = {
-  [JobType.FullTime]: 'full time',
-  [JobType.PartTime]: 'part time',
+  [JobType.FullTime]: 'Full time',
+  [JobType.PartTime]: 'Part time',
 };
 
 // Company
@@ -43,6 +57,11 @@ export enum OrganizationType {
   ProductCompany = 'PRODUCT_COMPANY',
   OutsourcingCompany = 'OUTSOURCING_COMPANY',
 }
+
+export const organizationType = {
+  [OrganizationType.OutsourcingCompany]: 'Outsourcing company',
+  [OrganizationType.ProductCompany]: 'Product company',
+};
 
 export enum TeamSize {
   ONE_TO_TEN = '1-10',

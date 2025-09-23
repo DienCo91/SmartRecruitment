@@ -9,4 +9,7 @@ export const Router = {
     APPLIED_JOB: '/applied-job',
   },
   HOME: '/',
+  JOB: {
+    DETAIL: (slug: string) => `/jobs/${slug}`,
+  },
 };

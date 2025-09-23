@@ -1,18 +1,12 @@
 import { BriefcaseBusinessIcon } from 'lucide-react';
 import Image from 'next/image';
+import { CustomImage } from '../Images/CustomImage';
 
 export function CompanyCard() {
   return (
     <div className="flex flex-col bg-white/5 p-3 rounded-xl shadow-sm hover:bg-white/15 hover:shadow-lg">
       <div className="flex mt-3 gap-3 ">
-        <div className="w-20 h-20 relative rounded-md overflow-hidden bg-white shadow-sm shadow-blue-900">
-          <Image
-            src="https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/UdiO7Pguf3akX65drUOKRz0N5dcyKWWr_1737604772____3a6bc78024143aefa7a42eaf3e57e674.png"
-            alt="thumbnail"
-            fill
-            className="object-contain p-1"
-          />
-        </div>
+        <CustomImage src="" alt="" />
 
         <div className="flex-1 flex flex-col justify-between w-full">
           <div>

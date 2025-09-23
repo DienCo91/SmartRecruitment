@@ -36,7 +36,7 @@ export function GlassCard({
       className={cn(
         'bg-white/5 border-none group text-neutral-300 relative overflow-visible\
         rounded-xl p-4 backdrop-blur-md transition-all duration-300\
-        hover:bg-white/15 hover:shadow-lg hover:shadow-white/5 hover:translate-y-[-5px]',
+        hover:bg-white/10 hover:shadow-lg hover:shadow-white/5 hover:translate-y-[-5px]',
         className
       )}
     >
