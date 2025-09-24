@@ -3,6 +3,7 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CompanyOverView } from '@/components/client/Company/CompanyOverview';
+import { ApplyJobForm } from '@/components/client/Forms/ApplyJobForm';
 import { JobContent } from '@/components/client/Jobs/JobContent';
 import { JobHeader } from '@/components/client/Jobs/JobHeader';
 import { JobOverView } from '@/components/client/Jobs/JobOverView';
@@ -17,9 +18,9 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 const JobDetailPage = () => {
-  const { slug } = useParams();
-
+  const [showApplyJobModal, setShowApplyJobModal] = useState<boolean>(false);
   const [job, setJob] = useState<Job>(mockedJob);
+  const { slug } = useParams();
   console.log(slug);
 
   return (
@@ -32,7 +33,10 @@ const JobDetailPage = () => {
             <CustomButton className="hover:bg-transparent hover:text-red-500">
               <HeartIcon className="size-6" fill="red" />
             </CustomButton>
-            <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
+            <CustomButton
+              onClick={() => setShowApplyJobModal(true)}
+              className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
+            >
               Apply now
               <ArrowRightIcon />
             </CustomButton>
@@ -62,6 +66,10 @@ const JobDetailPage = () => {
       </div>
       <Separator className="my-5 bg-gray-500" />
       <RelatedJob />
+
+      {showApplyJobModal && (
+        <ApplyJobForm title={job.title} onClose={() => setShowApplyJobModal(false)} />
+      )}
     </GlassCard>
   );
 };
