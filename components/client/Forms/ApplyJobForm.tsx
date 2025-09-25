@@ -13,6 +13,7 @@ interface Props extends Pick<Job, 'title'> {
 
 export function ApplyJobForm({ onClose, title }: Props) {
   const handleSubmit = () => {
+    console.log(editorRef.current?.getValue());
     onClose();
   };
 
@@ -51,7 +52,10 @@ export function ApplyJobForm({ onClose, title }: Props) {
 
       <div className="space-y-2">
         <Label htmlFor="select-enter-cover-letter">Cover letter</Label>
-        <QuillCustom ref={editorRef} />
+        <QuillCustom
+          ref={editorRef}
+          placeholder="Write down your biography here. Let the employers know who you are..."
+        />
       </div>
     </GlassDialog>
   );
