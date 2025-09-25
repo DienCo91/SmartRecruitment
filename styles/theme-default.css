@@ -11,3 +11,7 @@ body:has(.theme-default) input
 {
   color: #d4d4d4;
 } */
+
+body:has(.theme-default) .body:has(.theme-default) {
+  
+}

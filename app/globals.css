@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "../styles/theme-default.css";
+@import 'tw-animate-css';
+@import '../styles/theme-default.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -43,7 +43,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-blue-primary: var(--blue-primary);
-  --color-grey-primary:var(--grey-primary);
+  --color-grey-primary: var(--grey-primary);
 }
 
 :root {
@@ -54,7 +54,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #0A65CC;
+  --primary: #0a65cc;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -79,8 +79,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --blue-primary:#0A65CC;
-  --grey-primary:#F1F2F4;
+  --blue-primary: #0a65cc;
+  --grey-primary: #f1f2f4;
 }
 
 .dark {
@@ -148,7 +148,9 @@
 }
 
 @keyframes dot-bounce {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0.6);
     opacity: 0.3;
   }
@@ -169,9 +171,25 @@
   @apply min-h-[180px] max-h-[400px] overflow-y-auto;
 }
 
+.ql-toolbar .ql-stroke {
+  stroke: var(--color-neutral-300) !important;
+}
+.ql-toolbar .ql-fill,
+.ql-size.ql-picker.ql-expanded {
+  fill: var(--color-neutral-300) !important;
+}
+.ql-editor.ql-blank::before {
+  @apply !text-gray-400;
+}
+
+.ql-active {
+  @apply !bg-white/30 !rounded-xs;
+}
+
 @keyframes ping-small {
-  75%, 100% {
-    transform: scale(1.5); 
+  75%,
+  100% {
+    transform: scale(1.5);
     opacity: 0;
   }
 }
@@ -179,9 +197,6 @@
 .animate-ping-small {
   animation: ping-small 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-
-
-
 
 /* Scroll */
 ::-webkit-scrollbar {

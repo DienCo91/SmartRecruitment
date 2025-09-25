@@ -5,7 +5,7 @@ import { Button } from '../ui/button';
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
-  children: string;
+  children: React.ReactNode;
 }
 
 export function CustomButton({ startIcon, endIcon, className, children, ...props }: Props) {
@@ -14,7 +14,7 @@ export function CustomButton({ startIcon, endIcon, className, children, ...props
       <Button
         {...props}
         className={cn(
-          'flex items-center rounded-sm bg-transparent px-3 py-2 shadow-sm transition cursor-pointer text-gray-400 font-medium',
+          'flex items-center rounded-sm bg-transparent px-3 py-2 shadow-none transition cursor-pointer text-gray-400 font-medium',
           className
         )}
       >

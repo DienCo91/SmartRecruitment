@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { LoadingCircle } from '../Loadings/LoadingCircle';
 
 export function Notifications() {
-  const [notifications, setNotifications] = useState<number[]>(_.range(0, 6, 1));
+  const [notifications, setNotifications] = useState<number[]>(_.range(0, 8, 1));
   const getNoti = async () => {
     setTimeout(() => setNotifications(prev => [...prev, ..._.range(0, 6, 1)]), 2000);
   };
@@ -38,7 +38,7 @@ export function Notifications() {
   return (
     <CustomPopover trigger={trigger} align="end" className="w-[400px] shadow-md shadow-blue-500/50">
       <div className="text-neutral-300 font-semibold text-lg mb-2">Thông báo</div>
-      <Tabs defaultValue="unread">
+      <Tabs defaultValue="all">
         <div className="flex justify-between items-center text-neutral-300">
           <TabsList className="bg-blue-900/20">
             <TabsTrigger value="all" className="data-[state=inactive]:text-white">

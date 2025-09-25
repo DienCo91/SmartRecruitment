@@ -6,9 +6,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
-import { Avatar } from './Avatar';
 import { Router } from '@/constants';
 import { BookMarkedIcon, FileUserIcon, LogOutIcon, SquareUserIcon } from 'lucide-react';
+import { AvatarUser } from './AvatarUser';
 
 export function ShortUserInfo() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export function ShortUserInfo() {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Avatar src={user.avatar} className="size-8 hover:cursor-pointer" />
+          <AvatarUser src={user.avatar} className="size-8 hover:cursor-pointer" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
