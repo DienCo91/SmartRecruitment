@@ -1,5 +1,4 @@
 import { BriefcaseBusinessIcon } from 'lucide-react';
-import Image from 'next/image';
 import { CustomImage } from '../Images/CustomImage';
 
 export function CompanyCard() {
