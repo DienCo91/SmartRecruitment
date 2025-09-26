@@ -6,7 +6,6 @@ export function useEmailVerification() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-
     if (auth.currentUser && !auth.currentUser.emailVerified) {
       interval = setInterval(async () => {
         await auth.currentUser?.reload();

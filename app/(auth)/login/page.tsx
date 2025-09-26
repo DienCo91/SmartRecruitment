@@ -1,18 +1,21 @@
 'use client';
-import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
+import { auth } from '@/lib/firebase';
+import { AuthService } from '@/services/auth.service';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import TextField from '../components/TextField';
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useAppDispatch } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { fi } from 'zod/v4/locales';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
@@ -22,6 +25,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -32,34 +36,37 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
+    dispatch(setLoading(true));
     try {
       const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       const user = userCredential.user;
-
-      console.log('User', user);
 
       if (!user.emailVerified) {
         router.push('/verify-email');
         return;
       }
 
-      toast.success('Login successfully');
+      await AuthService.login();
 
-      // TODO: handle user info in database
+      toast.success('Login successfully');
     } catch (error) {
       console.error('Login error:', JSON.stringify(error));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
+      dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      console.log('User Info:', result.user);
+      await signInWithPopup(auth, provider);
+      await AuthService.oauth2();
       toast.success('Login successfully');
-      // TODO: handle user info in database
     } catch (error) {
       console.error(error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
