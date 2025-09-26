@@ -2,13 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { Separator } from '@/components/ui/separator';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { FcGoogle } from 'react-icons/fc';
-import z from 'zod';
-import TextField from '../components/TextField';
 import {
   Select,
   SelectContent,
@@ -18,25 +11,45 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { auth } from '@/lib/firebase';
+import { AuthService } from '@/services/auth.service';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   sendEmailVerification,
+  signInWithCustomToken,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
+import z from 'zod';
+import TextField from '../components/TextField';
+import { useAppDispatch } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { fi } from 'zod/v4/locales';
 
 const formSchema = z
   .object({
     username: z.string().min(3, { message: 'Username must be at least 3 characters' }),
     fullname: z.string().min(3, { message: 'Full name must be at least 3 characters' }),
     email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+    password: z
+      .string()
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+        message:
+          'Password must be at least 8 chars, include uppercase, lowercase, number and special char',
+      }),
     confirmPassword: z
       .string()
-      .min(6, { message: 'Confirm Password must be at least 6 characters' }),
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+        message:
+          'Password must be at least 8 chars, include uppercase, lowercase, number and special char',
+      }),
   })
   .refine(data => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
@@ -46,7 +59,10 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const [role, setRole] = useState('Employer');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -60,25 +76,42 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
+    dispatch(setLoading(true));
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      console.log('User registered:', userCredential.user);
-      await sendEmailVerification(userCredential.user);
-      router.push('/verify-email');
+      const res = await AuthService.register({
+        fullName: data.fullname,
+        userName: data.username,
+        email: data.email,
+        role: role.toUpperCase(),
+        password: data.password,
+      });
+
+      await signInWithCustomToken(auth, res.data.firebaseCustomToken);
+
+      if (auth.currentUser) {
+        await sendEmailVerification(auth.currentUser);
+        router.push('/verify-email');
+      }
     } catch (error) {
       console.error('Register error:', error);
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || 'Error');
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
+      dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      console.log('User Info:', result.user);
+      await signInWithPopup(auth, provider);
+      await AuthService.oauth2();
       toast.success('Login successfully');
-      // TODO: handle user info in database
     } catch (error) {
       console.error(error);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -95,15 +128,15 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        <Select>
+        <Select defaultValue="Employee" value={role} onValueChange={setRole}>
           <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Employers" />
+            <SelectValue placeholder="Employee" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Type:</SelectLabel>
-              <SelectItem value="light">Employers</SelectItem>
-              <SelectItem value="dark">Company</SelectItem>
+              <SelectItem value="Employer">Employer</SelectItem>
+              <SelectItem value="Candidate">Candidate</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
