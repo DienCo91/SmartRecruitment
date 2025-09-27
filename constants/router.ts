@@ -12,4 +12,7 @@ export const Router = {
   JOB: {
     DETAIL: (slug: string) => `/jobs/${slug}`,
   },
+  FIND_COMPANY: {
+    DETAIL: (id: string) => `/company/${id}`,
+  },
 };
