@@ -15,4 +15,5 @@ export const Router = {
   FIND_COMPANY: {
     DETAIL: (id: string) => `/company/${id}`,
   },
+  ACCOUNT_SETUP: '/account-setup',
 };

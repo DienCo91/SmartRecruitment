@@ -84,7 +84,7 @@ export const locations: TOptions[] = [
   },
 ];
 
-export const categoties = [
+export const categories = [
   {
     value: 'it',
     label: 'IT & Máy tính',

@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface CommonState {
-  isLoading: boolean;
-}
+import { CommonState } from './type';
 
 const initialState: CommonState = { isLoading: false };
 

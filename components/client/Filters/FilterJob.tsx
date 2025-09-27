@@ -7,7 +7,7 @@ import { CustomPopover } from '@/components/Popovers/CustomPopover';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
-  categoties,
+  categories,
   educations,
   experiences,
   jobLevels,
@@ -20,11 +20,26 @@ import { useState } from 'react';
 import { CustomCheckboxGroup } from '../CheckboxGroup/CustomCheckboxGroup';
 import { CustomRadioGroup } from '../RadioGroup/CustomRadioGroup';
 
-export function FilterJob() {
+interface IFilterJob {
+  handleSubmit?: (value: IFilter) => void;
+}
+
+interface IFilter {
+  search: string;
+  location: null;
+  categories: null;
+  exp: string;
+  salary: string;
+  jobType: string[];
+  education: string[];
+  jobLevel: string;
+}
+
+export function FilterJob({ handleSubmit }: IFilterJob) {
   const initFilter = {
     search: '',
     location: null,
-    categotie: null,
+    categories: null,
     exp: 'underOneYear',
     salary: '$50-$1000',
     jobType: ['all'],
@@ -57,9 +72,9 @@ export function FilterJob() {
       />
       <Separator orientation="vertical" />
       <Combobox
-        options={categoties}
-        value={filters.categotie}
-        onChange={val => handleFilter('categotie', val)}
+        options={categories}
+        value={filters.categories}
+        onChange={val => handleFilter('categories', val)}
         startIcon={<LayersIcon size={18} />}
         placeholder="Chọn danh mục"
       />
@@ -134,7 +149,7 @@ export function FilterJob() {
       <Button
         className="bg-blue-900 hover:bg-blue-800 hover:text-neutral-100 text-neutral-300 rounded-l-none h-full rounded-r-sm"
         onClick={() => {
-          console.log(filters);
+          if (typeof handleSubmit === 'function') handleSubmit(filters);
         }}
       >
         Tìm Job
