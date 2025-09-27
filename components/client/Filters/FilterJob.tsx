@@ -6,92 +6,21 @@ import { CustomInput } from '@/components/Inputs/CustomInput';
 import { CustomPopover } from '@/components/Popovers/CustomPopover';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { TOptions } from '@/types';
+import {
+  categoties,
+  educations,
+  experiences,
+  jobLevels,
+  jobTypes,
+  locations,
+  salaries,
+} from '@/constants/mockedData';
 import { ChevronDownIcon, LayersIcon, ListFilterIcon, MapPinIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { CustomCheckboxGroup } from '../CheckboxGroup/CustomCheckboxGroup';
 import { CustomRadioGroup } from '../RadioGroup/CustomRadioGroup';
 
 export function FilterJob() {
-  const locations: TOptions[] = [
-    {
-      value: 'hanoi',
-      label: 'Hà Nội',
-    },
-    {
-      value: 'hochiminh',
-      label: 'Hồ Chí Minh',
-    },
-    {
-      value: 'danang',
-      label: 'Đà Nẵng',
-    },
-    {
-      value: 'thaibinh',
-      label: 'Thái Bình',
-    },
-  ];
-
-  const categoties = [
-    {
-      value: 'it',
-      label: 'IT & Máy tính',
-    },
-    {
-      value: 'marketing',
-      label: 'Marketing',
-    },
-    {
-      value: 'bussiness',
-      label: 'Kinh doanh',
-    },
-  ];
-
-  const experiences = [
-    { id: 1, value: 'underOneYear', label: 'Fresher' },
-    { id: 2, value: '1-2Year', label: '1-2 Years' },
-    { id: 3, value: '2-4Year', label: '2-4 Years' },
-    { id: 4, value: '4-6Year', label: '4-6 Years' },
-    { id: 5, value: '6-8Year', label: '6-8 Years' },
-    { id: 6, value: '8-10Year', label: '8-10 Years' },
-    { id: 7, value: '10-15Year', label: '10-15 Years' },
-    { id: 8, value: '15+Year', label: '15+ Years' },
-  ];
-
-  const salaries = [
-    { id: '$50-$1000', value: '$50-$1000', label: '$50-$1000' },
-    { id: '$1000-$2000', value: '$1000-$2000', label: '$1000-$2000' },
-    { id: '$3000-$4000', value: '$3000-$4000', label: '$3000-$4000' },
-    { id: '$4000-$6000', value: '$4000-$6000', label: '$4000-$6000' },
-    { id: '$6000-$8000', value: '$6000-$8000', label: '$6000-$8000' },
-    { id: '$8000-$10000', value: '$8000-$10000', label: '$8000-$10000' },
-    { id: '$10000-$15000', value: '$10000-$15000', label: '$10000-$15000' },
-    { id: '$15000+', value: '$15000+', label: '$15000+' },
-  ];
-
-  const jobTypes = [
-    { id: 'all', value: 'all', label: 'All' },
-    { id: 'fulltime', value: 'fulltime', label: 'Full Time' },
-    { id: 'parttime', value: 'parttime', label: 'Part Time' },
-    { id: 'internship', value: 'internship', label: 'Internship' },
-    { id: 'remote', value: 'remote', label: 'Remote' },
-    { id: 'temporary', value: 'temporary', label: 'Temporary' },
-  ];
-
-  const educations = [
-    { id: 'all', value: 'all', label: 'All' },
-    { id: 'highSchool', value: 'highSchool', label: 'High School' },
-    { id: 'intermediate', value: 'intermediate', label: 'Intermediate' },
-    { id: 'graduation', value: 'graduation', label: 'Graduation' },
-    { id: 'masterDegree', value: 'masterDegree', label: 'Master Degree' },
-  ];
-
-  const jobLevels = [
-    { id: 'entryLevel', value: 'entryLevel', label: 'Entry Level' },
-    { id: 'midLevel', value: 'midLevel', label: 'Mid Level' },
-    { id: 'expertLevel', value: 'expertLevel', label: 'Expert Level' },
-  ];
-
   const initFilter = {
     search: '',
     location: null,

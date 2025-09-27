@@ -35,26 +35,28 @@ export function GlassCard({
     <Card
       className={cn(
         'bg-white/5 border-none group text-neutral-300 relative overflow-visible\
-        rounded-xl p-4 backdrop-blur-md transition-all duration-300\
+        rounded-xl p-4 backdrop-blur-lg transition-all duration-300\
         hover:bg-white/10 hover:shadow-lg hover:shadow-white/5 hover:translate-y-[-5px]',
         className
       )}
     >
-      <CardHeader className="gap-0">
-        <div className="flex justify-between">
-          <CardTitle className="text-lg ml-0">
-            {icon && <span className="mr-2">{icon}</span>}
-            {title}
-          </CardTitle>
+      {title !== '' && (
+        <CardHeader className="gap-0">
+          <div className="flex justify-between">
+            <CardTitle className="text-lg ml-0">
+              {icon && <span className="mr-2">{icon}</span>}
+              {title}
+            </CardTitle>
 
-          {action ? (
-            <CardAction>{action}</CardAction>
-          ) : (
-            <div className="h-1 w-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-20" />
-          )}
-        </div>
-        <CardDescription className="text-gray-400">{description}</CardDescription>
-      </CardHeader>
+            {action ? (
+              <CardAction>{action}</CardAction>
+            ) : (
+              <div className="h-1 w-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-20" />
+            )}
+          </div>
+          <CardDescription className="text-gray-400">{description}</CardDescription>
+        </CardHeader>
+      )}
 
       <CardContent className={cn('relative', classContentName)}>{children}</CardContent>
 

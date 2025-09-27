@@ -22,6 +22,10 @@ export function NavBar() {
       path: '/company',
     },
     {
+      name: 'Ứng viên',
+      path: '/candidate',
+    },
+    {
       name: 'Hỗ trợ',
       path: '/customer-support',
     },

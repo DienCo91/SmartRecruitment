@@ -1,8 +1,11 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
+import { setLoading } from '@/lib/features/common/commonSlice';
 import { auth } from '@/lib/firebase';
+import { useAppDispatch } from '@/lib/hooks';
 import { AuthService } from '@/services/auth.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
@@ -13,9 +16,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import TextField from '../components/TextField';
-import { useAppDispatch } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { fi } from 'zod/v4/locales';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
