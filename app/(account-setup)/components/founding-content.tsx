@@ -14,6 +14,7 @@ import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import ButtonAccountSetup from './button-account-setup';
+import { toast } from 'sonner';
 
 interface IFoundingContent {
   goToNext: () => void;
@@ -36,6 +37,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -49,8 +51,12 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    goToNext();
+    if (editorRef.current?.getValue() && editorRef.current.getValue().length > 20) {
+      console.log('🚀 ~ onSubmit ~ data:', data);
+      goToNext();
+    } else {
+      return toast.error('Description must be at least 20 characters');
+    }
   };
 
   return (
@@ -60,7 +66,10 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           <label htmlFor="organizationType" className="block text-sm font-medium mb-1">
             Organization Type
           </label>
-          <Select {...register('organizationType')}>
+          <Select
+            {...register('organizationType')}
+            onValueChange={val => setValue('organizationType', val, { shouldValidate: true })}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
@@ -79,7 +88,10 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           <label htmlFor="industryTypes" className="block text-sm font-medium mb-1">
             Industry Types
           </label>
-          <Select {...register('industryTypes')}>
+          <Select
+            {...register('industryTypes')}
+            onValueChange={val => setValue('industryTypes', val, { shouldValidate: true })}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>
@@ -98,7 +110,10 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           <label htmlFor="teamSize" className="block text-sm font-medium mb-1">
             Team Size
           </label>
-          <Select {...register('teamSize')}>
+          <Select
+            {...register('teamSize')}
+            onValueChange={val => setValue('teamSize', val, { shouldValidate: true })}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select..." />
             </SelectTrigger>

@@ -3,23 +3,30 @@
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
+import { Router } from '@/constants';
+import { setCurrentUser } from '@/lib/features/auth/authSlice';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { auth } from '@/lib/firebase';
 import { useAppDispatch } from '@/lib/hooks';
 import { AuthService } from '@/services/auth.service';
+import { isEmployer } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import { toast } from 'sonner';
 import { z } from 'zod';
-import TextField from '../components/TextField';
+import TextField from '../../../components/hookFormCustom/TextField';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  password: z
+    .string()
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+      message:
+        'Password must be at least 8 chars, include uppercase, lowercase, number and special char',
+    }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -46,9 +53,13 @@ const LoginPage = () => {
         return;
       }
 
-      await AuthService.login();
+      const res = await AuthService.login();
+      dispatch(setCurrentUser(res.data));
+      const isRoleEmployer = isEmployer(res.data.role);
 
-      toast.success('Login successfully');
+      if (isRoleEmployer) {
+        router.replace(Router.ACCOUNT_SETUP);
+      }
     } catch (error) {
       console.error('Login error:', JSON.stringify(error));
     } finally {
@@ -61,8 +72,9 @@ const LoginPage = () => {
       dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      await AuthService.oauth2();
-      toast.success('Login successfully');
+      const res = await AuthService.oauth2();
+      dispatch(setCurrentUser(res.data));
+      router.replace(Router.HOME);
     } catch (error) {
       console.error(error);
     } finally {

@@ -9,21 +9,18 @@ import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
 import { BookMarkedIcon, FileUserIcon, LogOutIcon, SquareUserIcon } from 'lucide-react';
 import { AvatarUser } from './AvatarUser';
+import { useAppSelector } from '@/lib/hooks';
+import { RootState } from '@/lib/store';
 
 export function ShortUserInfo() {
   const router = useRouter();
-  const user = {
-    fullname: 'Hoàng Minh Khương',
-    phoneNumber: '0377476212',
-    avatar: '',
-    username: 'hoangminhkhuong',
-  };
+  const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
 
   const options = [
     {
       icon: <SquareUserIcon color="#c1c3c9" size={18} />,
       label: 'Hồ sơ cá nhân',
-      route: Router.USER.PROFILE(user.username),
+      route: Router.USER.PROFILE(currentUser?.userName || ''),
     },
     {
       icon: <BookMarkedIcon color="#c1c3c9" size={18} />,
@@ -40,12 +37,12 @@ export function ShortUserInfo() {
   return (
     <div className="flex gap-2 items-center inset-shadow-sm rounded-full pl-3 shadow-xl ring-1 ring-blue-500/50">
       <div className="flex flex-col font-normal text-right text-xs">
-        <span>{user.fullname}</span>
-        <span>{user.phoneNumber}</span>
+        <span>{currentUser?.fullName}</span>
+        <span>{currentUser?.email}</span>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <AvatarUser src={user.avatar} className="size-8 hover:cursor-pointer" />
+          <AvatarUser src={''} className="size-8 hover:cursor-pointer" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"

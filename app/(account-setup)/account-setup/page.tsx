@@ -9,9 +9,41 @@ import FoundingContent from '../components/founding-content';
 import SocialMediaProfile from '../components/social-media-profile';
 import Contact from '../components/contact';
 
+interface DataSubmitFormProps {
+  nameCompany: string;
+  logo: File;
+  banner: File;
+  organizationType: string;
+  industryTypes: string;
+  teamSize: string;
+  yearOfEstablishment: string;
+  companyWebsite: string;
+  socialLinks: {
+    platform: string;
+    url: string;
+  }[];
+  location: string;
+  phoneNumber: string;
+  email: string;
+}
+
 const AccountSetup = () => {
   const [activeTab, setActiveTab] = useState('company');
   const { setProgress } = useProgressAccountSetup();
+  const [dataSubmitForm, setDataSubmitForm] = useState<DataSubmitFormProps>({
+    nameCompany: '',
+    logo: new File([], ''),
+    banner: new File([], ''),
+    organizationType: '',
+    industryTypes: '',
+    teamSize: '',
+    yearOfEstablishment: '',
+    companyWebsite: '',
+    socialLinks: [],
+    location: '',
+    phoneNumber: '',
+    email: '',
+  });
 
   const tabs = [
     { value: 'company', label: 'Company Info', icon: User },
@@ -22,12 +54,18 @@ const AccountSetup = () => {
 
   const currentIndex = tabs.findIndex(tab => tab.value === activeTab);
 
-  const goToNext = () => {
+  const goToNext = (values?: Partial<DataSubmitFormProps>) => {
+    if (values) {
+      setDataSubmitForm(prev => ({ ...prev, ...values }));
+    }
+
     if (currentIndex < tabs.length - 1) {
       const nextTab = tabs[currentIndex + 1].value;
       setActiveTab(nextTab);
       setProgress(((currentIndex + 1) * 100) / tabs.length);
       window.scrollTo(0, 0);
+    } else {
+      console.log('Final submit:', { ...dataSubmitForm, ...values });
     }
   };
 
@@ -52,13 +90,15 @@ const AccountSetup = () => {
           { value: 'founding', label: 'Founding Info', icon: Users },
           { value: 'social', label: 'Social Media Profile', icon: Globe },
           { value: 'contact', label: 'Contact', icon: AtSign },
-        ].map((tab, idx) => (
+        ].map(tab => (
           <TabsTrigger
-            onClick={() => setProgress((idx * 100) / 4)}
+            disabled
             key={tab.value}
             value={tab.value}
             style={{ boxShadow: 'none' }}
-            className="flex border-0 mb-[-3px] rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors"
+            className="flex border-0 mb-[-3px]  rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2
+             border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500
+            hover:text-gray-700 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default"
           >
             <tab.icon className="w-4 h-4" />
             {tab.label}
@@ -66,16 +106,16 @@ const AccountSetup = () => {
         ))}
       </TabsList>
 
-      <TabsContent value="company">
+      <TabsContent forceMount value="company" className="data-[state=inactive]:hidden">
         <CompanyInfo goToNext={goToNext} />
       </TabsContent>
-      <TabsContent value="founding">
+      <TabsContent forceMount value="founding" className="data-[state=inactive]:hidden">
         <FoundingContent goToNext={goToNext} goToPrev={goToPrev} />
       </TabsContent>
-      <TabsContent value="social">
+      <TabsContent forceMount value="social" className="data-[state=inactive]:hidden">
         <SocialMediaProfile goToNext={goToNext} goToPrev={goToPrev} />
       </TabsContent>
-      <TabsContent value="contact">
+      <TabsContent forceMount value="contact" className="data-[state=inactive]:hidden">
         <Contact goToPrev={goToPrev} />
       </TabsContent>
     </Tabs>

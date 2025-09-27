@@ -1,0 +1,5 @@
+export enum ROLE_USER {
+  ADMIN = 'ADMIN',
+  EMPLOYER = 'EMPLOYER',
+  CANDIDATE = 'CANDIDATE',
+}

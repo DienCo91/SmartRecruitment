@@ -28,10 +28,11 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import z from 'zod';
-import TextField from '../components/TextField';
+import TextField from '../../../components/hookFormCustom/TextField';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { fi } from 'zod/v4/locales';
+import { setCurrentUser } from '@/lib/features/auth/authSlice';
 
 const formSchema = z
   .object({
@@ -106,8 +107,8 @@ const RegisterPage = () => {
       dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      await AuthService.oauth2();
-      toast.success('Login successfully');
+      const res = await AuthService.oauth2();
+      dispatch(setCurrentUser(res.data));
     } catch (error) {
       console.error(error);
     } finally {
@@ -120,7 +121,7 @@ const RegisterPage = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-semibold">Create account</h1>
-          <div className="flex text-[14px] text-muted-foreground mt-[8px]">
+          <div className="flex text-[14px] text-muted-foreground mt-[8px] flex-wrap">
             <h2>Already have account?</h2>
             <Link href={'/login'} className="ml-1 hover:underline text-blue-primary">
               Login
