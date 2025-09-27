@@ -7,7 +7,7 @@ import {
   StatusJob,
   TeamSize,
 } from '.';
-import { Company, Job } from '@/types';
+import { Company, Job, TOptions } from '@/types';
 
 export const mockedCompany: Company = {
   id: 1,
@@ -63,3 +63,88 @@ Hơn 100 giải thưởng trong ngành CNTT trong nước và quốc tế',
   company: mockedCompany,
   posted_at: new Date(),
 };
+
+// Data cứng
+export const locations: TOptions[] = [
+  {
+    value: 'hanoi',
+    label: 'Hà Nội',
+  },
+  {
+    value: 'hochiminh',
+    label: 'Hồ Chí Minh',
+  },
+  {
+    value: 'danang',
+    label: 'Đà Nẵng',
+  },
+  {
+    value: 'thaibinh',
+    label: 'Thái Bình',
+  },
+];
+
+export const categoties = [
+  {
+    value: 'it',
+    label: 'IT & Máy tính',
+  },
+  {
+    value: 'marketing',
+    label: 'Marketing',
+  },
+  {
+    value: 'bussiness',
+    label: 'Kinh doanh',
+  },
+];
+
+export const experiences = [
+  { id: 1, value: 'underOneYear', label: 'Fresher' },
+  { id: 2, value: '1-2Year', label: '1-2 Năm' },
+  { id: 3, value: '2-4Year', label: '2-4 Năm' },
+  { id: 4, value: '4-6Year', label: '4-6 Năm' },
+  { id: 5, value: '6-8Year', label: '6-8 Năm' },
+  { id: 6, value: '8-10Year', label: '8-10 Năm' },
+  { id: 7, value: '10-15Year', label: '10-15 Năm' },
+  { id: 8, value: '15+Year', label: '15+ Năm' },
+];
+
+export const salaries = [
+  { id: '$50-$1000', value: '$50-$1000', label: '$50-$1000' },
+  { id: '$1000-$2000', value: '$1000-$2000', label: '$1000-$2000' },
+  { id: '$3000-$4000', value: '$3000-$4000', label: '$3000-$4000' },
+  { id: '$4000-$6000', value: '$4000-$6000', label: '$4000-$6000' },
+  { id: '$6000-$8000', value: '$6000-$8000', label: '$6000-$8000' },
+  { id: '$8000-$10000', value: '$8000-$10000', label: '$8000-$10000' },
+  { id: '$10000-$15000', value: '$10000-$15000', label: '$10000-$15000' },
+  { id: '$15000+', value: '$15000+', label: '$15000+' },
+];
+
+export const jobTypes = [
+  { id: 'all', value: 'all', label: 'All' },
+  { id: 'fulltime', value: 'fulltime', label: 'Full Time' },
+  { id: 'parttime', value: 'parttime', label: 'Part Time' },
+  { id: 'internship', value: 'internship', label: 'Internship' },
+  { id: 'remote', value: 'remote', label: 'Remote' },
+  { id: 'temporary', value: 'temporary', label: 'Temporary' },
+];
+
+export const educations = [
+  { id: 'all', value: 'all', label: 'All' },
+  { id: 'highSchool', value: 'highSchool', label: 'High School' },
+  { id: 'intermediate', value: 'intermediate', label: 'Intermediate' },
+  { id: 'graduation', value: 'graduation', label: 'Graduation' },
+  { id: 'masterDegree', value: 'masterDegree', label: 'Master Degree' },
+];
+
+export const jobLevels = [
+  { id: 'entryLevel', value: 'entryLevel', label: 'Entry Level' },
+  { id: 'midLevel', value: 'midLevel', label: 'Mid Level' },
+  { id: 'expertLevel', value: 'expertLevel', label: 'Expert Level' },
+];
+
+export const genders = [
+  { id: 'male', value: 'male', label: 'Nam' },
+  { id: 'female', value: 'female', label: 'Nữ' },
+];
