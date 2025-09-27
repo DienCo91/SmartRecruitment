@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button';
+import { Router } from '@/constants';
 import { BriefcaseBusinessIcon } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 import { FaArrowRight, FaYoutube } from 'react-icons/fa';
 import { MdLocationPin } from 'react-icons/md';
@@ -24,9 +26,14 @@ const CompanyOpenPosition = () => {
         </div>
       </div>
 
-      <Button className="flex bg-[#c5defb] text-blue-primary hover:bg-blue-primary hover:text-white ">
-        <span className="mr-[12px]">Open Position</span>
-        <FaArrowRight />
+      <Button
+        asChild
+        className="flex bg-[#c5defb] text-blue-primary hover:bg-blue-primary hover:text-white"
+      >
+        <Link href={Router.FIND_COMPANY.DETAIL('1')}>
+          <span className="mr-[12px]">Open Position</span>
+          <FaArrowRight />
+        </Link>
       </Button>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import CompanyOpenPosition from '@/components/client/Company/CompanyOpenPosition';
+import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
 import FilterCompany from '@/components/client/Filters/FilterCompany';
 import { FilterJob } from '@/components/client/Filters/FilterJob';
 import { useState } from 'react';
@@ -9,7 +9,7 @@ const Company = () => {
   const [optionSelected, setOptionSelected] = useState<string[]>([]);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <FilterJob />
 
       <div className="grid grid-cols-12 mt-[60px]">
