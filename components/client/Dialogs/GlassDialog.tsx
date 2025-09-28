@@ -39,7 +39,7 @@ export function GlassDialog({
           'flex flex-col bg-white/10 border p-1 md:p-0 backdrop-blur-2xl transition-all duration-300 shadow-xl',
           className
         )}
-        overlayClassName="bg-white/5 backdrop-blur-sm"
+        overlayClassName="bg-black/50 backdrop-blur-md"
       >
         {(title || description) && (
           <DialogHeader className="p-0 md:px-6 pr-8 pl-2 py-3 border-b border-white/10">

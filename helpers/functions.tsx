@@ -1,7 +1,20 @@
-import { JobOverViewItem, PropsJobOverViewItem } from '@/components/client/Jobs/JobOverViewItem';
+import {
+  ContactInformationItem,
+  PropsContactInformationItem,
+} from '@/components/client/Candidates';
+import { OverViewItem, PropsOverViewItem } from '@/components/client/Jobs/JobOverViewItem';
 
-export function makeOverViewItem({ icon, title }: Omit<PropsJobOverViewItem, 'content'>) {
-  return function _({ content }: Pick<PropsJobOverViewItem, 'content'>) {
-    return <JobOverViewItem title={title} icon={icon} content={content} />;
+export function makeOverViewItem({ icon, title }: Omit<PropsOverViewItem, 'content'>) {
+  return function _({ content }: Pick<PropsOverViewItem, 'content'>) {
+    return <OverViewItem title={title} icon={icon} content={content} />;
+  };
+}
+
+export function makeContactInformationItem({
+  icon,
+  title,
+}: Omit<PropsContactInformationItem, 'content'>) {
+  return function _({ content }: Pick<PropsContactInformationItem, 'content'>) {
+    return <ContactInformationItem title={title} icon={icon} content={content} />;
   };
 }

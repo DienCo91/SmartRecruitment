@@ -10,13 +10,13 @@ import {
 } from 'lucide-react';
 import { ReactNode } from 'react';
 
-export interface PropsJobOverViewItem {
+export interface PropsOverViewItem {
   icon: ReactNode;
   title: string;
   content: string;
 }
 
-export function JobOverViewItem({ icon, title, content }: PropsJobOverViewItem) {
+export function OverViewItem({ icon, title, content }: PropsOverViewItem) {
   return (
     <div className="flex flex-col col-span-1 text-xs">
       {icon}

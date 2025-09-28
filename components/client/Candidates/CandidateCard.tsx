@@ -1,9 +1,11 @@
-import { ArrowRightIcon, HeartIcon, LightbulbIcon, MapPinIcon, WalletIcon } from 'lucide-react';
+import { CustomButton } from '@/components/Buttons/CustomButton';
+import { ArrowRightIcon, HeartIcon, LightbulbIcon, MapPinIcon } from 'lucide-react';
+import { useState } from 'react';
 import { AvatarUser } from '../Avatar/AvatarUser';
 import { GlassCard } from '../Cards/GlassCard';
-import { CustomButton } from '@/components/Buttons/CustomButton';
-import { useState } from 'react';
 import { GlassDialog } from '../Dialogs/GlassDialog';
+import { CandidateDetailContent } from './CandidateDetailContent';
+import { CandidateDetailHeader } from './CandidateDetailHeader';
 
 export function CandidateCard() {
   const [showDetailUserModel, setShowDetailUserModel] = useState<boolean>(false);
@@ -41,8 +43,13 @@ export function CandidateCard() {
         </div>
       </div>
       {showDetailUserModel && (
-        <GlassDialog size="xl" open onClose={() => setShowDetailUserModel(false)} title="haha">
-          <>hahah</>
+        <GlassDialog
+          size="xl"
+          open
+          onClose={() => setShowDetailUserModel(false)}
+          title={<CandidateDetailHeader />}
+        >
+          <CandidateDetailContent />
         </GlassDialog>
       )}
     </GlassCard>
