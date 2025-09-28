@@ -1,20 +1,14 @@
 'use client';
 import QuillCustom, { QuillCustomRef } from '@/components/quill';
+import { SelectField } from '@/components/HookFormCustom/SelectField';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LinkIcon } from 'lucide-react';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import ButtonAccountSetup from './button-account-setup';
 import { toast } from 'sonner';
+import * as z from 'zod/v3';
+import ButtonAccountSetup from './button-account-setup';
 
 interface IFoundingContent {
   goToNext: () => void;
@@ -62,69 +56,44 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-[32px]">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <label htmlFor="organizationType" className="block text-sm font-medium mb-1">
-            Organization Type
-          </label>
-          <Select
-            {...register('organizationType')}
-            onValueChange={val => setValue('organizationType', val, { shouldValidate: true })}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="non-profit">Non-Profit</SelectItem>
-              <SelectItem value="startup">Startup</SelectItem>
-              <SelectItem value="corporation">Corporation</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.organizationType && (
-            <p className="text-red-500 text-sm">{errors.organizationType.message}</p>
-          )}
-        </div>
+        <SelectField
+          name="organizationType"
+          label="Organization Type"
+          options={[
+            { value: 'non-profit', label: 'Non-Profit' },
+            { value: 'startup', label: 'Startup' },
+            { value: 'corporation', label: 'Corporation' },
+          ]}
+          register={register}
+          setValue={setValue}
+          error={errors.organizationType}
+        />
 
-        <div>
-          <label htmlFor="industryTypes" className="block text-sm font-medium mb-1">
-            Industry Types
-          </label>
-          <Select
-            {...register('industryTypes')}
-            onValueChange={val => setValue('industryTypes', val, { shouldValidate: true })}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="tech">Technology</SelectItem>
-              <SelectItem value="healthcare">Healthcare</SelectItem>
-              <SelectItem value="finance">Finance</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.industryTypes && (
-            <p className="text-red-500 text-sm">{errors.industryTypes.message}</p>
-          )}
-        </div>
+        <SelectField
+          name="industryTypes"
+          label="Industry Types"
+          options={[
+            { value: 'tech', label: 'Technology' },
+            { value: 'healthcare', label: 'Healthcare' },
+            { value: 'finance', label: 'Finance' },
+          ]}
+          register={register}
+          setValue={setValue}
+          error={errors.industryTypes}
+        />
 
-        <div>
-          <label htmlFor="teamSize" className="block text-sm font-medium mb-1">
-            Team Size
-          </label>
-          <Select
-            {...register('teamSize')}
-            onValueChange={val => setValue('teamSize', val, { shouldValidate: true })}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1-10">1-10</SelectItem>
-              <SelectItem value="11-50">11-50</SelectItem>
-              <SelectItem value="51-200">51-200</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.teamSize && <p className="text-red-500 text-sm">{errors.teamSize.message}</p>}
-        </div>
+        <SelectField
+          name="teamSize"
+          label="Team Size"
+          options={[
+            { value: '1-10', label: '1-10' },
+            { value: '11-50', label: '11-50' },
+            { value: '51-200', label: '51-200' },
+          ]}
+          register={register}
+          setValue={setValue}
+          error={errors.teamSize}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

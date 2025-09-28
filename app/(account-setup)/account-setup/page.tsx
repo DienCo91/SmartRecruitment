@@ -8,6 +8,7 @@ import { useProgressAccountSetup } from '@/contexts';
 import FoundingContent from '../components/founding-content';
 import SocialMediaProfile from '../components/social-media-profile';
 import Contact from '../components/contact';
+import { cn } from '@/lib/utils';
 
 interface DataSubmitFormProps {
   nameCompany: string;
@@ -27,8 +28,20 @@ interface DataSubmitFormProps {
   email: string;
 }
 
-const AccountSetup = () => {
-  const [activeTab, setActiveTab] = useState('company');
+const tabs = [
+  { value: 'company', label: 'Company Info', icon: User },
+  { value: 'founding', label: 'Founding Info', icon: Users },
+  { value: 'social', label: 'Social Media Profile', icon: Globe },
+  { value: 'contact', label: 'Contact', icon: AtSign },
+] as const;
+
+interface IAccountSetup {
+  classNameTabList?: string;
+  classNameTabTrigger?: string;
+}
+
+const AccountSetup: React.FC<IAccountSetup> = ({ classNameTabList, classNameTabTrigger }) => {
+  const [activeTab, setActiveTab] = useState<string>(tabs[0].value);
   const { setProgress } = useProgressAccountSetup();
   const [dataSubmitForm, setDataSubmitForm] = useState<DataSubmitFormProps>({
     nameCompany: '',
@@ -44,13 +57,6 @@ const AccountSetup = () => {
     phoneNumber: '',
     email: '',
   });
-
-  const tabs = [
-    { value: 'company', label: 'Company Info', icon: User },
-    { value: 'founding', label: 'Founding Info', icon: Users },
-    { value: 'social', label: 'Social Media Profile', icon: Globe },
-    { value: 'contact', label: 'Contact', icon: AtSign },
-  ] as const;
 
   const currentIndex = tabs.findIndex(tab => tab.value === activeTab);
 
@@ -84,21 +90,24 @@ const AccountSetup = () => {
       onValueChange={setActiveTab}
       className="w-full mt-[60px]"
     >
-      <TabsList className="flex justify-start w-full border-b border-gray-200 bg-transparent p-0 rounded-none px-[0px] lg:px-[200px]">
-        {[
-          { value: 'company', label: 'Company Info', icon: User },
-          { value: 'founding', label: 'Founding Info', icon: Users },
-          { value: 'social', label: 'Social Media Profile', icon: Globe },
-          { value: 'contact', label: 'Contact', icon: AtSign },
-        ].map(tab => (
+      <TabsList
+        className={cn(
+          'flex justify-start w-full border-b border-gray-200 bg-transparent p-0 rounded-none px-[0px] lg:px-[200px] ',
+          classNameTabList
+        )}
+      >
+        {tabs.map(tab => (
           <TabsTrigger
             disabled
             key={tab.value}
             value={tab.value}
             style={{ boxShadow: 'none' }}
-            className="flex border-0 mb-[-3px]  rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2
+            className={cn(
+              `flex border-0 mb-[-3px]  rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2
              border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500
-            hover:text-gray-700 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default"
+            hover:text-gray-700 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default `,
+              classNameTabTrigger
+            )}
           >
             <tab.icon className="w-4 h-4" />
             {tab.label}

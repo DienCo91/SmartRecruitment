@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { z } from 'zod';
-import TextField from '../../../components/hookFormCustom/TextField';
+import TextField from '../../../components/HookFormCustom/TextField';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
@@ -58,8 +58,10 @@ const LoginPage = () => {
       const isRoleEmployer = isEmployer(res.data.role);
 
       if (isRoleEmployer) {
-        router.replace(Router.ACCOUNT_SETUP);
+        return router.replace(Router.ACCOUNT_SETUP);
       }
+
+      router.replace(Router.HOME);
     } catch (error) {
       console.error('Login error:', JSON.stringify(error));
     } finally {
@@ -84,7 +86,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col mb-[20px]">
         <h1 className="text-2xl font-semibold">Sign in</h1>
         <p className="text-[14px] text-muted-foreground mt-[8px]">
           Don’t have account?

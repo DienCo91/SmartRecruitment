@@ -1,6 +1,7 @@
 export * from './router';
 export * from './auth';
 export * from './common';
+export * from './vacancies';
 
 export enum Size {
   XS = 'xs',

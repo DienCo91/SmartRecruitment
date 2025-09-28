@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { Upload } from 'lucide-react';
+import { Upload, FileText } from 'lucide-react';
 import Image from 'next/image';
 import React, { useRef } from 'react';
 
@@ -11,6 +11,7 @@ interface IUploadInfo {
   classNameDropWrap?: string;
   value?: File | null; // nhận file để preview
   onChange?: (file: File | null) => void; // callback khi chọn file
+  accept?: string;
 }
 
 const UploadInfo: React.FC<IUploadInfo> = ({
@@ -19,6 +20,7 @@ const UploadInfo: React.FC<IUploadInfo> = ({
   className,
   classNameDropWrap,
   value,
+  accept = 'image/*',
   onChange,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +36,9 @@ const UploadInfo: React.FC<IUploadInfo> = ({
     }
   };
 
+  // kiểm tra file có phải ảnh không
+  const isImage = value && value.type.startsWith('image/');
+
   return (
     <div className={className}>
       <p className="text-[14px]">{title}</p>
@@ -45,12 +50,20 @@ const UploadInfo: React.FC<IUploadInfo> = ({
         )}
       >
         {value ? (
-          <Image src={URL.createObjectURL(value)} alt="preview" className="object-contain" fill />
+          isImage ? (
+            <Image src={URL.createObjectURL(value)} alt="preview" className="object-contain" fill />
+          ) : (
+            <div className="flex flex-col items-center gap-2">
+              <FileText className="w-[48px] h-[56px] text-[#b0b4ba]" />
+              <p className="text-sm font-medium">{value.name}</p>
+              <p className="text-xs text-white">{(value.size / 1024 / 1024).toFixed(2)} MB</p>
+            </div>
+          )
         ) : (
           <>
             <Upload className="w-[48px] h-[56px] text-[#b0b4ba]" />
             <div className="text-[14px]">
-              <span className="font-[500]">Browse photo </span>
+              <span className="font-[500]">Browse file </span>
               <span>or drop here</span>
             </div>
             <div className="text-[12px] opacity-[0.5] text-center">{desc}</div>
@@ -59,7 +72,7 @@ const UploadInfo: React.FC<IUploadInfo> = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept={accept}
           className="hidden"
           onChange={handleFileChange}
         />

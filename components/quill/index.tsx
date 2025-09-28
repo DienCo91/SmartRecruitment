@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useImperativeHandle, forwardRef } from 'react';
-import dynamic from 'next/dynamic';
-import 'react-quill-new/dist/quill.snow.css';
-import { BaseProps } from '@/types';
 import { cn } from '@/lib/utils';
+import { forwardRef, useImperativeHandle, useState } from 'react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 // tham khảo https://quilljs.com/docs/modules/toolbar
 const toolbarOptions = [
@@ -29,20 +28,12 @@ const toolbarOptions = [
   ['clean'],
 ];
 
-const ReactQuill = dynamic(() => import('react-quill-new'), {
-  ssr: false,
-});
-
 export type QuillCustomRef = {
   getValue: () => string;
   setValue: (v: string) => void;
 };
 
-interface Props extends BaseProps {
-  placeholder?: string;
-}
-
-const QuillCustom = forwardRef<QuillCustomRef, Props>((props, ref) => {
+const QuillCustom = forwardRef<QuillCustomRef, ReactQuill.ReactQuillProps>((props, ref) => {
   const [value, setValue] = useState('');
 
   useImperativeHandle(ref, () => ({

@@ -5,15 +5,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
-import { BookMarkedIcon, FileUserIcon, LogOutIcon, SquareUserIcon } from 'lucide-react';
-import { AvatarUser } from './AvatarUser';
+import { useLogout } from '@/hooks/useLogout';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
+import { BookMarkedIcon, FileUserIcon, LogOutIcon, SquareUserIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AvatarUser } from './AvatarUser';
 
 export function ShortUserInfo() {
   const router = useRouter();
+  const logout = useLogout();
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
 
   const options = [
@@ -60,7 +62,7 @@ export function ShortUserInfo() {
           ))}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => router.replace(Router.AUTH.LOGIN)}
+            onClick={logout}
             className="cursor-pointer text-neutral-300 data-[highlighted]:bg-white/30 data-[highlighted]:text-white rounded-none "
           >
             <LogOutIcon color="#c1c3c9" size={18} />
