@@ -12,8 +12,6 @@ const ErrorPage = () => {
   const errorCode = Number(searchParams.get('errorCode'));
 
   switch (errorCode) {
-    case 404:
-      return <NotFound />;
     case 401:
       return <Unauthorized />;
     case 403:
@@ -21,7 +19,7 @@ const ErrorPage = () => {
     case 500:
       return <InternalServerError />;
     default:
-      return <div className="mt-[60px]">Unknow Error</div>;
+      return <NotFound />;
   }
 };
 
