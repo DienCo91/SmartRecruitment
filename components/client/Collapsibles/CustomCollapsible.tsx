@@ -3,7 +3,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { cn } from '@/lib/utils';
 import { BaseProps } from '@/types';
 import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 interface Props extends BaseProps {
   title: ReactNode;
