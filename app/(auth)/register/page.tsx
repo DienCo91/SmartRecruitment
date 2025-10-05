@@ -12,7 +12,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { setCurrentUser } from '@/lib/features/auth/authSlice';
+import { setLoading } from '@/lib/features/common/commonSlice';
 import { auth } from '@/lib/firebase';
+import { useAppDispatch } from '@/lib/hooks';
 import { AuthService } from '@/services/auth.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -28,11 +31,7 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import z from 'zod';
-import TextField from '../../../components/hookFormCustom/TextField';
-import { useAppDispatch } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { fi } from 'zod/v4/locales';
-import { setCurrentUser } from '@/lib/features/auth/authSlice';
+import TextField from '../../../components/HookFormCustom/TextField';
 
 const formSchema = z
   .object({
@@ -118,7 +117,7 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-[20px]">
         <div>
           <h1 className="text-2xl font-semibold">Create account</h1>
           <div className="flex text-[14px] text-muted-foreground mt-[8px] flex-wrap">
@@ -144,23 +143,43 @@ const RegisterPage = () => {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[16px]">
           <div className="flex space-x-[20px]">
-            <TextField control={form.control} name="fullname" placeholder="Full Name" type="text" />
-            <TextField control={form.control} name="username" placeholder="Username" type="text" />
+            <TextField
+              className="placeholder:text-gray"
+              control={form.control}
+              name="fullname"
+              placeholder="Full Name"
+              type="text"
+            />
+            <TextField
+              className="placeholder:text-gray"
+              control={form.control}
+              name="username"
+              placeholder="Username"
+              type="text"
+            />
           </div>
-          <TextField control={form.control} name="email" placeholder="Email address" type="email" />
+          <TextField
+            className="placeholder:text-gray"
+            control={form.control}
+            name="email"
+            placeholder="Email address"
+            type="email"
+          />
 
           <TextField
             control={form.control}
             name="password"
             placeholder="Password"
             type="password"
+            className="placeholder:text-gray"
           />
           <TextField
             control={form.control}
             name="confirmPassword"
             placeholder="Confirm Password"
+            className="placeholder:text-gray"
             type="password"
           />
           <Button type="submit" className="w-full bg-blue-primary hover:bg-[#2787f5] mt-[32px]">

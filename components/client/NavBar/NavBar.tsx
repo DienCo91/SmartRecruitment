@@ -13,22 +13,11 @@ const reload = () => window.location.reload();
 
 export function NavBar() {
   const Sites = [
-    {
-      name: 'Trang chủ',
-      path: '/',
-    },
-    {
-      name: 'Công ty',
-      path: '/company',
-    },
-    {
-      name: 'Ứng viên',
-      path: '/candidate',
-    },
-    {
-      name: 'Hỗ trợ',
-      path: '/customer-support',
-    },
+    { name: 'Trang chủ', path: '/' },
+    { name: 'Công ty', path: '/company' },
+    { name: 'Ứng viên', path: '/candidate' },
+    // { name: 'Hỗ trợ', path: '/customer-support' },
+    { name: 'Dashboard', path: '/dashboard' },
   ];
 
   const pathName = usePathname();
@@ -41,21 +30,25 @@ export function NavBar() {
       <div className="flex w-full max-w-7xl mx-auto items-center justify-between">
         <div className="flex gap-5 items-center">
           <Image src={AppImage.logo} alt="Logo" className="size-10" onClick={reload} />
-          {Sites.map((site, index) => (
-            <Link key={index} href={site.path}>
-              <Button
-                variant="ghost"
-                className={cn(
-                  'hover:bg-[#2d3b69] hover:cursor-pointer hover:text-neutral-100 bg-transparent rounded-xs',
-                  pathName === site.path
-                    ? 'text-blue-500 border-b-2 border-blue-500 pb-2 pointer-events-none'
-                    : ''
-                )}
-              >
-                {site.name}
-              </Button>
-            </Link>
-          ))}
+          {Sites.map((site, index) => {
+            const isActive = site.path === '/' ? pathName === '/' : pathName.startsWith(site.path);
+
+            return (
+              <Link key={index} href={site.path}>
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    'hover:bg-[#2d3b69] hover:cursor-pointer hover:text-neutral-100 bg-transparent rounded-xs',
+                    isActive
+                      ? 'text-blue-500 border-b-2 border-blue-500 pb-2 pointer-events-none'
+                      : ''
+                  )}
+                >
+                  {site.name}
+                </Button>
+              </Link>
+            );
+          })}
         </div>
         <div className="flex gap-3">
           <Notifications />

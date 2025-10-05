@@ -23,7 +23,10 @@ export const ProgressAccountSetupProvider = ({ children }: { children: ReactNode
 export const useProgressAccountSetup = () => {
   const context = useContext(ProgressContext);
   if (!context) {
-    throw new Error('useProgress must be used within a ProgressProvider');
+    return {
+      progress: 0,
+      setProgress: () => {},
+    };
   }
   return context;
 };

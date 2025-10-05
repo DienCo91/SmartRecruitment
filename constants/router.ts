@@ -16,4 +16,14 @@ export const Router = {
     DETAIL: (id: string) => `/company/${id}`,
   },
   ACCOUNT_SETUP: '/account-setup',
+  DASHBOARD: {
+    OVERVIEW: '/dashboard',
+    APPLIED_JOBS: '/dashboard/applied-jobs',
+    FAVORITE_JOBS: '/dashboard/favorite-jobs',
+    JOB_ALERT: '/dashboard/job-alert',
+    POST_A_JOB: '/dashboard/post-a-job',
+    MY_JOBS: '/dashboard/my-jobs',
+    SAVE_CANDIDATES: '/dashboard/save-candidates',
+    SETTING: '/dashboard/setting',
+  },
 };
