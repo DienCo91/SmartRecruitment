@@ -1,7 +1,4 @@
-import { BaseProps } from '@/types';
-import { ReactNode } from 'react';
 import {
-  Card,
   CardAction,
   CardContent,
   CardDescription,
@@ -10,6 +7,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { BaseProps } from '@/types';
+import { ReactNode } from 'react';
 import GlassCardBase from './GlassCardBase';
 
 interface Props extends BaseProps {
@@ -35,7 +34,7 @@ export function GlassCard({
   return (
     <GlassCardBase className={className}>
       {title !== '' && (
-        <CardHeader className="gap-0">
+        <CardHeader className="gap-0 p-0">
           <div className="flex justify-between">
             <CardTitle className="text-lg ml-0 ư-full">
               {icon && <span className="mr-2">{icon}</span>}
@@ -52,7 +51,7 @@ export function GlassCard({
         </CardHeader>
       )}
 
-      <CardContent className={cn('relative', classContentName)}>{children}</CardContent>
+      <CardContent className={cn('relative px-0', classContentName)}>{children}</CardContent>
 
       {footer && <CardFooter className="relative">{footer}</CardFooter>}
     </GlassCardBase>

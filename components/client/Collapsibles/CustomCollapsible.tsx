@@ -12,7 +12,7 @@ interface Props extends BaseProps {
 }
 
 export function CustomCollapsible({ title, children, className, contentClassName }: Props) {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
   const TriggerButton = (
     <Button
       onClick={() => setOpen(!open)}
@@ -23,9 +23,9 @@ export function CustomCollapsible({ title, children, className, contentClassName
   );
 
   return (
-    <Collapsible className={cn(className)}>
+    <Collapsible open={open} className={cn(className)}>
       <div className="flex justify-between items-center">
-        <h3>{title}</h3>
+        {title}
         <CollapsibleTrigger asChild>{TriggerButton}</CollapsibleTrigger>
       </div>
       <CollapsibleContent className={cn(contentClassName)}>{children}</CollapsibleContent>
