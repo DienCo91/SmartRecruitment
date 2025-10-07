@@ -102,7 +102,7 @@ const CandidatePage = () => {
               <CustomCollapsible
                 title={
                   <div className="flex items-baseline text-sm font-medium space-x-1">
-                    <span>Kinh nghiệm</span>
+                    <span>Học vấn</span>
                   </div>
                 }
               >

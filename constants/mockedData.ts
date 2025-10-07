@@ -148,3 +148,11 @@ export const genders = [
   { id: 'male', value: 'male', label: 'Nam' },
   { id: 'female', value: 'female', label: 'Nữ' },
 ];
+
+export const categoriesBlog = [
+  { id: 'graphics&design', value: 'graphics&design', label: 'Graphics & Design' },
+  { id: 'code&programing', value: 'code&programing', label: 'Code & Programing' },
+  { id: 'digitalMarketing', value: 'digitalMarketing', label: 'Digital Marketing' },
+  { id: 'it', value: 'it', label: 'Information & Technology' },
+  { id: 'ai', value: 'ai', label: 'AI' },
+];
