@@ -4,7 +4,7 @@ import { CustomButton } from '@/components/Buttons/CustomButton';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CompanyOverView } from '@/components/client/Company/CompanyOverview';
 import { ApplyJobForm } from '@/components/client/Forms/ApplyJobForm';
-import { JobContent } from '@/components/client/Jobs/JobContent';
+import { DecorateContent } from '@/components/client/Jobs/DecorateContent';
 import { JobHeader } from '@/components/client/Jobs/JobHeader';
 import { JobOverView } from '@/components/client/Jobs/JobOverView';
 import { Jobtags } from '@/components/client/Jobs/JobTags';
@@ -51,9 +51,9 @@ const JobDetailPage = () => {
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-7">
           <Separator className="bg-gray-500" />
-          {job.description && <JobContent title="Job Description" content={job.description} />}
+          {job.description && <DecorateContent title="Job Description" content={job.description} />}
           {job.responsibilities && (
-            <JobContent title="Responsibilities" content={job.responsibilities} />
+            <DecorateContent title="Responsibilities" content={job.responsibilities} />
           )}
           {/* {job.tags &&  */}
           <Jobtags />
