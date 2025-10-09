@@ -23,6 +23,7 @@ export const Router = {
     JOB_ALERT: '/dashboard/job-alert',
     POST_A_JOB: '/dashboard/post-a-job',
     MY_JOBS: '/dashboard/my-jobs',
+    VIEW_APPLICATIONS: (id: string) => `/dashboard/view-applications/${id}`,
     SAVE_CANDIDATES: '/dashboard/save-candidates',
     SETTING: '/dashboard/setting',
   },

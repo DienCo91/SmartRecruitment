@@ -3,6 +3,8 @@ import GlassCardBase from '../Cards/GlassCardBase';
 import { CircleCheckBig, CircleX, EllipsisVertical, Eye, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import Link from 'next/link';
+import { Router } from '@/constants';
 
 const MyJobItem = () => {
   const onViewDetail = () => {};
@@ -38,7 +40,9 @@ const MyJobItem = () => {
         <span className="ml-[8px]">798 Applications</span>
       </div>
       <div className="flex items-center">
-        <Button className="cursor-pointer">View Applications</Button>
+        <Link href={Router.DASHBOARD.VIEW_APPLICATIONS('1')}>
+          <Button className="cursor-pointer">View Applications</Button>
+        </Link>
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <button className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-0">
@@ -52,15 +56,20 @@ const MyJobItem = () => {
               sideOffset={8}
               className="z-50 w-40 rounded-md bg-white shadow-md overflow-hidden cursor-pointer"
             >
-              <DropdownMenu.Item
-                onSelect={onViewDetail}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
+              <Link
+                href={Router.JOB.DETAIL(
+                  'chuyen-vien-kinh-doanh-giai-phap-thanh-toan-tu-van-tin-dung-doanh-nghiep'
+                )}
+              >
+                <DropdownMenu.Item
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
                          hover:bg-blue-100 hover:text-blue-700 
                          focus:outline-none focus:ring-0"
-              >
-                <Eye className="w-4 h-4" />
-                <span>View Detail</span>
-              </DropdownMenu.Item>
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>View Detail</span>
+                </DropdownMenu.Item>
+              </Link>
 
               <DropdownMenu.Item
                 onSelect={onMakeItExpire}

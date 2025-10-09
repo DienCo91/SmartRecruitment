@@ -17,7 +17,11 @@ const DashboardSidebar = () => {
   const data = isEmployer(currentUser.role) ? EMPLOYER_DASHBOARD : CANDIDATE_DASHBOARD;
 
   return (
-    <GlassCard title={data.title} className="p-0 py-[16px] overflow-hidden" classContentName="p-0">
+    <GlassCard
+      title={data.title}
+      className="py-[16px] px-[24px] overflow-hidden"
+      classContentName="p-0"
+    >
       <div className="flex flex-col">
         {data.items.map(item => {
           const isActive = pathname === item.link;
