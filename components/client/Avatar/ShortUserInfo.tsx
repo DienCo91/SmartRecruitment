@@ -22,7 +22,7 @@ export function ShortUserInfo() {
     {
       icon: <SquareUserIcon color="#c1c3c9" size={18} />,
       label: 'Hồ sơ cá nhân',
-      route: Router.USER.PROFILE(currentUser?.userName || ''),
+      route: Router.DASHBOARD.OVERVIEW,
     },
     {
       icon: <BookMarkedIcon color="#c1c3c9" size={18} />,
