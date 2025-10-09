@@ -1,8 +1,8 @@
 'use client';
 import { CheckCheck } from 'lucide-react';
 import React, { useEffect } from 'react';
-import ButtonAccountSetup from '../components/button-account-setup';
 import { useProgressAccountSetup } from '@/contexts';
+import ButtonAccountSetup from '@/components/client/AccountSetup/button-account-setup';
 
 const Congratulations = () => {
   const { setProgress } = useProgressAccountSetup();

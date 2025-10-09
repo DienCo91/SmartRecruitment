@@ -1,6 +1,6 @@
 'use client';
-import { SelectField } from '@/components/HookFormCustom/SelectField';
-import TextField from '@/components/HookFormCustom/TextField';
+import { SelectField } from '@/components/hookFormCustom/SelectField';
+import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';

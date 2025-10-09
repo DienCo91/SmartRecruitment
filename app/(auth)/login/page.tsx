@@ -1,5 +1,6 @@
 'use client';
 
+import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
@@ -17,7 +18,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { z } from 'zod';
-import TextField from '../../../components/HookFormCustom/TextField';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),

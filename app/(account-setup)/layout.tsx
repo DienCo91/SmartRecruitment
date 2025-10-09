@@ -1,6 +1,6 @@
 import { ProgressAccountSetupProvider } from '@/contexts';
-import HeaderAccountSetup from './components/header';
-import Footer from './components/footer';
+import HeaderAccountSetup from '@/components/client/AccountSetup/header';
+import Footer from '@/components/client/AccountSetup/footer';
 
 const LayoutAccountSetup = (props: LayoutProps<'/'>) => {
   return (

@@ -1,5 +1,5 @@
 'use client';
-import TextField from '@/components/HookFormCustom/TextField';
+import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { ACCEPT_TYPE_CV, ACCEPTED_IMAGE_TYPES_CV, MAX_FILE_SIZE_CV } from '@/constants';
@@ -8,7 +8,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod/v3';
 import { GlassDialog } from '../Dialogs/GlassDialog';
-import UploadInfo from '@/app/(account-setup)/components/upload-info';
+import UploadInfo from '../AccountSetup/upload-info';
 
 interface IDialogAddCV {
   isShow: boolean;

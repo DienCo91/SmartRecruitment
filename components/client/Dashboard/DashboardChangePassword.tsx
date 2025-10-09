@@ -1,5 +1,5 @@
 'use client';
-import TextField from '@/components/HookFormCustom/TextField';
+import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { ValidatorZod } from '@/helpers/zod/validator';

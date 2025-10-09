@@ -1,5 +1,5 @@
 'use client';
-import AccountSetup from '@/app/(account-setup)/account-setup/page';
+import AccountSetupTabView from '@/components/client/AccountSetup/AccountSetupTabView';
 import DashboardHeader from '@/components/client/Dashboard/DashboardHeader';
 import DashboardSettingTabView from '@/components/client/Dashboard/DashboardSettingTab';
 import { useAppSelector } from '@/lib/hooks';
@@ -21,7 +21,7 @@ const Setting = () => {
       {!isRoleEmployer ? (
         <DashboardSettingTabView />
       ) : (
-        <AccountSetup
+        <AccountSetupTabView
           classNameTabList="lg:px-[0px] bg-transparent "
           classNameTabTrigger="data-[state=active]:bg-transparent data-[state=active]:border-white data-[state=active]:text-white border-gray-500"
         />

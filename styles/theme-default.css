@@ -13,5 +13,4 @@ body:has(.theme-default) input
 } */
 
 body:has(.theme-default) .body:has(.theme-default) {
-  
 }

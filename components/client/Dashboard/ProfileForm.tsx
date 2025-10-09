@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v3';
 import { AvatarUser } from '../Avatar/AvatarUser';
-import TextField from '@/components/HookFormCustom/TextField';
+import TextField from '@/components/hookFormCustom/TextField';
 import { Form } from '@/components/ui/form';
 
 const profileSchema = z.object({

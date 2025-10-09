@@ -31,7 +31,7 @@ import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import z from 'zod';
-import TextField from '../../../components/HookFormCustom/TextField';
+import TextField from '../../../components/hookFormCustom/TextField';
 
 const formSchema = z
   .object({
