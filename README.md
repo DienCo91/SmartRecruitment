@@ -15,7 +15,9 @@ bun dev
 ```
 
 ## General
+
 Fix lint code:
+
 ```bash
 npx prettier --write .
 ```

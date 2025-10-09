@@ -8,7 +8,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod/v3';
 import { GlassDialog } from '../Dialogs/GlassDialog';
-import UploadInfo from '@/app/(account-setup)/components/upload-info';
+import UploadInfo from '../AccountSetup/upload-info';
 
 interface IDialogAddCV {
   isShow: boolean;
