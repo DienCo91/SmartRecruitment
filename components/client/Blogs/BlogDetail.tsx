@@ -1,3 +1,5 @@
+'use client';
+
 import { Post } from '@/types/post';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';

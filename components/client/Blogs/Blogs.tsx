@@ -6,7 +6,7 @@ export function Blogs() {
   return (
     <GlassCard
       icon="📚"
-      title="Cẩm nang làm việc"
+      title="Cẩm nang việc làm"
       action={
         <Link href="/blogs" className="hover:text-white cursor-pointer text-sm">
           Xem tất cả
