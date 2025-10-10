@@ -1,3 +1,5 @@
+'use client';
+
 import DashboardHeader from '@/components/client/Dashboard/DashboardHeader';
 import ListApplyJob from '@/components/client/Dashboard/ListApplyJob';
 import React from 'react';

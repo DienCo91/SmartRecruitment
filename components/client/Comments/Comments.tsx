@@ -17,6 +17,12 @@ const treeComments = (comments: Comment[], parentId: number | null): Comment[] =
     }));
 };
 
+const CommentTree = (comments: Comment[]) => {
+  return comments.map(comment => {
+    return <CommentCard key={comment.id} comment={comment} />;
+  });
+};
+
 export function Comments() {
   console.log(treeComments(comments, null));
   return (
@@ -31,14 +37,7 @@ export function Comments() {
       </CustomButton>
       <Separator className="bg-gray-500 my-2" />
       <h3 className="font-semibold text-lg">Bình luận</h3>
-      <div className="w-full">
-        {treeComments(comments, null).map((comment, i) => (
-          <div className="flex" key={comment.id}>
-            {i !== comments.length - 1 ? <LetterTCanvas /> : <LetterLCanvas />}
-            <CommentCard comment={comment} />
-          </div>
-        ))}
-      </div>
+      <div className="w-full">{CommentTree(treeComments(comments, null))}</div>
     </div>
   );
 }

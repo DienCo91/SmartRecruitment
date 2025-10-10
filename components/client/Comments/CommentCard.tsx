@@ -6,6 +6,7 @@ import { AvatarUser } from '../Avatar/AvatarUser';
 import { useEffect, useRef, useState } from 'react';
 import CommentInput from './CommentInput';
 import { Comment } from '@/types/comment';
+import { LetterICanvas } from '../Canvas/LetterICanvas';
 
 interface Props {
   comment: Comment;
@@ -47,6 +48,13 @@ export function CommentCard({ comment }: Props) {
         </div>
       </div>
       {showReplyInput && <CommentInput ref={commentInputRef} />}
+      {comment.childs.length > 0 &&
+        comment.childs.map(comment => (
+          <div className="flex" key={comment.id}>
+            <LetterICanvas />
+            <CommentCard comment={comment} />
+          </div>
+        ))}
     </div>
   );
 }

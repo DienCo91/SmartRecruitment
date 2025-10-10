@@ -12,16 +12,15 @@ export function LetterLCanvas({ className }: HTMLAttributes<HTMLCanvasElement>) 
     if (!ctx) return;
 
     const resizeAndDraw = () => {
-      const { width, height } = canvas.getBoundingClientRect();
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = 40;
+      canvas.height = 100;
 
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, 40, 100);
 
       ctx.beginPath();
-      ctx.moveTo(width * 0.5, 0);
-      ctx.lineTo(width * 0.5, height * 0.3);
-      ctx.lineTo(width, height * 0.3);
+      ctx.moveTo(40 * 0.5, 0);
+      ctx.lineTo(40 * 0.5, 100 * 0.3);
+      ctx.lineTo(40, 100 * 0.3);
       ctx.strokeStyle = 'gray';
       ctx.lineWidth = 1;
       ctx.stroke();

@@ -1,3 +1,5 @@
+'use client';
+
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import CompanyDetailContact from '@/components/client/FindCompany/CompanyDetailContact';
 import CompanyDetailFollow from '@/components/client/FindCompany/CompanyDetailFollow';
@@ -6,11 +8,11 @@ import CompanyDetailPosition from '@/components/client/FindCompany/CompanyDetail
 import ContentCompanyDetail from '@/components/client/FindCompany/ContentCompanyDetail';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { FaArrowRight, FaYoutube } from 'react-icons/fa';
 
-const CompanyPositionDetail = async (prop: PageProps<'/company/[id]'>) => {
-  const id = (await prop.params).id;
-  console.log('🚀 ~ CompanyPositionDetail ~ id:', id);
+const CompanyPositionDetail = () => {
+  const { id } = useParams();
 
   return (
     <div className="w-full scroll-smooth">

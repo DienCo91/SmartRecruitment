@@ -6,4 +6,5 @@ export interface Comment {
   content: string;
   created_date: Date;
   last_modified_date?: Date;
+  childs: Comment[];
 }

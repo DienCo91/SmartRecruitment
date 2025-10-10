@@ -180,6 +180,7 @@ export const comment: Comment = {
   post_id: 1,
   user_id: 1,
   parent_comment_id: 0,
+  childs: [],
 };
 
 export const comments: Comment[] = [
@@ -190,6 +191,7 @@ export const comments: Comment[] = [
     post_id: 1,
     user_id: 1,
     parent_comment_id: null,
+    childs: [],
   },
   {
     id: 2,
@@ -198,6 +200,7 @@ export const comments: Comment[] = [
     post_id: 1,
     user_id: 1,
     parent_comment_id: null,
+    childs: [],
   },
   {
     id: 3,
@@ -206,6 +209,7 @@ export const comments: Comment[] = [
     post_id: 1,
     user_id: 1,
     parent_comment_id: 1,
+    childs: [],
   },
   {
     id: 4,
@@ -214,13 +218,24 @@ export const comments: Comment[] = [
     post_id: 1,
     user_id: 1,
     parent_comment_id: null,
+    childs: [],
   },
   {
     id: 5,
-    content: 'Quá đỉnh luôn :>>',
+    content: 'Cmt5 :>>',
     created_date: new Date(),
     post_id: 1,
     user_id: 1,
     parent_comment_id: 2,
+    childs: [],
+  },
+  {
+    id: 6,
+    content: 'Sub comment 2 :>>',
+    created_date: new Date(),
+    post_id: 1,
+    user_id: 1,
+    parent_comment_id: 3,
+    childs: [],
   },
 ];
