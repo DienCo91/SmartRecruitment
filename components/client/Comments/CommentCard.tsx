@@ -10,9 +10,10 @@ import { LetterICanvas } from '../Canvas/LetterICanvas';
 
 interface Props {
   comment: Comment;
+  level: number;
 }
 
-export function CommentCard({ comment }: Props) {
+export function CommentCard({ comment, level }: Props) {
   const [showReplyInput, setShowReplyInput] = useState<boolean>(false);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -24,7 +25,7 @@ export function CommentCard({ comment }: Props) {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex items-baseline justify-between w-full p-2">
+      <div className="flex items-baseline justify-between w-full p-2 bg-white/5 shadow-sm rounded-sm my-1">
         <div className="space-y-2 flex-1 ">
           <div className="flex items-center gap-2">
             <AvatarUser src="" />
@@ -37,22 +38,24 @@ export function CommentCard({ comment }: Props) {
           </div>
           <p className="text-sm">{comment.content}</p>
         </div>
-        <div>
-          <CustomButton
-            className="flex gap-2 items-center text-sm text-white hover:bg-transparent hover:text-gray-200"
-            onClick={() => setShowReplyInput(!showReplyInput)}
-          >
-            <MessageSquareReplyIcon size={16} />
-            Phản hồi
-          </CustomButton>
-        </div>
+        {level < 3 && (
+          <div>
+            <CustomButton
+              className="flex gap-2 items-center text-sm text-white hover:bg-transparent hover:text-gray-200"
+              onClick={() => setShowReplyInput(!showReplyInput)}
+            >
+              <MessageSquareReplyIcon size={16} />
+              Phản hồi
+            </CustomButton>
+          </div>
+        )}
       </div>
       {showReplyInput && <CommentInput ref={commentInputRef} />}
       {comment.childs.length > 0 &&
         comment.childs.map(comment => (
           <div className="flex" key={comment.id}>
             <LetterICanvas />
-            <CommentCard comment={comment} />
+            <CommentCard comment={comment} level={level + 1} />
           </div>
         ))}
     </div>

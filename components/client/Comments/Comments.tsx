@@ -1,12 +1,10 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import * as _ from 'lodash';
-import { LetterLCanvas } from '../Canvas/LetterLCanvas';
-import { LetterTCanvas } from '../Canvas/LetterTCanvas';
-import { CommentCard } from './CommentCard';
-import { Comment } from '@/types/comment';
 import { comments } from '@/constants/mockedData';
+import { Comment } from '@/types/comment';
+import { LetterICanvas } from '../Canvas/LetterICanvas';
+import { CommentCard } from './CommentCard';
 
 const treeComments = (comments: Comment[], parentId: number | null): Comment[] => {
   return comments
@@ -18,9 +16,13 @@ const treeComments = (comments: Comment[], parentId: number | null): Comment[] =
 };
 
 const CommentTree = (comments: Comment[]) => {
-  return comments.map(comment => {
-    return <CommentCard key={comment.id} comment={comment} />;
-  });
+  return comments.map(comment => (
+    <div className="flex" key={comment.id}>
+      {/* {comment.id == comments[comments.length - 1].id ? <LetterLCanvas /> : <LetterTCanvas />} */}
+      <LetterICanvas />
+      <CommentCard key={comment.id} comment={comment} level={1} />
+    </div>
+  ));
 };
 
 export function Comments() {
