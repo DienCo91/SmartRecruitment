@@ -1,5 +1,6 @@
 import { BriefcaseBusinessIcon } from 'lucide-react';
 import { CustomImage } from '../Images/CustomImage';
+import Link from 'next/link';
 
 export function CompanyCard() {
   return (
@@ -9,9 +10,12 @@ export function CompanyCard() {
 
         <div className="flex-1 flex flex-col justify-between w-full">
           <div>
-            <p className="font-semibold text-neutral-300 hover:text-blue-400 line-clamp-2 hover:cursor-pointer">
+            <Link
+              href={'/company/1'}
+              className="font-semibold text-neutral-300 hover:text-blue-400 line-clamp-2 hover:cursor-pointer"
+            >
               Công ty TNHH Đầu tư ứng dụng sản xuất bao bì Việt
-            </p>
+            </Link>
             <p className="text-gray-400 text-sm line-clamp-2">IT - Phần mềm</p>
           </div>
         </div>

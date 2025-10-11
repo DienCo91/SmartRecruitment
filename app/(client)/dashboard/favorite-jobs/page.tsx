@@ -1,3 +1,5 @@
+'use client';
+
 import DashboardHeader from '@/components/client/Dashboard/DashboardHeader';
 import FavoriteJobsList from '@/components/client/Dashboard/FavoriteJobsList';
 import React from 'react';

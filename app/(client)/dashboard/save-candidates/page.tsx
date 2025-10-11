@@ -1,3 +1,5 @@
+'use client';
+
 import DashboardHeader from '@/components/client/Dashboard/DashboardHeader';
 import DashboardListSaveCandidate from '@/components/client/Dashboard/DashboardListSaveCandidate';
 import React from 'react';

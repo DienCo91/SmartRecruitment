@@ -25,7 +25,7 @@ export function FilterBlog() {
           <CustomInput
             startIcon={<SearchIcon size={18} />}
             placeholder="Nhập tên blog"
-            className="focus-within:ring-0 focus-within:ring-white border-0"
+            className="focus-within:ring-0 border-0 bg-white/10"
             // value={filters.search}
             // onChange={e => handleFilter('search', e.target.value)}
           />

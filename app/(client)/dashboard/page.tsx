@@ -1,4 +1,5 @@
 'use client';
+
 import DashboardChangePassword from '@/components/client/Dashboard/DashboardChangePassword';
 import ProfileForm from '@/components/client/Dashboard/ProfileForm';
 import { Separator } from '@/components/ui/separator';

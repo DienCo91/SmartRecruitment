@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator';
-import { JobContent as CandidateContent } from '../Jobs/JobContent';
+import { DecorateContent as CandidateContent } from '../Jobs/DecorateContent';
 import { CandidateOverView } from './CandidateOverView';
 import { DownloadCandidateResume } from './DownloadCandidateResume';
 import { CandidateContactInformation } from './CandidateContactInformation';
