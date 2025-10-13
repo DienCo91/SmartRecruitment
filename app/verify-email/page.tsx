@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useEmailVerification } from '@/hooks';
+import { Router } from '@/constants';
 
 const VerifyEmail = () => {
   const router = useRouter();
@@ -16,8 +17,11 @@ const VerifyEmail = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
+    if (!auth.currentUser?.email) {
+      return router.replace('/');
+    }
     if (isVerify) {
-      router.replace('/login');
+      router.replace(Router.AUTH.LOGIN);
       toast.success('Email verified successfully');
     }
   }, [isVerify, router]);

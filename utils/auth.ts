@@ -1,7 +1,7 @@
 import { ROLE_USER } from '@/constants';
 import { auth } from '@/lib/firebase';
 
-export const isEmployer = (role: string) => role.toUpperCase() === ROLE_USER.EMPLOYER;
+export const isEmployer = (role?: string) => role?.toUpperCase() === ROLE_USER.EMPLOYER;
 
 export function isLoginWithPassword(): boolean {
   const user = auth.currentUser;

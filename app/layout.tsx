@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import StoreProvider from './StoreProvider';
 import LoadingOverlay from '@/layout/loading-global';
+import ProtectedRoute from '@/layout/ProtectedRoute';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,9 +30,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StoreProvider>
-          {children}
-          <LoadingOverlay />
-          <Toaster richColors theme="light" />
+          <ProtectedRoute>
+            {children}
+            <LoadingOverlay />
+            <Toaster richColors theme="light" />
+          </ProtectedRoute>
         </StoreProvider>
       </body>
     </html>

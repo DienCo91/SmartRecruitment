@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { GlassCard } from '../Cards/GlassCard';
 import { BlogCard } from './BlogCard';
+import { Router } from '@/constants';
 
 export function Blogs() {
   return (
@@ -8,7 +9,7 @@ export function Blogs() {
       icon="📚"
       title="Cẩm nang việc làm"
       action={
-        <Link href="/blogs" className="hover:text-white cursor-pointer text-sm">
+        <Link href={Router.BLOGS} className="hover:text-white cursor-pointer text-sm">
           Xem tất cả
         </Link>
       }

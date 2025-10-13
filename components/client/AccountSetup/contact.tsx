@@ -9,6 +9,7 @@ import { IoMdMail } from 'react-icons/io';
 import { z } from 'zod/v3';
 import ButtonAccountSetup from './button-account-setup';
 import { useRouter } from 'next/navigation';
+import { Router } from '@/constants';
 
 interface IContact {
   goToPrev: () => void;
@@ -51,7 +52,7 @@ const Contact: React.FC<IContact> = ({ goToPrev }) => {
 
   const handleSubmitForm = (data: FormValues) => {
     console.log(data);
-    router.push('/congratulations');
+    router.push(Router.CONGRATULATIONS);
   };
 
   return (
