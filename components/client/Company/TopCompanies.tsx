@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo, useState } from 'react';
 import { GlassCard } from '../Cards/GlassCard';
 import { CompanyCard } from './CompanyCard';

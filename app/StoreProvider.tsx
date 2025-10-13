@@ -1,5 +1,5 @@
 'use client';
-import { LoadingDoubleCircle } from '@/components/Loadings/LoadingDoubleCircle';
+import LoadingCustom from '@/components/ui/loading-custom';
 import { useRef } from 'react';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
@@ -18,7 +18,7 @@ export default function StoreProvider({ children }: { children: React.ReactNode 
 
   return (
     <Provider store={storeRef.current}>
-      <PersistGate loading={<LoadingDoubleCircle />} persistor={persistor}>
+      <PersistGate loading={<LoadingCustom />} persistor={persistor}>
         {children}
       </PersistGate>
     </Provider>

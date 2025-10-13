@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { Router } from '@/constants';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -53,7 +54,7 @@ const ForgotPassword = () => {
           <Button className="w-full" onClick={handleForgotPassword} disabled={loading || !email}>
             {loading ? 'Sending...' : 'Send Reset Link'}
           </Button>
-          <Link href="/login">
+          <Link href={Router.AUTH.LOGIN}>
             <Button className=" text-black w-full" variant={'outline'}>
               Back to Login
             </Button>

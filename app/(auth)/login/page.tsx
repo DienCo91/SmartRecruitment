@@ -1,8 +1,18 @@
 'use client';
 
+import { GlassDialog } from '@/components/client/Dialogs/GlassDialog';
 import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Router } from '@/constants';
 import { setCurrentUser } from '@/lib/features/auth/authSlice';
@@ -12,11 +22,14 @@ import { useAppDispatch } from '@/lib/hooks';
 import { AuthService } from '@/services/auth.service';
 import { isEmployer } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { he } from 'date-fns/locale';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -34,6 +47,10 @@ type FormValues = z.infer<typeof formSchema>;
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [role, setRole] = useState<string>('Employer');
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +66,7 @@ const LoginPage = () => {
       const user = userCredential.user;
 
       if (!user.emailVerified) {
-        router.push('/verify-email');
+        router.push(Router.VERIFY_EMAIL);
         return;
       }
 
@@ -64,21 +81,25 @@ const LoginPage = () => {
       router.replace(Router.HOME);
     } catch (error) {
       console.error('Login error:', JSON.stringify(error));
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err.response?.data?.message || 'Error');
     } finally {
       dispatch(setLoading(false));
     }
   };
 
   const handleGoogleLogin = async () => {
+    setIsOpen(false);
     try {
       dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      const res = await AuthService.oauth2();
+      const res = await AuthService.oauth2(role);
       dispatch(setCurrentUser(res.data));
       router.replace(Router.HOME);
     } catch (error) {
       console.error(error);
+      toast.error('Failed to login with Google');
     } finally {
       dispatch(setLoading(false));
     }
@@ -90,7 +111,7 @@ const LoginPage = () => {
         <h1 className="text-2xl font-semibold">Sign in</h1>
         <p className="text-[14px] text-muted-foreground mt-[8px]">
           Don’t have account?
-          <Link href="/register" className="text-blue-primary hover:underline ml-[8px]">
+          <Link href={Router.AUTH.REGISTER} className="text-blue-primary hover:underline ml-[8px]">
             Create Account
           </Link>
         </p>
@@ -115,7 +136,7 @@ const LoginPage = () => {
 
           <div className="w-full text-right">
             <Link
-              href={'/forgot-password'}
+              href={Router.FORGOT_PASSWORD}
               className="text-blue-primary hover:underline text-[14px] "
             >
               Forgot password
@@ -135,11 +156,37 @@ const LoginPage = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button variant="outline" className="flex-1" onClick={handleGoogleLogin}>
+        <Button variant="outline" className="flex-1" onClick={() => setIsOpen(true)}>
           <FcGoogle />
           Sign in with Google
         </Button>
       </div>
+
+      <GlassDialog
+        size="sm"
+        onClose={() => setIsOpen(false)}
+        title={<h1 className="my-[16px]">Chọn loại người dùng trước khi bắt đầu</h1>}
+        open={isOpen}
+        contentClassName="pb-[16px]"
+      >
+        <div className=" text-white">
+          <Select defaultValue="Employer" value={role} onValueChange={setRole}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Type:</SelectLabel>
+                <SelectItem value="Employer">Employer</SelectItem>
+                <SelectItem value="Candidate">Candidate</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Button onClick={handleGoogleLogin} className="w-full mt-4">
+            Submit
+          </Button>
+        </div>
+      </GlassDialog>
     </>
   );
 };

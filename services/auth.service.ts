@@ -13,8 +13,8 @@ export const AuthService = {
     return res.data;
   },
 
-  async oauth2() {
-    const res = await http.post(`${endpointPrefix}/callback`);
+  async oauth2(role: string) {
+    const res = await http.post(`${endpointPrefix}/callback`, { role });
     return res.data;
   },
 };

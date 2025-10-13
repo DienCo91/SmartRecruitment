@@ -4,6 +4,7 @@ import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosi
 import FilterCompany from '@/components/client/Filters/FilterCompany';
 import { FilterJob } from '@/components/client/Filters/FilterJob';
 import { useState } from 'react';
+import GlassCardBase from '@/components/client/Cards/GlassCardBase';
 
 const Company = () => {
   const [optionSelected, setOptionSelected] = useState<string[]>([]);
@@ -12,7 +13,7 @@ const Company = () => {
     <div className="relative ">
       <FilterJob />
 
-      <div className="grid grid-cols-12 mt-[60px]">
+      <GlassCardBase className="grid grid-cols-12 mt-[60px]">
         <div className="col-span-3 mr-3 ">
           <FilterCompany setOptionSelected={setOptionSelected} optionSelected={optionSelected} />
         </div>
@@ -22,7 +23,7 @@ const Company = () => {
             <CompanyOpenPosition key={index} />
           ))}
         </div>
-      </div>
+      </GlassCardBase>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+'use client';
 import { GlassCard } from '../Cards/GlassCard';
 import { JobCard } from './JobCard';
 import * as _ from 'lodash';
