@@ -18,23 +18,23 @@ export function ShortUserInfo() {
   const logout = useLogout();
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
 
-  const options = [
-    {
-      icon: <SquareUserIcon color="#c1c3c9" size={18} />,
-      label: 'Hồ sơ cá nhân',
-      route: Router.DASHBOARD.OVERVIEW,
-    },
-    {
-      icon: <BookMarkedIcon color="#c1c3c9" size={18} />,
-      label: 'Đã lưu',
-      route: Router.USER.SAVED_JOB,
-    },
-    {
-      icon: <FileUserIcon color="#c1c3c9" size={18} />,
-      label: 'Đã ứng tuyển',
-      route: Router.USER.APPLIED_JOB,
-    },
-  ];
+  // const options = [
+  //   {
+  //     icon: <SquareUserIcon color="#c1c3c9" size={18} />,
+  //     label: 'Hồ sơ cá nhân',
+  //     route: Router.DASHBOARD.OVERVIEW,
+  //   },
+  //   {
+  //     icon: <BookMarkedIcon color="#c1c3c9" size={18} />,
+  //     label: 'Đã lưu',
+  //     route: Router.USER.SAVED_JOB,
+  //   },
+  //   {
+  //     icon: <FileUserIcon color="#c1c3c9" size={18} />,
+  //     label: 'Đã ứng tuyển',
+  //     route: Router.USER.APPLIED_JOB,
+  //   },
+  // ];
 
   return (
     <div className="flex gap-2 items-center inset-shadow-sm rounded-full pl-3 shadow-xl ring-1 ring-blue-500/50">
@@ -50,7 +50,7 @@ export function ShortUserInfo() {
           align="end"
           className="p-0 w-[160px] border-none bg-[#384878] shadow-md shadow-blue-500/50"
         >
-          {options.map((o, i) => (
+          {/* {options.map((o, i) => (
             <DropdownMenuItem
               key={i}
               onClick={() => router.push(o.route)}
@@ -59,8 +59,8 @@ export function ShortUserInfo() {
               {o.icon}
               {o.label}
             </DropdownMenuItem>
-          ))}
-          <DropdownMenuSeparator />
+          ))} */}
+          {/* <DropdownMenuSeparator /> */}
           <DropdownMenuItem
             onClick={logout}
             className="cursor-pointer text-neutral-300 data-[highlighted]:bg-white/30 data-[highlighted]:text-white rounded-none "
