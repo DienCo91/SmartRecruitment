@@ -36,14 +36,20 @@ const FormPostJobSchema = z.object({
       })
     )
     .min(1, 'At least one tag is required'),
-  jobRole: z.string().nonempty('Job Role is required'),
   minimumSalary: z.string().nonempty('Minimum Salary is required'),
   maximumSalary: z.string().nonempty('Maximum Salary is required'),
   salaryType: z.string().nonempty('Salary Type is required'),
   education: z.string().nonempty('Education is required'),
   experience: z.string().nonempty('Experience is required'),
   jobType: z.string().nonempty('Job Type is required'),
-  vacancies: z.string().nonempty('Vacancies is required'),
+  // vacancies: z.string().nonempty('Vacancies is required'),
+  quantity: z.string().refine(
+    val => {
+      const num = Number(val);
+      return !isNaN(num) && num >= 1 && Number.isInteger(num);
+    },
+    { message: 'Quantity must be a positive integer' }
+  ),
   expirationDate: z.date({ required_error: 'Expiration Date is required' }),
   jobLevel: z.string().nonempty('Job Level is required'),
 });
@@ -59,16 +65,16 @@ const DashboardFormPostJob = () => {
     defaultValues: {
       jobTitle: '',
       tag: [],
-      jobRole: '',
       minimumSalary: '',
       maximumSalary: '',
       salaryType: '',
       education: '',
       experience: '',
       jobType: '',
-      vacancies: '',
+      // vacancies: '',
       expirationDate: new Date(),
       jobLevel: '',
+      quantity: '',
     },
   });
 
@@ -95,31 +101,14 @@ const DashboardFormPostJob = () => {
           placeholder="Add job title, role, vacancies etc"
           isActiveBorderRedError
         />
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          <TextField
-            classNameLabel="!text-white"
-            control={form.control}
-            name="tag"
-            label="Tags"
-            placeholder="Job keyword, tags etc..."
-            isActiveBorderRedError
-          />
-
-          <SelectField
-            name="jobRole"
-            label="Organization Type"
-            options={[
-              { value: 'non-profit', label: 'Non-Profit' },
-              { value: 'startup', label: 'Startup' },
-              { value: 'corporation', label: 'Corporation' },
-            ]}
-            register={form.register}
-            setValue={form.setValue}
-            error={form.formState.errors.jobRole}
-            classNameInput={cn('bg-white/20 rounded-lg mt-[10px]')}
-            className="space-y-0"
-          />
-        </div>
+        <TextField
+          classNameLabel="!text-white"
+          control={form.control}
+          name="tag"
+          label="Tags"
+          placeholder="Job keyword, tags etc..."
+          isActiveBorderRedError
+        />
 
         <h1 className="font-bold text-[18px]">Salary</h1>
 
@@ -149,7 +138,7 @@ const DashboardFormPostJob = () => {
             ]}
             register={form.register}
             setValue={form.setValue}
-            error={form.formState.errors.jobRole}
+            error={form.formState.errors.salaryType}
             classNameInput={cn('bg-white/20 rounded-lg mt-[10px]')}
             className="space-y-0"
           />
@@ -198,10 +187,10 @@ const DashboardFormPostJob = () => {
             ]}
             register={form.register}
             setValue={form.setValue}
-            error={form.formState.errors.jobRole}
+            error={form.formState.errors.jobType}
             classNameInput="bg-white/20 rounded-lg"
           />
-          <SearchableSelectField<FormValues>
+          {/* <SearchableSelectField<FormValues>
             name="vacancies"
             label="Vacancies"
             placeholder="Select a vacancy..."
@@ -210,6 +199,17 @@ const DashboardFormPostJob = () => {
             setValue={form.setValue}
             error={form.formState.errors.vacancies}
             classNameInput="bg-white/20 rounded-lg"
+          /> */}
+          <TextField
+            classNameLabel="!text-white"
+            control={form.control}
+            name="quantity"
+            label="Quantity"
+            placeholder="Quantity..."
+            isActiveBorderRedError
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9\s]{13,19}"
           />
           <DatePickerField
             name="expirationDate"

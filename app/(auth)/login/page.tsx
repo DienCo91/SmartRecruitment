@@ -80,9 +80,8 @@ const LoginPage = () => {
 
       router.replace(Router.HOME);
     } catch (error) {
-      console.error('Login error:', JSON.stringify(error));
       const err = error as { response?: { data?: { message?: string } } };
-      toast.error(err.response?.data?.message || 'Error');
+      toast.error(err.response?.data?.message || 'Wrong email or password');
     } finally {
       dispatch(setLoading(false));
     }
