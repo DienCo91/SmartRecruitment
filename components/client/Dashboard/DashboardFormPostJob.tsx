@@ -146,7 +146,7 @@ const DashboardFormPostJob = () => {
 
         <h1 className="font-bold text-[18px]">Advance Information</h1>
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <div className="flex flex-wrap gap-4">
           <SelectField
             name="education"
             label="Education"
@@ -160,6 +160,7 @@ const DashboardFormPostJob = () => {
             setValue={form.setValue}
             error={form.formState.errors.education}
             classNameInput="bg-white/20 rounded-lg"
+            className="flex flex-col flex-1"
           />
           <SelectField
             name="experience"
@@ -174,6 +175,7 @@ const DashboardFormPostJob = () => {
             setValue={form.setValue}
             error={form.formState.errors.experience}
             classNameInput="bg-white/20 rounded-lg"
+            className="flex flex-col flex-1"
           />
           <SelectField
             name="jobType"
@@ -189,8 +191,10 @@ const DashboardFormPostJob = () => {
             setValue={form.setValue}
             error={form.formState.errors.jobType}
             classNameInput="bg-white/20 rounded-lg"
+            className="flex flex-col flex-1"
           />
-          {/* <SearchableSelectField<FormValues>
+        </div>
+        {/* <SearchableSelectField<FormValues>
             name="vacancies"
             label="Vacancies"
             placeholder="Select a vacancy..."
@@ -200,17 +204,21 @@ const DashboardFormPostJob = () => {
             error={form.formState.errors.vacancies}
             classNameInput="bg-white/20 rounded-lg"
           /> */}
-          <TextField
-            classNameLabel="!text-white"
-            control={form.control}
-            name="quantity"
-            label="Quantity"
-            placeholder="Quantity..."
-            isActiveBorderRedError
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9\s]{13,19}"
-          />
+
+        <div className="flex flex-wrap gap-4">
+          <div className="flex flex-col flex-1 mt-[-2px]">
+            <TextField
+              classNameLabel="!text-white"
+              control={form.control}
+              name="quantity"
+              label="Quantity"
+              placeholder="Quantity..."
+              isActiveBorderRedError
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9\s]{13,19}"
+            />
+          </div>
           <DatePickerField
             name="expirationDate"
             label="Expiration Date"
@@ -218,6 +226,7 @@ const DashboardFormPostJob = () => {
             value={form.getValues('expirationDate')}
             error={form.formState.errors.expirationDate}
             classNameInput="bg-white/20 rounded-lg"
+            className="flex flex-col flex-1"
           />
 
           <SelectField
@@ -228,6 +237,7 @@ const DashboardFormPostJob = () => {
             setValue={form.setValue}
             error={form.formState.errors.jobLevel}
             classNameInput="bg-white/20 rounded-lg"
+            className="flex flex-col flex-1"
           />
         </div>
 

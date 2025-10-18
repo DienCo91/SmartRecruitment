@@ -17,6 +17,7 @@ const reload = () => window.location.reload();
 
 const SiteAll = [
   { name: 'Trang chủ', path: Router.HOME },
+  { name: 'Tìm Kiếm Công Việc', path: Router.FIND_JOB },
   { name: 'Công ty', path: Router.FIND_COMPANY.LIST },
   { name: 'Ứng viên', path: Router.FIND_CANDIDATE.LIST },
   { name: 'Dashboard', path: Router.DASHBOARD.OVERVIEW },
@@ -32,9 +33,13 @@ export function NavBar() {
       case ROLE_USER.CANDIDATE:
         return SiteAll.filter(site => site.name !== 'Ứng viên');
       case ROLE_USER.EMPLOYER:
-        return SiteAll.filter(site => site.name !== 'Công ty');
+        return SiteAll.filter(
+          site => site.name !== 'Công ty' && site.name !== 'Tìm Kiếm Công Việc'
+        );
       default:
-        return SiteAll.filter(site => site.name === 'Trang chủ');
+        return SiteAll.filter(
+          site => site.name === 'Trang chủ' || site.name === 'Tìm Kiếm Công Việc'
+        );
     }
   }, [currentUser?.role]);
 
