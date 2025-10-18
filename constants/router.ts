@@ -37,6 +37,7 @@ export const Router = {
   CONGRATULATIONS: '/congratulations',
   CHANGE_PASSWORD: '/change-password',
   ACTION: '/action',
+  FIND_JOB: '/find-job',
 };
 
 export const ROUTER_GUESS = [
@@ -47,6 +48,7 @@ export const ROUTER_GUESS = [
   Router.FORGOT_PASSWORD,
   Router.CHANGE_PASSWORD,
   Router.ACTION,
+  Router.FIND_JOB,
 ];
 export const ROUTER_CANDIDATE = [
   Router.HOME,
@@ -60,6 +62,7 @@ export const ROUTER_CANDIDATE = [
   Router.DASHBOARD.SETTING,
   Router.DASHBOARD.FAVORITE_JOBS,
   Router.VERIFY_EMAIL,
+  Router.FIND_JOB,
 ];
 
 export const ROUTER_EMPLOYER = [

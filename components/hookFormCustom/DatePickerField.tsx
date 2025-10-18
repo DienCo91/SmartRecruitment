@@ -17,6 +17,7 @@ interface DatePickerFieldProps<TFieldValues extends FieldValues> {
   value?: Date | null;
   error?: FieldError;
   classNameInput?: string;
+  className?: string;
 }
 
 export function DatePickerField<TFieldValues extends FieldValues>({
@@ -27,6 +28,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   value,
   error,
   classNameInput,
+  className,
 }: DatePickerFieldProps<TFieldValues>) {
   const [date, setDate] = React.useState<Date | undefined>(value ?? undefined);
 
@@ -38,7 +40,7 @@ export function DatePickerField<TFieldValues extends FieldValues>({
   };
 
   return (
-    <div className="space-y-1.5 ">
+    <div className={cn('space-y-1.5 ', className)}>
       <label className="block text-sm font-bold">{label}</label>
       <Popover>
         <PopoverTrigger asChild>
