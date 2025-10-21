@@ -12,6 +12,7 @@ import {
   CommandItem,
   CommandList,
 } from '../ui/command';
+import { normalize } from '@/common';
 
 interface Props extends BaseProps {
   startIcon?: React.ReactNode;
@@ -32,6 +33,12 @@ export function Combobox({
   align = 'center',
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
+
+  const filteredOptions = useMemo(() => {
+    console.log(options.filter(o => normalize(String(o.label)).includes(normalize(search))));
+    return options.filter(o => normalize(String(o.label)).includes(normalize(search)));
+  }, [search, options]);
 
   const trigger = useMemo(
     () => (
@@ -42,7 +49,7 @@ export function Combobox({
         )}
       >
         <div className={cn('flex justify-between w-[200px]', className)}>
-          {options.find(o => o.value === value)?.label || placeholder}
+          {value ? options.find(option => option.value === value)?.label : placeholder}
           {!open ? (
             <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-70" />
           ) : (
@@ -64,31 +71,39 @@ export function Combobox({
         onOpenChange={setOpen}
         className="p-0"
       >
-        <Command className="bg-transparent">
-          <CommandInput placeholder="Search..." className="text-neutral-300" />
+        <Command className="bg-transparent" filter={() => 1}>
+          <CommandInput
+            placeholder="Search..."
+            className="text-neutral-300"
+            value={search}
+            onValueChange={val => setSearch(val)}
+          />
           <CommandList>
-            <CommandEmpty>No options.</CommandEmpty>
-            <CommandGroup className="p-0">
-              {options.map((o, i) => (
-                <CommandItem
-                  key={i}
-                  value={o.value}
-                  onSelect={curValue => {
-                    onChange(curValue);
-                    setOpen(!open);
-                  }}
-                  className="flex justify-between text-neutral-300 data-[selected=true]:bg-white/30 data-[selected=true]:text-neutral-300 cursor-pointer rounded-none"
-                >
-                  {o.label}
-                  <CheckIcon
-                    className={cn(
-                      'mr-2 h-4 w-4 text-neutral-300',
-                      value === o.value ? 'opacity-100' : 'opacity-0'
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            {filteredOptions.length <= 0 ? (
+              <CommandEmpty>No options.</CommandEmpty>
+            ) : (
+              <CommandGroup className="p-0">
+                {filteredOptions.map((o, i) => (
+                  <CommandItem
+                    key={i}
+                    value={o.value}
+                    onSelect={curValue => {
+                      onChange(curValue);
+                      setOpen(!open);
+                    }}
+                    className="flex justify-between text-neutral-300 data-[selected=true]:bg-white/30 data-[selected=true]:text-neutral-300 cursor-pointer rounded-none"
+                  >
+                    {o.label}
+                    <CheckIcon
+                      className={cn(
+                        'mr-2 h-4 w-4 text-neutral-300',
+                        value === o.value ? 'opacity-100' : 'opacity-0'
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </CustomPopover>
