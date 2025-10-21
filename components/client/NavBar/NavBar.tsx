@@ -20,6 +20,7 @@ const SiteAll = [
   { name: 'Tìm Kiếm Công Việc', path: Router.FIND_JOB },
   { name: 'Công ty', path: Router.FIND_COMPANY.LIST },
   { name: 'Ứng viên', path: Router.FIND_CANDIDATE.LIST },
+  { name: 'Bài viết', path: Router.BLOGS },
   { name: 'Dashboard', path: Router.DASHBOARD.OVERVIEW },
 ];
 
