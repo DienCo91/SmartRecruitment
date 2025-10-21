@@ -8,6 +8,7 @@ export const AuthService = {
     const res = await http.post(`${endpointPrefix}/login`);
     return res.data;
   },
+
   async register(data: IRegister) {
     const res = await http.post(`${endpointPrefix}/register`, data, { skipAuth: true });
     return res.data;

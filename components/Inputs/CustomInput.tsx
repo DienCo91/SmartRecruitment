@@ -5,9 +5,10 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   error?: string;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
-export function CustomInput({ startIcon, endIcon, error, className, ...props }: Props) {
+export function CustomInput({ ref, startIcon, endIcon, error, className, ...props }: Props) {
   return (
     <div className="w-full">
       <div
@@ -21,6 +22,7 @@ export function CustomInput({ startIcon, endIcon, error, className, ...props }: 
 
         <input
           {...props}
+          ref={ref}
           className="flex-1 w-full bg-transparent outline-none placeholder-gray-400 text-sm"
         />
 

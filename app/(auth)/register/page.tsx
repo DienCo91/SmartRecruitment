@@ -39,7 +39,7 @@ import { ValidatorZod } from '@/helpers/zod/validator';
 const formSchema = z
   .object({
     username: z.string().min(3, { message: 'Username must be at least 3 characters' }),
-    fullname: z.string().min(3, { message: 'Full name must be at least 3 characters' }),
+    // fullname: z.string().min(3, { message: 'Full name must be at least 3 characters' }),
     email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
     password: ValidatorZod.password,
     confirmPassword: ValidatorZod.password,
@@ -62,7 +62,7 @@ const RegisterPage = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullname: '',
+      // fullname: '',
       username: '',
       email: '',
       password: '',
@@ -74,7 +74,7 @@ const RegisterPage = () => {
     dispatch(setLoading(true));
     try {
       const res = await AuthService.register({
-        fullName: data.fullname,
+        // fullName: data.fullname,
         userName: data.username,
         email: data.email,
         role: role.toUpperCase(),
@@ -142,13 +142,13 @@ const RegisterPage = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[16px]">
           <div className="flex space-x-[20px]">
-            <TextField
+            {/* <TextField
               className="placeholder:text-gray"
               control={form.control}
               name="fullname"
               placeholder="Full Name"
               type="text"
-            />
+            /> */}
             <TextField
               className="placeholder:text-gray"
               control={form.control}

@@ -5,6 +5,8 @@ import { Toaster } from '@/components/ui/sonner';
 import StoreProvider from './StoreProvider';
 import LoadingOverlay from '@/layout/loading-global';
 import ProtectedRoute from '@/layout/ProtectedRoute';
+import ThemeWrapper from '@/layout/theme-wrapper';
+import { ThemeProvider } from '@/contexts/theme';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ThemeProvider>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StoreProvider>
           <ProtectedRoute>
@@ -37,6 +39,6 @@ export default function RootLayout({
           </ProtectedRoute>
         </StoreProvider>
       </body>
-    </html>
+    </ThemeProvider>
   );
 }
