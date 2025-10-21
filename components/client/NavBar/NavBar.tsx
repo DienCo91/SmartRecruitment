@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { ShortUserInfo } from '../Avatar/ShortUserInfo';
+import { Theme, useTheme } from '@/contexts/theme';
 
 const reload = () => window.location.reload();
 
@@ -20,11 +21,16 @@ const SiteAll = [
   { name: 'Tìm Kiếm Công Việc', path: Router.FIND_JOB },
   { name: 'Công ty', path: Router.FIND_COMPANY.LIST },
   { name: 'Ứng viên', path: Router.FIND_CANDIDATE.LIST },
+  { name: 'Bài viết', path: Router.BLOGS },
+  { name: 'Chatting', path: Router.CHATTING },
   { name: 'Dashboard', path: Router.DASHBOARD.OVERVIEW },
 ];
 
 export function NavBar() {
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
+  const pathName = usePathname();
+
+  const { theme, setTheme } = useTheme();
 
   const sites = useMemo(() => {
     switch (currentUser?.role) {
@@ -43,7 +49,9 @@ export function NavBar() {
     }
   }, [currentUser?.role]);
 
-  const pathName = usePathname();
+  const handleChangeTheme = () => {
+    setTheme(theme === Theme.DARK ? Theme.LIGHT : Theme.DARK);
+  };
 
   return (
     <div
@@ -73,8 +81,16 @@ export function NavBar() {
             );
           })}
         </div>
+
         {currentUser?.role ? (
           <div className="flex gap-3">
+            <Button
+              size={'sm'}
+              onClick={handleChangeTheme}
+              className="rounded-full border px-2 text-sm bg-white/30 dark:bg-gray-900 hover:dark:bg-gray-800 hover:bg-gray-200"
+            >
+              {theme === Theme.DARK ? '🌙' : '☀️'}
+            </Button>
             <Notifications />
             <ShortUserInfo />
           </div>
