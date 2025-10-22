@@ -96,17 +96,38 @@ const RegisterPage = () => {
     }
   };
 
+  const handleUpdateUserRole = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await AuthService.oauth2(role);
+      dispatch(setCurrentUser(res.data));
+      router.replace(Router.HOME);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to login with Google');
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
   const handleGoogleLogin = async () => {
     setIsOpen(false);
     try {
       dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      const res = await AuthService.oauth2(role);
+      const res = await AuthService.oauth2();
+
       dispatch(setCurrentUser(res.data));
+      router.replace(Router.HOME);
     } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } } | undefined;
+      if (err?.response?.data?.message === 'Role is required.') {
+        setIsOpen(true);
+        return;
+      }
       console.error(error);
-      toast.error('Failed to login with Google');
+      toast.error('Failed to login with Google ');
     } finally {
       dispatch(setLoading(false));
     }
@@ -191,7 +212,7 @@ const RegisterPage = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button variant="outline" className="flex-1" onClick={() => setIsOpen(true)}>
+        <Button variant="outline" className="flex-1" onClick={handleGoogleLogin}>
           <FcGoogle />
           Sign in with Google
         </Button>
@@ -217,7 +238,7 @@ const RegisterPage = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button onClick={handleGoogleLogin} className="w-full mt-4">
+          <Button onClick={handleUpdateUserRole} className="w-full mt-4">
             Submit
           </Button>
         </div>

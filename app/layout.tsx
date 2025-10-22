@@ -1,12 +1,10 @@
+import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/contexts/theme';
+import LoadingOverlay from '@/layout/loading-global';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { Toaster } from '@/components/ui/sonner';
 import StoreProvider from './StoreProvider';
-import LoadingOverlay from '@/layout/loading-global';
-import ProtectedRoute from '@/layout/ProtectedRoute';
-import ThemeWrapper from '@/layout/theme-wrapper';
-import { ThemeProvider } from '@/contexts/theme';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,11 +30,14 @@ export default function RootLayout({
     <ThemeProvider>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StoreProvider>
-          <ProtectedRoute>
-            {children}
-            <LoadingOverlay />
-            <Toaster richColors theme="light" />
-          </ProtectedRoute>
+          {/* - block wrap because flick UI
+              - use middleware.ts for Authorization */}
+
+          {/* <ProtectedRoute> */}
+          {children}
+          <LoadingOverlay />
+          <Toaster richColors theme="light" />
+          {/* </ProtectedRoute> */}
         </StoreProvider>
       </body>
     </ThemeProvider>

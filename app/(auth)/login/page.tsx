@@ -22,15 +22,14 @@ import { useAppDispatch } from '@/lib/hooks';
 import { AuthService } from '@/services/auth.service';
 import { isEmployer } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { he } from 'date-fns/locale';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
-import { z } from 'zod';
+import { z } from 'zod/v3';
 
 const formSchema = z.object({
   email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
@@ -45,6 +44,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -58,6 +58,12 @@ const LoginPage = () => {
       password: '',
     },
   });
+
+  useEffect(() => {
+    if (searchParams.get('error') === 'unauthorized') {
+      toast.error('Please login to access this page');
+    }
+  }, [searchParams]);
 
   const onSubmit = async (data: FormValues) => {
     dispatch(setLoading(true));
@@ -87,16 +93,36 @@ const LoginPage = () => {
     }
   };
 
+  const handleUpdateUserRole = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await AuthService.oauth2(role);
+      dispatch(setCurrentUser(res.data));
+      router.replace(Router.HOME);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to login with Google');
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
   const handleGoogleLogin = async () => {
     setIsOpen(false);
     try {
       dispatch(setLoading(true));
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      const res = await AuthService.oauth2(role);
+      const res = await AuthService.oauth2();
+
       dispatch(setCurrentUser(res.data));
       router.replace(Router.HOME);
     } catch (error) {
+      const err = error as { response?: { data?: { message?: string } } } | undefined;
+      if (err?.response?.data?.message === 'Role is required.') {
+        setIsOpen(true);
+        return;
+      }
       console.error(error);
       toast.error('Failed to login with Google');
     } finally {
@@ -155,7 +181,7 @@ const LoginPage = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button variant="outline" className="flex-1" onClick={() => setIsOpen(true)}>
+        <Button variant="outline" className="flex-1" onClick={handleGoogleLogin}>
           <FcGoogle />
           Sign in with Google
         </Button>
@@ -164,7 +190,7 @@ const LoginPage = () => {
       <GlassDialog
         size="sm"
         onClose={() => setIsOpen(false)}
-        title={<h1 className="my-[16px]">Chọn loại người dùng trước khi bắt đầu</h1>}
+        title={<p className="my-[16px]">Chọn loại người dùng trước khi bắt đầu</p>}
         open={isOpen}
         contentClassName="pb-[16px]"
       >
@@ -181,7 +207,7 @@ const LoginPage = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Button onClick={handleGoogleLogin} className="w-full mt-4">
+          <Button onClick={handleUpdateUserRole} className="w-full mt-4">
             Submit
           </Button>
         </div>

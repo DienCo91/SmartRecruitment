@@ -22,8 +22,8 @@ const SiteAll = [
   { name: 'Công ty', path: Router.FIND_COMPANY.LIST },
   { name: 'Ứng viên', path: Router.FIND_CANDIDATE.LIST },
   { name: 'Bài viết', path: Router.BLOGS },
-  { name: 'Chatting', path: Router.CHATTING },
-  { name: 'Dashboard', path: Router.DASHBOARD.OVERVIEW },
+  { name: 'Tin Nhắn', path: Router.CHATTING },
+  { name: 'Tổng Quan', path: Router.DASHBOARD.OVERVIEW },
 ];
 
 export function NavBar() {

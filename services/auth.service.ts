@@ -14,8 +14,12 @@ export const AuthService = {
     return res.data;
   },
 
-  async oauth2(role: string) {
-    const res = await http.post(`${endpointPrefix}/callback`, { role });
+  async oauth2(role?: string) {
+    if (role) {
+      const res = await http.post(`${endpointPrefix}/callback`, { role });
+      return res.data;
+    }
+    const res = await http.post(`${endpointPrefix}/callback`);
     return res.data;
   },
 };

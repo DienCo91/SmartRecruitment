@@ -12,8 +12,6 @@ const Setting = () => {
   if (!currentUser) return null;
 
   const isRoleEmployer = isEmployer(currentUser.role);
-  console.log('🚀 ~ Setting ~ isCandiDate:', isRoleEmployer, currentUser.role);
-  // const isCandiDate = false;
 
   return (
     <>
