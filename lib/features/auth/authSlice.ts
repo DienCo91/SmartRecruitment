@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, CurrentUser } from './type';
+import { clearUserRoleCookie, setUserRoleToCookie } from '@/utils/roleCookie';
 
 const initialState: AuthState = { currentUser: null };
 
@@ -8,6 +9,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCurrentUser: (state, action: PayloadAction<CurrentUser | null>) => {
+      if (action.payload !== null) {
+        setUserRoleToCookie(action.payload.role);
+      } else {
+        clearUserRoleCookie();
+      }
       state.currentUser = action.payload;
     },
   },

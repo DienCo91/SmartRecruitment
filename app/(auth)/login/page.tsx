@@ -25,8 +25,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { he } from 'date-fns/locale';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
@@ -45,6 +45,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -58,6 +59,12 @@ const LoginPage = () => {
       password: '',
     },
   });
+
+  useEffect(() => {
+    if (searchParams.get('error') === 'unauthorized') {
+      toast.error('Please login to access this page');
+    }
+  }, [searchParams]);
 
   const onSubmit = async (data: FormValues) => {
     dispatch(setLoading(true));

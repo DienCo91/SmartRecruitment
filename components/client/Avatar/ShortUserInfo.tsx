@@ -39,7 +39,7 @@ export function ShortUserInfo() {
   return (
     <div className="flex gap-2 items-center inset-shadow-sm rounded-full pl-3 shadow-xl ring-1 ring-blue-500/50">
       <div className="flex flex-col font-normal text-right text-xs">
-        <span>{currentUser?.fullName}</span>
+        <span>{currentUser?.userName}</span>
         <span>{currentUser?.email}</span>
       </div>
       <DropdownMenu>

@@ -14,7 +14,7 @@ import { Form } from '@/components/ui/form';
 
 const profileSchema = z.object({
   email: z.string().nonempty('Email is required').email('Invalid email address'),
-  fullName: z.string().min(2, 'Họ tên ít nhất 2 ký tự'),
+  // fullName: z.string().min(2, 'Họ tên ít nhất 2 ký tự'),
   userName: z.string().min(3, 'Username ít nhất 3 ký tự'),
   role: z.enum(['CANDIDATE', 'EMPLOYER']),
   avatar: z
@@ -36,7 +36,7 @@ const ProfileForm: React.FC = () => {
     resolver: zodResolver(profileSchema),
     defaultValues: {
       email: currentUser?.email ?? '',
-      fullName: currentUser?.fullName ?? '',
+      // fullName: currentUser?.fullName ?? '',
       role: currentUser?.role === 'EMPLOYER' ? 'EMPLOYER' : 'CANDIDATE',
       userName: currentUser?.userName ?? '',
       avatar: undefined,
@@ -111,13 +111,13 @@ const ProfileForm: React.FC = () => {
 
         <TextField label="Email" disabled placeholder="Email" control={form.control} name="email" />
 
-        <TextField
+        {/* <TextField
           label="Full Name"
           disabled={!isEditing}
           placeholder="Họ và tên"
           control={form.control}
           name="fullName"
-        />
+        /> */}
 
         <TextField
           label="Username"

@@ -1,7 +1,9 @@
 import { AppImage } from '@/common';
 import LogoApp from '@/components/ui/logo-app';
+import { Router } from '@/constants';
 import { Briefcase, Building2 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 type StatItem = {
@@ -33,7 +35,9 @@ const AuthLayout = async (props: LayoutProps<'/'>) => {
     <div className="min-h-screen relative flex justify-center">
       <div className="w-[80%]">
         <div className="relative w-full h-screen space-y-6 flex justify-center xl:justify-start items-center">
-          <LogoApp className="absolute left-0 top-[16px] flex items-center" />
+          <Link href={Router.HOME}>
+            <LogoApp className="absolute left-0 top-[16px] flex items-center" />
+          </Link>
           <div className="w-[300px] md:w-[400px] relative">{props.children}</div>
         </div>
         <div className="hidden xl:block">
