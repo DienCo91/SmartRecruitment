@@ -80,7 +80,7 @@ const LoginPage = () => {
       dispatch(setCurrentUser(res.data));
       const isRoleEmployer = isEmployer(res.data.role);
 
-      if (isRoleEmployer) {
+      if (isRoleEmployer && !res.data.companySetup) {
         return router.replace(Router.ACCOUNT_SETUP);
       }
 

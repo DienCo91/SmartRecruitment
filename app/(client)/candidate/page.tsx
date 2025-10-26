@@ -14,10 +14,11 @@ import {
   experiences,
   genders,
 } from '@/constants/mockedData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import * as _ from 'lodash';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { CandidateService } from '@/services/candidate.services';
 
 const CandidatePage = () => {
   const initFilter = {
@@ -29,13 +30,45 @@ const CandidatePage = () => {
   };
   type Filter = typeof initFilter;
   const [filters, setFilters] = useState<Filter>(initFilter);
+
+  const [candidates, setCandidates] = useState<[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const handleFilter = (key: keyof Filter, value: Filter[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
 
-  const [candidates, setCandiadtes] = useState<number[]>(_.range(0, 10, 1));
-  const getCandidates = async () => {
-    setTimeout(() => setCandiadtes(prev => [...prev, ..._.range(0, 6, 1)]), 2000);
+  const getCandidates = async (pageNumber = 1) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const params = {
+        page: pageNumber,
+        // size: 10,
+        // location: '', // tuỳ nếu bạn có location filter riêng
+        // category: '',
+        // experienceLevel: filters.experience,
+        // educationLevels: filters.education,
+        // gender: filters.gender,
+      };
+
+      const res = await CandidateService.getAllCandidate(params);
+      const newData = res.data.content;
+
+      setCandidates(prev => (pageNumber === 1 ? newData : [...prev, ...newData]));
+      setHasMore(!res.data.last);
+      setPage(pageNumber);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    getCandidates(1);
+  }, [filters]);
 
   return (
     <div>
@@ -137,12 +170,12 @@ const CandidatePage = () => {
             <InfiniteScroll
               scrollableTarget="scrollable-candidates"
               dataLength={candidates.length}
-              next={getCandidates}
-              hasMore={true}
+              next={() => getCandidates(page + 1)}
+              hasMore={hasMore}
               loader={<LoadingCircle />}
             >
               {candidates.map((item, i) => (
-                <CandidateCard key={i} />
+                <CandidateCard key={i} candidate={item} />
               ))}
             </InfiniteScroll>
           </div>

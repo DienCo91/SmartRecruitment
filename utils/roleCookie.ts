@@ -27,5 +27,6 @@ export function getUserRoleFromCookie(): string | null {
 }
 
 export function clearUserRoleCookie() {
+  if (typeof document === 'undefined') return;
   document.cookie = `${COOKIE_KEY}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Strict`;
 }

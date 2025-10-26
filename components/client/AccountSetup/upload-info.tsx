@@ -12,6 +12,7 @@ interface IUploadInfo {
   value?: File | null; // nhận file để preview
   onChange?: (file: File | null) => void; // callback khi chọn file
   accept?: string;
+  disabled?: boolean;
 }
 
 const UploadInfo: React.FC<IUploadInfo> = ({
@@ -22,6 +23,7 @@ const UploadInfo: React.FC<IUploadInfo> = ({
   value,
   accept = 'image/*',
   onChange,
+  disabled,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -73,6 +75,7 @@ const UploadInfo: React.FC<IUploadInfo> = ({
           ref={fileInputRef}
           type="file"
           accept={accept}
+          disabled={disabled}
           className="hidden"
           onChange={handleFileChange}
         />

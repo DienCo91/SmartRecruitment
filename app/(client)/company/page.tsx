@@ -1,27 +1,119 @@
 'use client';
 
-import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
-import FilterCompany from '@/components/client/Filters/FilterCompany';
-import { FilterJob } from '@/components/client/Filters/FilterJob';
-import { useState } from 'react';
 import GlassCardBase from '@/components/client/Cards/GlassCardBase';
+import FilterCompany, { FilterCompanyRef } from '@/components/client/Filters/FilterCompany';
+import { FilterCompanyHeader } from '@/components/client/Filters/FilterCompanyHeader';
+import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { CompanyService } from '@/services/company.services';
+import { CompanyItem } from '@/types';
+import { useEffect, useRef, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
+export interface TypeFilterCompanyHeader {
+  search?: string;
+  location?: string;
+  organizationTypes?: string;
+  industryTypes?: string;
+  teamSizes?: string;
+  yearRange?: number;
+}
 
 const Company = () => {
-  const [optionSelected, setOptionSelected] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
+  const refFilterCompany = useRef<FilterCompanyRef>(null);
+
+  const [dataCompany, setDataCompany] = useState<CompanyItem[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  const size = 10;
+
+  const getCompany = async (pageNum = 1, filter?: TypeFilterCompanyHeader) => {
+    dispatch(setLoading(true));
+
+    try {
+      const res = await CompanyService.getAllCompanies({
+        page: pageNum,
+        size,
+        keyword: filter?.search,
+        location: filter?.location,
+        organizationType: filter?.organizationTypes,
+        industryType: filter?.industryTypes,
+        teamSize: filter?.teamSizes,
+        foundedIn: filter?.yearRange,
+      });
+
+      const content = res?.data?.content || [];
+      const total = res?.data?.totalElements || 0;
+
+      setDataCompany(prev => (pageNum === 1 ? content : [...prev, ...content]));
+      setHasMore(pageNum * size < total);
+    } catch (error) {
+      console.error('getCompany error', error);
+    } finally {
+      dispatch(setLoading(false));
+      setIsFirstLoad(false);
+    }
+  };
+
+  useEffect(() => {
+    getCompany();
+  }, []);
+
+  const handleSubmit = (data: TypeFilterCompanyHeader) => {
+    setPage(1);
+    const dataFilterSideBar = refFilterCompany.current?.getFilters();
+    getCompany(1, {
+      ...data,
+      industryTypes: dataFilterSideBar?.industryType,
+      organizationTypes: dataFilterSideBar?.organizationType,
+      teamSizes: dataFilterSideBar?.teamSize,
+      yearRange: dataFilterSideBar?.year,
+    });
+  };
+
+  const fetchMoreData = async () => {
+    const nextPage = page + 1;
+    await getCompany(nextPage);
+    setPage(nextPage);
+  };
 
   return (
-    <div className="relative ">
-      <FilterJob />
+    <div className="relative">
+      <FilterCompanyHeader handleSubmit={handleSubmit} />
 
       <GlassCardBase className="grid grid-cols-12 mt-[60px]">
-        <div className="col-span-3 mr-3 ">
-          <FilterCompany setOptionSelected={setOptionSelected} optionSelected={optionSelected} />
+        <div className="col-span-3 mr-3">
+          <FilterCompany ref={refFilterCompany} />
         </div>
-        {/* Right card */}
-        <div className="col-span-9 space-y-[16px]">
-          {Array.from({ length: 10 }, (_, index) => (
-            <CompanyOpenPosition key={index} />
-          ))}
+
+        <div
+          id="scrollableCompany"
+          className="col-span-9 space-y-[16px] h-[80vh] overflow-auto pr-2"
+        >
+          {!isFirstLoad && dataCompany.length === 0 && (
+            <div className="flex flex-col justify-center items-center py-20 text-gray-400">
+              <p className="text-lg">Không tìm thấy công ty nào phù hợp</p>
+            </div>
+          )}
+
+          {dataCompany.length > 0 && (
+            <InfiniteScroll
+              dataLength={dataCompany.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              scrollableTarget="scrollableCompany"
+              className="space-y-[16px]"
+              loader={<p className="text-center py-4 text-gray-400">Đang tải thêm...</p>}
+            >
+              {dataCompany.map((item, index) => (
+                <CompanyOpenPosition key={index} item={item} />
+              ))}
+            </InfiniteScroll>
+          )}
         </div>
       </GlassCardBase>
     </div>

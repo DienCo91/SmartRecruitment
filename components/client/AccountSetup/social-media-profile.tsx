@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FaReddit, FaSkype, FaYoutube } from 'react-icons/fa';
+import { FaGithub, FaGitlab, FaGlobe, FaReddit, FaSkype, FaYoutube } from 'react-icons/fa';
 import { FaLinkedin, FaXTwitter } from 'react-icons/fa6';
 import { IoMdAddCircleOutline, IoMdCloseCircleOutline } from 'react-icons/io';
 import { TiSocialFacebook, TiSocialInstagram } from 'react-icons/ti';
@@ -19,14 +19,26 @@ import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import { z } from 'zod/v3';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ButtonAccountSetup from './button-account-setup';
+import { DataSubmitFormProps } from './AccountSetupTabView';
+import { getIconSocialLink } from '@/utils/common';
 
+const socialList = [
+  { label: 'Facebook', value: 'FACEBOOK' },
+  { label: 'Instagram', value: 'INSTAGRAM' },
+  { label: 'X', value: 'X' },
+  { label: 'Linkedin', value: 'LINKEDIN' },
+  { label: 'Youtube', value: 'YOUTUBE' },
+  { label: 'GitLab', value: 'GITLAB' },
+  { label: 'GitHub', value: 'GITHUB' },
+  { label: 'Protfolio', value: 'PORTFOLIO' },
+];
 interface ISocialMediaProfile {
-  goToNext: () => void;
+  goToNext: (values?: Partial<DataSubmitFormProps>) => void;
   goToPrev: () => void;
 }
 
 const socialLinkSchema = z.object({
-  platform: z.string().min(1, 'Platform is required'),
+  platformName: z.string().min(1, 'Platform is required'),
   url: z.string().nonempty('URL is required').url('Invalid URL'),
 });
 
@@ -44,7 +56,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      socialLinks: [{ platform: '', url: '' }],
+      socialLinks: [{ platformName: '', url: '' }],
     },
   });
 
@@ -54,29 +66,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-    goToNext();
-  };
-
-  const getIcon = (platform: string) => {
-    switch (platform) {
-      case 'Facebook':
-        return <TiSocialFacebook className="text-blue-600" />;
-      case 'Instagram':
-        return <TiSocialInstagram className="text-pink-500" />;
-      case 'X':
-        return <FaXTwitter />;
-      case 'Linkedin':
-        return <FaLinkedin className="text-blue-600" />;
-      case 'Youtube':
-        return <FaYoutube className="text-red-500" />;
-      case 'Reddit':
-        return <FaReddit className="text-orange-500" />;
-      case 'Skype':
-        return <FaSkype className="text-blue-500" />;
-      default:
-        return null;
-    }
+    goToNext({ socialLinks: data.socialLinks });
   };
 
   return (
@@ -87,7 +77,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
           <div className="flex">
             <div className="flex flex-1 items-center border-[1px] border-grey-primary rounded-[6px]">
               <Controller
-                name={`socialLinks.${index}.platform` as const}
+                name={`socialLinks.${index}.platformName` as const}
                 control={control}
                 render={({ field: { onChange, value } }) => (
                   <Select onValueChange={onChange} value={value}>
@@ -97,18 +87,10 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Social</SelectLabel>
-                        {[
-                          { label: 'Facebook', value: 'Facebook' },
-                          { label: 'Instagram', value: 'Instagram' },
-                          { label: 'X', value: 'X' },
-                          { label: 'Linkedin', value: 'Linkedin' },
-                          { label: 'Youtube', value: 'Youtube' },
-                          { label: 'Reddit', value: 'Reddit' },
-                          { label: 'Skype', value: 'Skype' },
-                        ].map(item => (
+                        {socialList.map(item => (
                           <SelectItem key={item.value} value={item.value}>
                             <span className="flex items-center gap-2">
-                              {getIcon(item.value)}
+                              {getIconSocialLink(item.value)}
                               {item.label}
                             </span>
                           </SelectItem>
@@ -147,9 +129,9 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
 
           <div className="flex">
             <div className="w-[180px]">
-              {errors.socialLinks?.[index]?.platform && (
+              {errors.socialLinks?.[index]?.platformName && (
                 <p className="text-red-500 text-xs mt-1">
-                  {errors.socialLinks[index]?.platform.message}
+                  {errors.socialLinks[index]?.platformName.message}
                 </p>
               )}
             </div>
@@ -162,7 +144,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
 
       <Button
         type="button"
-        onClick={() => append({ platform: '', url: '' })}
+        onClick={() => append({ platformName: '', url: '' })}
         className="w-full bg-grey-primary mt-[18px] text-black hover:shadow-md hover:bg-grey-primary hover:translate-y-[-2px] active:translate-y-0"
       >
         <IoMdAddCircleOutline className="mr-2" />

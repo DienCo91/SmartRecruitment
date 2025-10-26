@@ -21,7 +21,6 @@ const JobDetailPage = () => {
   const [showApplyJobModal, setShowApplyJobModal] = useState<boolean>(false);
   const [job, setJob] = useState<Job>(mockedJob);
   const { slug } = useParams();
-  console.log(slug);
 
   return (
     <GlassCard

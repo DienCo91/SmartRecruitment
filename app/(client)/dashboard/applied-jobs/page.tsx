@@ -8,7 +8,6 @@ const ApplyJobs = () => {
   return (
     <div>
       <DashboardHeader title="Applied Jobs" count={589} />
-
       <ListApplyJob />
     </div>
   );

@@ -11,9 +11,10 @@ import ButtonAccountSetup from './button-account-setup';
 import UploadInfo from './upload-info';
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants';
 import { toast } from 'sonner';
+import { DataSubmitFormProps } from './AccountSetupTabView';
 
 interface ICompanyInfo {
-  goToNext: () => void;
+  goToNext: (values?: Partial<DataSubmitFormProps>) => void;
 }
 
 const formSchema = z.object({
@@ -47,9 +48,14 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
     },
   });
 
-  const onSubmit = () => {
+  const onSubmit = (data: FormValues) => {
     if (editorRef.current?.getValue() && editorRef.current.getValue().length > 20) {
-      goToNext();
+      goToNext({
+        nameCompany: data.nameCompany,
+        description: editorRef.current.getValue(),
+        banner: data.banner,
+        logo: data.logo,
+      });
     } else {
       return toast.error('Description must be at least 20 characters');
     }

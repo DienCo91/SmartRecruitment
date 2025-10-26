@@ -1,13 +1,15 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import LocationInputOSM from '@/components/ui/location-input-OSM';
 import { PhoneInput } from '@/components/ui/phone-input';
-import { OSMAddress } from '@/types';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { CandidateService } from '@/services/candidate.services';
+import { IPlace, OSMAddress } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { IoMdMail } from 'react-icons/io';
+import { toast } from 'sonner';
 import z from 'zod/v3';
 
 const accountSettingSchema = z.object({
@@ -18,20 +20,22 @@ const accountSettingSchema = z.object({
     .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
     .min(10, 'Phone Number must be at least 10 characters')
     .max(15, 'Phone Number must be at most 15 characters'),
-  email: z.string().nonempty('Email is required').email('Invalid email address'),
 });
 
 type FormValues = z.infer<typeof accountSettingSchema>;
 
 const DashboardAccountSetting = () => {
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(accountSettingSchema),
-    defaultValues: { location: '', phoneNumber: '', email: '' },
+    defaultValues: { location: '', phoneNumber: '' },
   });
+
+  const [place, setPlace] = useState<IPlace | null>(null);
 
   const handleLocationSelect = (place: {
     address: string;
@@ -41,11 +45,31 @@ const DashboardAccountSetting = () => {
     osm_id: number;
     address_detail: OSMAddress;
   }) => {
-    console.log('📍 Selected Place (OSM):', place);
+    setPlace(place);
   };
 
   const handleSubmitForm = (data: FormValues) => {
-    console.log(data);
+    if (!place) return;
+    try {
+      dispatch(setLoading(true));
+      const res = CandidateService.updateContactInfo({
+        location: {
+          commune: place?.address_detail?.suburb ?? '',
+          provinceCity: place?.address_detail?.city ?? '',
+          country: place?.address_detail?.country ?? '',
+          latitude: place?.lat ?? 0,
+          longitude: place?.lng ?? 0,
+        },
+        phoneNumber: data.phoneNumber,
+      });
+      toast.success('Update contact info successfully');
+      console.log('res', res);
+    } catch (error) {
+      console.log('error', error);
+      toast.error('Update contact info failed');
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   return (
@@ -77,29 +101,6 @@ const DashboardAccountSetting = () => {
         <p className="text-red-500 text-xs mt-1">{errors.phoneNumber?.message}</p>
       )}
 
-      <Controller
-        control={control}
-        name="email"
-        render={({ field: { onChange, value } }) => (
-          <>
-            <h1 className="text-[14px] mt-[18px] mb-[8px]">Email</h1>
-            <div className={'flex items-center border-[1px] rounded-md'}>
-              <div className="px-[16px]">
-                <IoMdMail className="text-[20px] text-white" />
-              </div>
-              <Input
-                placeholder="Email address"
-                className="border-none rounded-l-none"
-                onChange={onChange}
-                value={value}
-              />
-            </div>
-          </>
-        )}
-      />
-      {errors.email?.message && (
-        <p className="text-red-500 text-xs mt-1">{errors.email?.message}</p>
-      )}
       <Button type="submit" size={'lg'} className="mt-[32px]">
         Save Changes
       </Button>

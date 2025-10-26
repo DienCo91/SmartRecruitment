@@ -32,6 +32,7 @@ interface SelectFieldProps<TFieldValues extends FieldValues> {
   error?: FieldError;
   className?: string;
   classNameInput?: string;
+  value: string;
 }
 
 export function SelectField<TFieldValues extends FieldValues>({
@@ -44,6 +45,7 @@ export function SelectField<TFieldValues extends FieldValues>({
   className,
   classNameInput,
   error,
+  value,
 }: SelectFieldProps<TFieldValues>) {
   return (
     <div className={cn('space-y-1.5 w-full ', className)}>
@@ -55,6 +57,7 @@ export function SelectField<TFieldValues extends FieldValues>({
         onValueChange={val =>
           setValue(name, val as PathValue<TFieldValues, typeof name>, { shouldValidate: true })
         }
+        value={value}
       >
         <SelectTrigger
           className={cn(

@@ -41,7 +41,7 @@ export function CountrySelectField<TFieldValues extends FieldValues>({
             whitelist={whitelist}
             blacklist={blacklist}
             onChange={(val: CountryRegion) => {
-              onChange(val?.countryShortCode);
+              onChange(val?.countryName);
             }}
           />
         )}

@@ -2,7 +2,6 @@
 
 import GlassCardBase from '@/components/client/Cards/GlassCardBase';
 import LogoApp from '@/components/ui/logo-app';
-import { Mail } from 'lucide-react';
 
 export default function Footer() {
   return (

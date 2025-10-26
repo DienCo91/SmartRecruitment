@@ -4,27 +4,31 @@ import { Separator } from '@/components/ui/separator';
 import { FiPhone } from 'react-icons/fi';
 import { GoMail } from 'react-icons/go';
 import { RiGlobalLine } from 'react-icons/ri';
+import { CompanyDetail } from '@/types';
 
-const CONTACT_INFO = [
-  {
-    label: 'Website',
-    value: 'www.estherhoward.com',
-    icon: <RiGlobalLine size={24} />,
-  },
-  {
-    label: 'Phone',
-    value: '+1-202-555-0141',
-    icon: <FiPhone size={24} />,
-  },
+interface ICompanyDetailContact {
+  company: CompanyDetail;
+}
 
-  {
-    label: 'Email address',
-    value: 'esther.howard@gmail.com',
-    icon: <GoMail size={24} />,
-  },
-];
+const CompanyDetailContact: React.FC<ICompanyDetailContact> = ({ company }) => {
+  const CONTACT_INFO = [
+    {
+      label: 'Website',
+      value: company.socialLinks[0].url,
+      icon: <RiGlobalLine size={24} />,
+    },
+    {
+      label: 'Phone',
+      value: company.phone,
+      icon: <FiPhone size={24} />,
+    },
 
-const CompanyDetailContact = () => {
+    {
+      label: 'Email address',
+      value: company.email,
+      icon: <GoMail size={24} />,
+    },
+  ];
   return (
     <GlassCard title="Thông tin liên hệ" action>
       {CONTACT_INFO.map((item, index) => (

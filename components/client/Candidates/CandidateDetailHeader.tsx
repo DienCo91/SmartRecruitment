@@ -1,15 +1,20 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { HeartIcon, MailIcon } from 'lucide-react';
 import { AvatarUser } from '../Avatar/AvatarUser';
+import { ICandidateDetail } from '@/types';
 
-export function CandidateDetailHeader() {
+export function CandidateDetailHeader({
+  candidateDetail,
+}: {
+  candidateDetail: ICandidateDetail | null;
+}) {
   return (
     <div className="flex gap-3 items-center mr-5">
       <AvatarUser className="size-16" />
       <div className="flex w-full justify-between">
         <div className="flex flex-col space-y-2">
-          <h3 className="font-semibold text-neutral-300 capitalize">Hoàng minh Khương</h3>
-          <span className="text-gray-400 text-sm">Backend developer</span>
+          <h3 className="font-semibold text-neutral-300 capitalize">{candidateDetail?.fullName}</h3>
+          <span className="text-gray-400 text-sm">{candidateDetail?.headline}</span>
         </div>
         <div className="flex col-span-3 items-center">
           <CustomButton className="hover:bg-transparent hover:text-red-500">

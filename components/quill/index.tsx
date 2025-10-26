@@ -28,13 +28,17 @@ const toolbarOptions = [
   ['clean'],
 ];
 
+interface Props extends ReactQuill.ReactQuillProps {
+  initValue?: string;
+}
+
 export type QuillCustomRef = {
   getValue: () => string;
   setValue: (v: string) => void;
 };
 
-const QuillCustom = forwardRef<QuillCustomRef, ReactQuill.ReactQuillProps>((props, ref) => {
-  const [value, setValue] = useState('');
+const QuillCustom = forwardRef<QuillCustomRef, Props>((props, ref) => {
+  const [value, setValue] = useState(props.initValue || '');
 
   useImperativeHandle(ref, () => ({
     getValue: () => value,
