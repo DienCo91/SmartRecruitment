@@ -67,10 +67,10 @@ const DashBoardOverView = () => {
             style={{ backgroundColor: item.color }}
           >
             <div>
-              <h1 className="text-[24px] font-bold">{item.value}</h1>
-              <span className="font-[400] text-[18px] ">{item.title}</span>
+              <h1 className="text-[20px] font-bold">{item.value}</h1>
+              <span className="font-[400] text-[16px] ">{item.title}</span>
             </div>
-            <div className="bg-white p-[16px] rounded-md shadow-sm">{item.icon}</div>
+            <div className="bg-white p-[14px] rounded-md shadow-sm">{item.icon}</div>
           </div>
         ))}
       </div>

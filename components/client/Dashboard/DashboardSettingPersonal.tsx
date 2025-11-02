@@ -9,19 +9,67 @@ import { useForm } from 'react-hook-form';
 import z from 'zod/v3';
 import CvItem from './CvItem';
 import GlassCardBase from '../Cards/GlassCardBase';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DialogAddCV from './DialogAddCV';
+import { educations, experiences } from '@/constants/mockedData';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { RootState } from '@/lib/store';
+import { CandidateService } from '@/services/candidate.services';
+import { toast } from 'sonner';
+import { ApplicationServices } from '@/services/application.services';
 
 const formSchema = z.object({
   experience: z.string().nonempty('Experience is required'),
+  headline: z.string().nonempty('Headline is required'),
   education: z.string().nonempty('Education is required'),
-  personalWebsite: z.string().url('Invalid URL').optional(),
+  personalWebsite: z
+    .string()
+    .optional()
+    .refine(
+      val => {
+        if (!val) return true;
+        try {
+          const url = val.startsWith('http') ? val : `https://${val}`;
+          new URL(url);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      { message: 'Invalid URL' }
+    ),
+  fullName: z.string().min(2, 'Họ tên ít nhất 3 ký tự'),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
+export interface ICvItem {
+  title: string;
+  size: number;
+  id: string;
+}
+
 const DashboardSettingPersonal = () => {
+  const dispatch = useAppDispatch();
   const [isShowDialogAddCV, setIsShowDialogAddCV] = useState<boolean>(false);
+  const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
+  const [listCv, setListCv] = useState<ICvItem[]>([]);
+
+  const getMyCV = async () => {
+    try {
+      const res = await ApplicationServices.getMyCV();
+      setListCv(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      getMyCV();
+    }
+  }, [currentUser]);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -29,11 +77,31 @@ const DashboardSettingPersonal = () => {
       experience: '',
       education: '',
       personalWebsite: '',
+      headline: '',
+      fullName: '',
     },
   });
 
   const onSubmit = async (data: FormData) => {
-    console.log('data', data);
+    try {
+      dispatch(setLoading(true));
+      const res = await CandidateService.updateBasicInfo({
+        headline: data.headline,
+        experienceLevel: data.experience,
+        educationLevel: data.education,
+        personalWebsite: data.personalWebsite,
+        fullName: data.fullName,
+      });
+      toast.success('Update basic info successfully');
+      console.log('res', res);
+    } catch (error) {
+      console.log(error);
+      toast.error('Update basic info failed');
+    } finally {
+      dispatch(setLoading(false));
+
+      console.log('done');
+    }
   };
 
   return (
@@ -41,34 +109,47 @@ const DashboardSettingPersonal = () => {
       <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">Basic Information</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {currentUser?.role === 'CANDIDATE' && (
+            <TextField
+              label="Full Name"
+              placeholder="Họ và tên"
+              control={form.control}
+              name="fullName"
+              className="bg-transparent"
+              classNameLabel="!text-white"
+              isActiveBorderRedError
+            />
+          )}
+          <TextField
+            control={form.control}
+            label="Title/headline"
+            name="headline"
+            placeholder="Title/headline..."
+            className="bg-transparent"
+            classNameLabel="!text-white"
+            isActiveBorderRedError
+          />
           <div className="grid grid-cols-2 gap-[16px]">
             <SelectField
+              value={form.getValues('experience')}
               name="experience"
               label="Experience"
-              options={[
-                { value: '<1', label: '< 1 year' },
-                { value: '1-3', label: '1-3 year' },
-                { value: '3-5', label: '3-5 year' },
-                { value: '>5', label: '> 5 year' },
-              ]}
+              options={experiences}
               register={form.register}
               setValue={form.setValue}
               error={form.formState.errors.experience}
             />
             <SelectField
+              value={form.getValues('education')}
               name="education"
               label="Education"
-              options={[
-                { value: 'highschool', label: 'High School' },
-                { value: 'bachelor', label: "Bachelor's Degree" },
-                { value: 'master', label: "Master's Degree" },
-                { value: 'phd', label: 'PhD' },
-              ]}
+              options={educations}
               register={form.register}
               setValue={form.setValue}
               error={form.formState.errors.education}
             />
           </div>
+
           <TextField
             control={form.control}
             label="Personal Website"
@@ -87,8 +168,8 @@ const DashboardSettingPersonal = () => {
       </Form>
       <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">Your Cv/Resume</h1>
       <div className="grid grid-cols-2 2xl:grid-cols-3 gap-[16px]">
-        {Array.from({ length: 3 }, (_, i) => (
-          <CvItem key={i} size="3.5 MB" title="My Resume" />
+        {listCv.map(item => (
+          <CvItem key={item.id} size={`${(item?.size).toFixed(2)} MB`} title={item.title} />
         ))}
         <GlassCardBase className="flex flex-row items-center justify-between">
           <div
@@ -103,7 +184,11 @@ const DashboardSettingPersonal = () => {
           </div>
         </GlassCardBase>
       </div>
-      <DialogAddCV isShow={isShowDialogAddCV} setIsShow={setIsShowDialogAddCV} />
+      <DialogAddCV
+        isShow={isShowDialogAddCV}
+        setIsShow={setIsShowDialogAddCV}
+        setListCv={setListCv}
+      />
     </div>
   );
 };

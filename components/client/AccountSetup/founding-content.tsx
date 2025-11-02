@@ -9,9 +9,11 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod/v3';
 import ButtonAccountSetup from './button-account-setup';
+import { DataSubmitFormProps } from './AccountSetupTabView';
+import { COMPANY_SIZE, INDUSTRY_TYPE, ORGANIZATION_TYPE } from '@/constants/company';
 
 interface IFoundingContent {
-  goToNext: () => void;
+  goToNext: (values?: Partial<DataSubmitFormProps>) => void;
   goToPrev: () => void;
 }
 
@@ -19,7 +21,9 @@ const formSchema = z.object({
   organizationType: z.string().min(1, 'Organization Type is required'),
   industryTypes: z.string().min(1, 'Industry Type is required'),
   teamSize: z.string().min(1, 'Team Size is required'),
-  yearOfEstablishment: z.string().min(1, 'Year of Establishment is required'),
+  yearOfEstablishment: z.coerce.date({
+    required_error: 'Year of establishment is required',
+  }),
   companyWebsite: z.string().url('Invalid URL').optional(),
 });
 
@@ -32,6 +36,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -39,15 +44,21 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
       organizationType: '',
       industryTypes: '',
       teamSize: '',
-      yearOfEstablishment: '',
+      yearOfEstablishment: new Date(),
       companyWebsite: '',
     },
   });
 
   const onSubmit = (data: FormData) => {
     if (editorRef.current?.getValue() && editorRef.current.getValue().length > 20) {
-      console.log('🚀 ~ onSubmit ~ data:', data);
-      goToNext();
+      goToNext({
+        organizationType: data.organizationType,
+        industryTypes: data.industryTypes,
+        teamSize: data.teamSize,
+        yearOfEstablishment: data.yearOfEstablishment.getFullYear(),
+        companyWebsite: data.companyWebsite,
+        companyVision: editorRef.current?.getValue(),
+      });
     } else {
       return toast.error('Description must be at least 20 characters');
     }
@@ -59,38 +70,29 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
         <SelectField
           name="organizationType"
           label="Organization Type"
-          options={[
-            { value: 'non-profit', label: 'Non-Profit' },
-            { value: 'startup', label: 'Startup' },
-            { value: 'corporation', label: 'Corporation' },
-          ]}
+          options={ORGANIZATION_TYPE}
           register={register}
           setValue={setValue}
+          value={watch('organizationType')}
           error={errors.organizationType}
         />
 
         <SelectField
           name="industryTypes"
           label="Industry Types"
-          options={[
-            { value: 'tech', label: 'Technology' },
-            { value: 'healthcare', label: 'Healthcare' },
-            { value: 'finance', label: 'Finance' },
-          ]}
+          options={INDUSTRY_TYPE}
           register={register}
           setValue={setValue}
+          value={watch('industryTypes')}
           error={errors.industryTypes}
         />
 
         <SelectField
           name="teamSize"
           label="Team Size"
-          options={[
-            { value: '1-10', label: '1-10' },
-            { value: '11-50', label: '11-50' },
-            { value: '51-200', label: '51-200' },
-          ]}
+          options={COMPANY_SIZE}
           register={register}
+          value={watch('teamSize')}
           setValue={setValue}
           error={errors.teamSize}
         />

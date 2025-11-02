@@ -32,3 +32,19 @@ export interface Job {
   // thêm trường
   slug: string;
 }
+
+export interface CreateJob {
+  title: string;
+  description: string;
+  responsibilities: string;
+  categoryIds?: number[];
+  tagIds?: number[];
+  minSalary: number;
+  maxSalary: number;
+  salaryType: string;
+  educationLevel: string;
+  experienceLevel: string;
+  jobType: string;
+  expirationDate: Date;
+  vacancies: number;
+}

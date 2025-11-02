@@ -4,11 +4,14 @@ import { DatePickerField } from '@/components/hookFormCustom/DatePickerField';
 import { SelectField } from '@/components/hookFormCustom/SelectField';
 import QuillCustom, { QuillCustomRef } from '@/components/quill';
 import { Button } from '@/components/ui/button';
-import CountrySelect from '@/components/ui/country-select';
 import { Form } from '@/components/ui/form';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { CandidateService } from '@/services/candidate.services';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z from 'zod/v3';
 
 const formSchema = z.object({
@@ -20,6 +23,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const DashboardProfile = () => {
+  const dispatch = useAppDispatch();
   const editorRef = useRef<QuillCustomRef>(null);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -30,7 +34,24 @@ const DashboardProfile = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    console.log('data', data, editorRef.current?.getValue());
+    try {
+      dispatch(setLoading(true));
+      const res = await CandidateService.updateDetailInfo({
+        biography: editorRef.current?.getValue() || '',
+        dateOfBirth: data.dateOfBirth,
+        gender: data.gender,
+        nationality: data.nationality.toUpperCase(),
+      });
+      toast.success('Update detail info successfully');
+      console.log('res', res);
+    } catch (error) {
+      toast.error('Update detail info failed');
+      console.log(error);
+    } finally {
+      dispatch(setLoading(false));
+
+      console.log('done');
+    }
   };
 
   return (
@@ -56,10 +77,11 @@ const DashboardProfile = () => {
           <SelectField
             name="gender"
             label="Gender"
+            value={form.getValues('gender')}
             options={[
-              { value: 'male', label: 'Male' },
-              { value: 'female', label: 'Female' },
-              { value: 'other', label: 'Other' },
+              { value: 'MALE', label: 'Male' },
+              { value: 'FEMALE', label: 'Female' },
+              { value: 'OTHERS', label: 'Others' },
             ]}
             register={form.register}
             setValue={form.setValue}

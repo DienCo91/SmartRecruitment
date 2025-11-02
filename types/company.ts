@@ -1,4 +1,6 @@
 import { OrganizationType, TeamSize } from '@/constants';
+import { OSMAddress } from './osm';
+import { Location } from './candidate';
 
 export interface Company {
   id: number;
@@ -19,4 +21,39 @@ export interface Company {
   // is_deleted (BOOLEAN): Cờ xóa mềm (mặc định false).
   // created_date (DATETIME): Thời điểm tạo.
   // last_modified_date (DATETIME): Thời điểm cập nhật cuối.
+}
+
+export interface IPlace {
+  address: string;
+  display_name: string;
+  lat: number;
+  lng: number;
+  osm_id: number;
+  address_detail: OSMAddress;
+}
+
+export interface CompanyItem {
+  id: number;
+  logoUrl: string;
+  name: string;
+  location: Location;
+  numberOfJobs: number;
+}
+
+export interface CompanyDetail {
+  name: string;
+  description: string;
+  logoUrl: string;
+  bannerUrl: string;
+  organizationType: string;
+  industryType: string;
+  teamSize: string;
+  website: string;
+  foundedIn: number;
+  companyVision: string;
+  socialLinks: { platformName: string; url: string }[];
+  location: Location;
+  email: string;
+  phone: string;
+  isFavorite: boolean;
 }

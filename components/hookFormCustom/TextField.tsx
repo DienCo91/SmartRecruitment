@@ -93,7 +93,7 @@ const TextField = <T extends FieldValues>({
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               ) : (
-                endIcon && <span className="absolute right-2 text-gray-400">{endIcon}</span>
+                (endIcon ?? <span className="absolute right-2 text-gray-400">{endIcon}</span>)
               )}
             </div>
             <FormMessage />

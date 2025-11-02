@@ -17,7 +17,7 @@ export const Router = {
   },
   FIND_COMPANY: {
     LIST: '/company',
-    DETAIL: (id: string) => `/company/${id}`,
+    DETAIL: (id: number) => `/company/${id}`,
   },
   FORGOT_PASSWORD: '/forgot-password',
   BLOGS: '/blogs',
@@ -83,4 +83,5 @@ export const ROUTER_EMPLOYER = [
   Router.VERIFY_EMAIL,
   Router.CHATTING,
   Router.BLOG,
+  Router.CONGRATULATIONS,
 ];

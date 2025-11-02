@@ -58,13 +58,14 @@ const ListJob = () => {
 
   return (
     <div className="mt-[30px] hover:translate-y-[0px] ">
-      <GlassCardBase className="text-white font-bold text-[20px] mb-[20px]">Jobs</GlassCardBase>
+      <GlassCardBase className="text-white font-bold text-[20px] mb-[20px]">Việc Làm</GlassCardBase>
       <div
         id="scrollableDiv"
-        className="overflow-auto mb-[20px] "
+        className="overflow-auto mb-[20px]"
         style={{ height: 'calc(100vh - 240px)' }}
       >
         <InfiniteScroll
+          className="pt-[8px]"
           dataLength={items.length}
           next={fetchMoreData}
           scrollableTarget="scrollableDiv"

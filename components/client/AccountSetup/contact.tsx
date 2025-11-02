@@ -2,17 +2,18 @@
 import { Input } from '@/components/ui/input';
 import LocationInputOSM from '@/components/ui/location-input-OSM';
 import { PhoneInput } from '@/components/ui/phone-input';
-import { OSMAddress } from '@/types';
+import { IPlace, OSMAddress } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { IoMdMail } from 'react-icons/io';
 import { z } from 'zod/v3';
+import { DataSubmitFormProps } from './AccountSetupTabView';
 import ButtonAccountSetup from './button-account-setup';
-import { useRouter } from 'next/navigation';
-import { Router } from '@/constants';
+import { useState } from 'react';
 
 interface IContact {
   goToPrev: () => void;
+  goToNext: (values?: Partial<DataSubmitFormProps>) => void;
 }
 
 const contactSchema = z.object({
@@ -28,8 +29,7 @@ const contactSchema = z.object({
 
 type FormValues = z.infer<typeof contactSchema>;
 
-const Contact: React.FC<IContact> = ({ goToPrev }) => {
-  const router = useRouter();
+const Contact: React.FC<IContact> = ({ goToPrev, goToNext }) => {
   const {
     control,
     handleSubmit,
@@ -39,6 +39,8 @@ const Contact: React.FC<IContact> = ({ goToPrev }) => {
     defaultValues: { location: '', phoneNumber: '', email: '' },
   });
 
+  const [place, setPlace] = useState<IPlace | null>(null);
+
   const handleLocationSelect = (place: {
     address: string;
     display_name: string;
@@ -47,12 +49,20 @@ const Contact: React.FC<IContact> = ({ goToPrev }) => {
     osm_id: number;
     address_detail: OSMAddress;
   }) => {
-    console.log('📍 Selected Place (OSM):', place);
+    setPlace(place);
   };
 
   const handleSubmitForm = (data: FormValues) => {
-    console.log(data);
-    router.push(Router.CONGRATULATIONS);
+    goToNext({
+      ...data,
+      location: {
+        commune: place?.address_detail?.suburb ?? '',
+        provinceCity: place?.address_detail?.city ?? '',
+        country: place?.address_detail?.country ?? '',
+        latitude: place?.lat ?? 0,
+        longitude: place?.lng ?? 0,
+      },
+    });
   };
 
   return (

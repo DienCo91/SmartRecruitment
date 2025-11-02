@@ -1,31 +1,41 @@
 'use client';
 
-import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, Users, Globe, AtSign } from 'lucide-react';
 import { useProgressAccountSetup } from '@/contexts';
+import { setLoading } from '@/lib/features/common/commonSlice';
 import { cn } from '@/lib/utils';
+import { EmployerService } from '@/services/employer.services';
+import { Location } from '@/types';
+import { AtSign, Globe, User, Users } from 'lucide-react';
+import React, { use, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'sonner';
 import CompanyInfo from './company-infor';
+import Contact from './contact';
 import FoundingContent from './founding-content';
 import SocialMediaProfile from './social-media-profile';
-import Contact from './contact';
+import { da } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
+import { Router } from '@/constants';
 
-interface DataSubmitFormProps {
+export interface DataSubmitFormProps {
   nameCompany: string;
+  description: string;
   logo: File;
   banner: File;
   organizationType: string;
   industryTypes: string;
   teamSize: string;
-  yearOfEstablishment: string;
+  yearOfEstablishment: number;
   companyWebsite: string;
   socialLinks: {
-    platform: string;
+    platformName: string;
     url: string;
   }[];
-  location: string;
+  location: Location | null;
   phoneNumber: string;
   email: string;
+  companyVision: string;
 }
 
 const tabs = [
@@ -44,24 +54,75 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
   classNameTabList,
   classNameTabTrigger,
 }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<string>(tabs[0].value);
   const { setProgress } = useProgressAccountSetup();
   const [dataSubmitForm, setDataSubmitForm] = useState<DataSubmitFormProps>({
     nameCompany: '',
+    description: '',
     logo: new File([], ''),
     banner: new File([], ''),
     organizationType: '',
     industryTypes: '',
     teamSize: '',
-    yearOfEstablishment: '',
+    yearOfEstablishment: new Date().getFullYear(),
     companyWebsite: '',
     socialLinks: [],
-    location: '',
+    location: null,
     phoneNumber: '',
     email: '',
+    companyVision: '',
   });
 
   const currentIndex = tabs.findIndex(tab => tab.value === activeTab);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    dispatch(setLoading(true));
+    try {
+      const res = await EmployerService.getMyCompany();
+      console.log('res', res);
+    } catch (error) {
+      console.log('error', error);
+      toast.error('Get my company failed');
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const handleSubmit = async (data: DataSubmitFormProps) => {
+    try {
+      dispatch(setLoading(true));
+      await EmployerService.updateCompanyInfo(
+        {
+          name: data.nameCompany,
+          description: data.description,
+          email: data.email,
+          industryType: data.industryTypes,
+          location: data.location,
+          organizationType: data.organizationType,
+          phone: data.phoneNumber,
+          teamSize: data.teamSize,
+          website: data.companyWebsite,
+          companyVision: data.companyVision,
+          foundedIn: data.yearOfEstablishment,
+          socialLinks: [...data.socialLinks],
+        },
+        data.logo,
+        data.banner
+      );
+      router.push(Router.CONGRATULATIONS);
+    } catch (error) {
+      console.log('error', error);
+      toast.error('Update social links failed');
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   const goToNext = (values?: Partial<DataSubmitFormProps>) => {
     if (values) {
@@ -74,7 +135,7 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
       setProgress(((currentIndex + 1) * 100) / tabs.length);
       window.scrollTo(0, 0);
     } else {
-      console.log('Final submit:', { ...dataSubmitForm, ...values });
+      handleSubmit({ ...dataSubmitForm, ...values });
     }
   };
 
@@ -128,7 +189,7 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
         <SocialMediaProfile goToNext={goToNext} goToPrev={goToPrev} />
       </TabsContent>
       <TabsContent forceMount value="contact" className="data-[state=inactive]:hidden">
-        <Contact goToPrev={goToPrev} />
+        <Contact goToNext={goToNext} goToPrev={goToPrev} />
       </TabsContent>
     </Tabs>
   );

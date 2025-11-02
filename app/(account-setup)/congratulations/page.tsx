@@ -3,6 +3,8 @@ import { CheckCheck } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useProgressAccountSetup } from '@/contexts';
 import ButtonAccountSetup from '@/components/client/AccountSetup/button-account-setup';
+import Link from 'next/link';
+import { Router } from '@/constants';
 
 const Congratulations = () => {
   const { setProgress } = useProgressAccountSetup();
@@ -21,8 +23,12 @@ const Congratulations = () => {
         🎉 Congratulations, You profile is 100% complete!
       </h1>
       <div className="mt-[32px]">
-        <ButtonAccountSetup title="View Dashboard" className=" mr-[16px]" isPrevious />
-        <ButtonAccountSetup title="Post Job" />
+        <Link href={Router.DASHBOARD.OVERVIEW}>
+          <ButtonAccountSetup title="View Dashboard" className=" mr-[16px]" isPrevious />
+        </Link>
+        <Link href={Router.DASHBOARD.POST_A_JOB}>
+          <ButtonAccountSetup title="Post Job" />
+        </Link>
       </div>
     </div>
   );

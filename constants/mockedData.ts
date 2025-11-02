@@ -150,14 +150,20 @@ export const categories = [
 ];
 
 export const experiences = [
-  { id: 1, value: 'underOneYear', label: 'Fresher' },
-  { id: 2, value: '1-2Year', label: '1-2 Năm' },
-  { id: 3, value: '2-4Year', label: '2-4 Năm' },
-  { id: 4, value: '4-6Year', label: '4-6 Năm' },
-  { id: 5, value: '6-8Year', label: '6-8 Năm' },
-  { id: 6, value: '8-10Year', label: '8-10 Năm' },
-  { id: 7, value: '10-15Year', label: '10-15 Năm' },
-  { id: 8, value: '15+Year', label: '15+ Năm' },
+  { id: 1, value: 'FRESHER', label: 'Fresher' },
+  { id: 2, value: 'ONE_TO_TWO_YEARS', label: '1-2 Years' },
+  { id: 3, value: 'TWO_TO_FOUR_YEARS', label: '2-4 Years' },
+  { id: 4, value: 'FOUR_TO_SIX_YEARS', label: '4-6 Years' },
+  { id: 5, value: 'SIX_TO_TEN_YEARS', label: '6-10 Years' },
+  { id: 6, value: 'TEN_PLUS_YEARS', label: '10+ Years' },
+];
+
+export const educations = [
+  { value: 'HIGH_SCHOOL', label: 'High School' },
+  { value: 'INTERMEDIATE', label: 'Intermediate' },
+  { value: 'BACHELOR_DEGREE', label: 'Bachelor Degree' },
+  { value: 'MASTER_DEGREE', label: 'Master Degree' },
+  { value: 'DOCTORATE', label: 'Doctorate' },
 ];
 
 export const salaries = [
@@ -178,14 +184,6 @@ export const jobTypes = [
   { id: 'internship', value: 'internship', label: 'Internship' },
   { id: 'remote', value: 'remote', label: 'Remote' },
   { id: 'temporary', value: 'temporary', label: 'Temporary' },
-];
-
-export const educations = [
-  { id: 'all', value: 'all', label: 'All' },
-  { id: 'highSchool', value: 'highSchool', label: 'High School' },
-  { id: 'intermediate', value: 'intermediate', label: 'Intermediate' },
-  { id: 'graduation', value: 'graduation', label: 'Graduation' },
-  { id: 'masterDegree', value: 'masterDegree', label: 'Master Degree' },
 ];
 
 export const jobLevels = [

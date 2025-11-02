@@ -21,10 +21,6 @@ const CvItem: React.FC<ICvItem> = ({ title, size }) => {
 
   const handleDelete = () => {};
 
-  const handleEdit = () => {
-    console.log('Edit clicked');
-  };
-
   return (
     <GlassCardBase className="flex flex-row items-center justify-between">
       <div className="flex items-center gap-3">
@@ -49,16 +45,6 @@ const CvItem: React.FC<ICvItem> = ({ title, size }) => {
             className="z-50 w-40 rounded-md bg-white shadow-md overflow-hidden cursor-pointer"
           >
             <DropdownMenu.Item
-              onSelect={handleEdit}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
-                         hover:bg-blue-100 hover:text-blue-700 
-                         focus:outline-none focus:ring-0"
-            >
-              <Pencil className="w-4 h-4" />
-              <span>Edit Resume</span>
-            </DropdownMenu.Item>
-
-            <DropdownMenu.Item
               onSelect={() => setIsShowDialog(true)}
               className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 
                          hover:bg-red-100 hover:text-red-700 
@@ -73,7 +59,7 @@ const CvItem: React.FC<ICvItem> = ({ title, size }) => {
 
       {isShowDialog && (
         <GlassDialog
-          size="xl"
+          size="sm"
           open
           onClose={onCloseDialog}
           title={<DashboardConfirmDeleteHeader />}

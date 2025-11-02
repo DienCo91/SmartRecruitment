@@ -1,4 +1,7 @@
-import { auth } from '@/lib/firebase';
+import { Router } from '@/constants';
+import { setCurrentUser } from '@/lib/features/auth/authSlice';
+import { auth, authReady } from '@/lib/firebase';
+import { store } from '@/lib/store';
 import axios from 'axios';
 
 const http = axios.create({
@@ -17,13 +20,14 @@ declare module 'axios' {
 //handle request
 http.interceptors.request.use(
   async config => {
-    if (!config.skipAuth) {
-      const user = auth.currentUser;
-      if (user) {
-        const token = await user.getIdToken();
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    await authReady;
+
+    const user = auth.currentUser;
+    if (user && !config.skipAuth) {
+      const token = await user.getIdToken();
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   error => Promise.reject(error)
@@ -44,8 +48,13 @@ http.interceptors.response.use(
           originalRequest.headers['Authorization'] = `Bearer ${token}`;
           return http(originalRequest);
         }
+        throw new Error('Refresh token failed');
       } catch (err) {
         console.error('Refresh token failed:', err);
+        store.dispatch(setCurrentUser(null));
+        if (typeof window !== 'undefined') {
+          window.location.href = Router.AUTH.LOGIN;
+        }
       }
     }
 

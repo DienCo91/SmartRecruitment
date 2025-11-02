@@ -2,14 +2,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Router } from '@/constants';
 import { useLogout } from '@/hooks/useLogout';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
-import { BookMarkedIcon, FileUserIcon, LogOutIcon, SquareUserIcon } from 'lucide-react';
+import { LogOutIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AvatarUser } from './AvatarUser';
 

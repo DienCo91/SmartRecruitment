@@ -1,29 +1,21 @@
 import { GlassCard } from '@/components/client/Cards/GlassCard';
+import { CompanyDetail } from '@/types';
+import { getIconSocialLink } from '@/utils/common';
 import Link from 'next/link';
 import React from 'react';
-import { FaFacebookF, FaInstagram, FaYoutube } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
 
-const FOLLOW_SOCIAL = [
-  {
-    href: '',
-    icon: <FaFacebookF size={24} color="#3b5998" />,
-  },
-  {
-    href: '',
-    icon: <FaXTwitter size={24} color="black" />,
-  },
-  {
-    href: '',
-    icon: <FaInstagram size={24} color="#d62976" />,
-  },
-  {
-    href: '',
-    icon: <FaYoutube size={24} color="red" />,
-  },
-];
+interface ICompanyDetailFollow {
+  company: CompanyDetail;
+}
 
-const CompanyDetailFollow = () => {
+const CompanyDetailFollow: React.FC<ICompanyDetailFollow> = ({ company }) => {
+  const FOLLOW_SOCIAL = company.socialLinks.map(item => {
+    return {
+      href: item.url,
+      icon: getIconSocialLink(item.platformName),
+    };
+  });
+
   return (
     <GlassCard title="Theo dõi chúng tôi" action>
       <div className="flex gap-6">

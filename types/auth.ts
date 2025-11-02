@@ -5,3 +5,14 @@ export interface IRegister {
   role: string;
   password: string;
 }
+
+export interface ISettingCandidate {
+  experience?: string;
+  education?: string;
+  personalWebsite?: string;
+  nationality?: string;
+  gender?: string;
+  socialLinks?: { platform: string; url: string }[];
+  location?: string;
+  phoneNumber?: string;
+}
