@@ -68,6 +68,7 @@ Hơn 100 giải thưởng trong ngành CNTT trong nước và quốc tế',
 
 // Data cứng
 export const locations: TOptions[] = [
+  { value: 'all', label: 'Tất cả' },
   { value: 'an_giang', label: 'An Giang' },
   { value: 'ba_ria_vung_tau', label: 'Bà Rịa - Vũng Tàu' },
   { value: 'bac_giang', label: 'Bắc Giang' },

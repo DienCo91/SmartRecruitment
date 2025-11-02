@@ -9,11 +9,15 @@ import ContentCompanyDetail from '@/components/client/FindCompany/ContentCompany
 import { Button } from '@/components/ui/button';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { cn } from '@/lib/utils';
+import { CandidateService } from '@/services/candidate.services';
 import { CompanyService } from '@/services/company.services';
 import type { CompanyDetail } from '@/types';
+import { CircleX, Divide, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { FaArrowRight, FaYoutube } from 'react-icons/fa';
+import { toast } from 'sonner';
 
 const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
   const dispatch = useAppDispatch();
@@ -38,7 +42,23 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
     if (id) getCompanyDetail();
   }, [id]);
 
-  if (!company || loading) return;
+  const handleToggleFollowCompany = async () => {
+    try {
+      dispatch(setLoading(true));
+      if (company?.isFavorite) {
+        await CandidateService.unfollowCompany(id);
+      } else await CandidateService.followCompany(id);
+
+      setCompany(prev => (prev ? { ...prev, isFavorite: !company?.isFavorite } : null));
+      toast.success(`${company?.isFavorite ? 'Unfollow' : 'Follow'} company successfully!`);
+    } catch (error) {
+      console.error('Error following company:', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  if (!company) return;
 
   return (
     <div className="w-full scroll-smooth">
@@ -56,15 +76,29 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
           </div>
         }
         action={
-          <Button
-            asChild
-            className="flex bg-[#c5defb] text-blue-primary hover:bg-blue-primary hover:text-white"
-          >
-            <Link href={'#open-position'}>
-              <span className="mr-[12px]">View Open Position</span>
-              <FaArrowRight />
-            </Link>
-          </Button>
+          <div className="flex space-x-[16px]">
+            <Button
+              className={cn(
+                'flex bg-blue-primary hover:bg-white text-white hover:text-blue-primary cursor-pointer ',
+                company.isFavorite && 'bg-red-500 hover:bg-red-400 hover:text-white'
+              )}
+              onClick={handleToggleFollowCompany}
+            >
+              <>
+                <span className="mr-[12px]">{company.isFavorite ? 'Unfollow' : 'Follow'}</span>
+                {company.isFavorite ? <CircleX size={16} /> : <Plus size={16} />}
+              </>
+            </Button>
+            <Button
+              asChild
+              className="flex bg-[#c5defb] text-blue-primary hover:bg-blue-primary hover:text-white"
+            >
+              <Link href={'#open-position'}>
+                <span className="mr-[12px]">View Open Position</span>
+                <FaArrowRight />
+              </Link>
+            </Button>
+          </div>
         }
       >
         <div className="grid grid-cols-12 gap-3">
