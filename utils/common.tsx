@@ -1,3 +1,4 @@
+import { locations } from '@/constants/mockedData';
 import {
   FaGithub,
   FaGitlab,
@@ -37,4 +38,9 @@ export const getIconSocialLink = (platform: string) => {
     default:
       return null;
   }
+};
+
+export const getLabelLocationByValue = (value: string) => {
+  if (value === 'all') return;
+  return locations.find(item => item.value === value)?.label;
 };

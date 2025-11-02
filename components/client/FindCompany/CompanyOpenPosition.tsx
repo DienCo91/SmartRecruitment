@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { IMAGE_BLUR, IMAGE_EMPTY, Router } from '@/constants';
 import { CompanyItem } from '@/types';
-import { BriefcaseBusinessIcon } from 'lucide-react';
+import { BriefcaseBusinessIcon, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowRight } from 'react-icons/fa';

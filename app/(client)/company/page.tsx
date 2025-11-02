@@ -8,6 +8,7 @@ import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { CompanyService } from '@/services/company.services';
 import { CompanyItem } from '@/types';
+import { getLabelLocationByValue } from '@/utils/common';
 import { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -68,6 +69,7 @@ const Company = () => {
     const dataFilterSideBar = refFilterCompany.current?.getFilters();
     getCompany(1, {
       ...data,
+      location: data?.location ? getLabelLocationByValue(data?.location) : '',
       industryTypes: dataFilterSideBar?.industryType,
       organizationTypes: dataFilterSideBar?.organizationType,
       teamSizes: dataFilterSideBar?.teamSize,

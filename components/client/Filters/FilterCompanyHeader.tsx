@@ -46,7 +46,7 @@ export function FilterCompanyHeader({ handleSubmit }: IFilterCompanyHeader) {
       <Button
         className="bg-blue-900 hover:bg-blue-800 hover:text-neutral-100 text-neutral-300 rounded-l-none h-full rounded-r-sm"
         onClick={() => {
-          if (handleSubmit) handleSubmit(filters);
+          if (typeof handleSubmit === 'function') handleSubmit(filters);
         }}
       >
         Find Company

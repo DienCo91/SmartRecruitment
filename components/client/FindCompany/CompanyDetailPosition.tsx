@@ -1,5 +1,7 @@
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { JobCardMini } from '@/components/client/Jobs/JobCardMini';
+import { Router } from '@/constants';
+import Link from 'next/link';
 
 const CompanyDetailPosition = () => {
   return (
@@ -12,7 +14,14 @@ const CompanyDetailPosition = () => {
       >
         <div className=" grid grid-cols-2 lg:grid-cols-3 gap-[16px]">
           {Array.from({ length: 10 }, (_, i) => (
-            <JobCardMini key={i} />
+            <Link
+              href={Router.JOB.DETAIL(
+                'chuyen-vien-kinh-doanh-giai-phap-thanh-toan-tu-van-tin-dung-doanh-nghiep'
+              )}
+              key={i}
+            >
+              <JobCardMini />
+            </Link>
           ))}
         </div>
       </GlassCard>
