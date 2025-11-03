@@ -1,47 +1,47 @@
-import { Job } from '@/types';
+import { Job, JobDetail } from '@/types';
 import { AvatarCompany } from '../Avatar/AvatarUser';
 import { Badge } from '@/components/ui/badge';
 import { LinkIcon, MailIcon, PhoneIcon } from 'lucide-react';
 import Link from 'next/link';
 import { jobType } from '@/constants';
+import { getLabelJobType } from '@/utils';
 
-export function JobHeader({
-  company,
-  title,
-  is_featured,
-  job_type,
-}: Pick<Job, 'company' | 'title' | 'is_featured' | 'job_type'>) {
+export function JobHeader({ job }: { job: JobDetail }) {
   return (
     <div className="flex items-center gap-2">
-      <AvatarCompany className="size-18" src={company.logo_url} />
+      <AvatarCompany className="size-18" src={job.company.logoUrl} />
       <div className="flex flex-col">
         <div className="flex gap-2 items-center">
           <p id="title-job" className="font-semibold text-lg">
-            {title}
+            {job.title}
           </p>
-          {is_featured && (
+          {/* {is_featured && (
             <Badge className="rounded-full text-red-700 bg-red-100 capitalize">featured</Badge>
-          )}
+          )} */}
           <Badge className="rounded-full text-blue-700 bg-blue-100 capitalize">
-            {jobType[job_type]}
+            {getLabelJobType(job.jobType)}
           </Badge>
         </div>
 
         <div className="flex gap-5 items-center mt-3">
           <p className="flex gap-2 items-center">
             <LinkIcon size={14} />
-            <Link target="_blank" href={company.website} className="text-sm font-normal">
-              {company.website}
+            <Link target="_blank" href={job.company.website} className="text-sm font-normal">
+              {job.company.website}
             </Link>
           </p>
           <p className="flex gap-2 items-center">
             <PhoneIcon size={14} />
-            <span className="text-sm font-normal">{company.phone}</span>
+            <span className="text-sm font-normal">{job.company.phone}</span>
           </p>
           <p className="flex gap-2 items-center">
             <MailIcon size={14} />
-            <Link target="_blank" href={`mailto:${company.email}`} className="text-sm font-normal">
-              {company.email}
+            <Link
+              target="_blank"
+              href={`mailto:${job.company.email}`}
+              className="text-sm font-normal"
+            >
+              {job.company.email}
             </Link>
           </p>
         </div>

@@ -6,25 +6,18 @@ import { CustomInput } from '@/components/Inputs/CustomInput';
 import { CustomPopover } from '@/components/Popovers/CustomPopover';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import {
-  categories,
-  educations,
-  experiences,
-  jobLevels,
-  jobTypes,
-  locations,
-  salaries,
-} from '@/constants/mockedData';
+import { categories, educations, experiences, locations, salaries } from '@/constants/mockedData';
 import { ChevronDownIcon, LayersIcon, ListFilterIcon, MapPinIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { CustomCheckboxGroup } from '../CheckboxGroup/CustomCheckboxGroup';
 import { CustomRadioGroup } from '../RadioGroup/CustomRadioGroup';
+import { JOB_TYPE } from '@/constants/company';
 
 interface IFilterJob {
   handleSubmit?: (value: IFilter) => void;
 }
 
-interface IFilter {
+export interface IFilter {
   search: string;
   location: null;
   categories: null;
@@ -32,7 +25,6 @@ interface IFilter {
   salary: string;
   jobType: string[];
   education: string[];
-  jobLevel: string;
 }
 
 export function FilterJob({ handleSubmit }: IFilterJob) {
@@ -40,11 +32,10 @@ export function FilterJob({ handleSubmit }: IFilterJob) {
     search: '',
     location: null,
     categories: null,
-    exp: 'underOneYear',
-    salary: '$50-$1000',
-    jobType: ['all'],
-    education: ['all'],
-    jobLevel: 'entryLevel',
+    exp: '',
+    salary: '',
+    jobType: [''],
+    education: [''],
   };
 
   type Filter = typeof initFilter;
@@ -118,7 +109,7 @@ export function FilterJob({ handleSubmit }: IFilterJob) {
             <span className="text-sm">Loại công việc</span>
             <Separator className="my-2" />
             <CustomCheckboxGroup
-              options={jobTypes}
+              options={JOB_TYPE}
               values={filters.jobType}
               onCheckedValues={vals => handleFilter('jobType', vals)}
             />
@@ -131,16 +122,6 @@ export function FilterJob({ handleSubmit }: IFilterJob) {
               options={educations}
               values={filters.education}
               onCheckedValues={vals => handleFilter('education', vals)}
-            />
-          </div>
-
-          <div className="">
-            <span className="text-sm">Level công việc</span>
-            <Separator className="my-2" />
-            <CustomRadioGroup
-              options={jobLevels}
-              value={filters.jobLevel}
-              onValueChange={val => handleFilter('jobLevel', val)}
             />
           </div>
         </div>

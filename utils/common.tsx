@@ -44,3 +44,18 @@ export const getLabelLocationByValue = (value: string) => {
   if (value === 'all') return;
   return locations.find(item => item.value === value)?.label;
 };
+
+export const formatNumber = (num: number | string) => {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+};
+
+export const parseSalaryRange = (salaryString: string) => {
+  if (salaryString === 'all') return { minSalary: 0, maxSalary: null };
+
+  const numbers = salaryString.replace(/\$/g, '').split(/[-+]/).map(Number);
+
+  const minSalary = numbers[0] || 0;
+  const maxSalary = salaryString.includes('+') ? null : numbers[1] || null;
+
+  return { minSalary, maxSalary };
+};

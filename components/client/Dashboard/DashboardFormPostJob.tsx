@@ -6,6 +6,7 @@ import QuillCustom, { QuillCustomRef } from '@/components/quill';
 import { Button } from '@/components/ui/button';
 import CategorySelector from '@/components/ui/category-selector';
 import { Form } from '@/components/ui/form';
+import { JOB_TYPE } from '@/constants/company';
 import { educations, experiences } from '@/constants/mockedData';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { cn } from '@/lib/utils';
@@ -230,14 +231,7 @@ const DashboardFormPostJob = () => {
           <SelectField
             name="jobType"
             label="Job Type"
-            options={[
-              { value: 'FULL_TIME', label: 'Full Time' },
-              { value: 'PART_TIME', label: 'Part Time' },
-              { value: 'INTERNSHIP', label: 'Internship' },
-              { value: 'REMOTE', label: 'Remote' },
-              { value: 'TEMPORARY', label: 'Temporary' },
-              { value: 'CONTRACT_BASE', label: 'Contract Base' },
-            ]}
+            options={JOB_TYPE}
             value={form.watch('jobType')}
             register={form.register}
             setValue={form.setValue}

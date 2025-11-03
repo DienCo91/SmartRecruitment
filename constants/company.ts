@@ -30,3 +30,12 @@ export const COMPANY_SIZE = [
   { value: 'FIVE_HUNDRED_ONE_TO_THOUSAND', label: '501-1,000' },
   { value: 'THOUSAND_PLUS', label: '1,000+' },
 ];
+
+export const JOB_TYPE = [
+  { value: 'FULL_TIME', label: 'Full Time' },
+  { value: 'PART_TIME', label: 'Part Time' },
+  { value: 'INTERNSHIP', label: 'Internship' },
+  { value: 'REMOTE', label: 'Remote' },
+  { value: 'TEMPORARY', label: 'Temporary' },
+  { value: 'CONTRACT_BASE', label: 'Contract Base' },
+];
