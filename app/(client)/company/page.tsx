@@ -4,6 +4,7 @@ import GlassCardBase from '@/components/client/Cards/GlassCardBase';
 import FilterCompany, { FilterCompanyRef } from '@/components/client/Filters/FilterCompany';
 import { FilterCompanyHeader } from '@/components/client/Filters/FilterCompanyHeader';
 import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { CompanyService } from '@/services/company.services';
@@ -22,7 +23,6 @@ export interface TypeFilterCompanyHeader {
 }
 
 const Company = () => {
-  const dispatch = useAppDispatch();
   const refFilterCompany = useRef<FilterCompanyRef>(null);
 
   const [dataCompany, setDataCompany] = useState<CompanyItem[]>([]);
@@ -33,8 +33,6 @@ const Company = () => {
   const size = 10;
 
   const getCompany = async (pageNum = 1, filter?: TypeFilterCompanyHeader) => {
-    dispatch(setLoading(true));
-
     try {
       const res = await CompanyService.getAllCompanies({
         page: pageNum,
@@ -55,7 +53,6 @@ const Company = () => {
     } catch (error) {
       console.error('getCompany error', error);
     } finally {
-      dispatch(setLoading(false));
       setIsFirstLoad(false);
     }
   };
@@ -102,20 +99,18 @@ const Company = () => {
             </div>
           )}
 
-          {dataCompany.length > 0 && (
-            <InfiniteScroll
-              dataLength={dataCompany.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              scrollableTarget="scrollableCompany"
-              className="space-y-[16px]"
-              loader={<p className="text-center py-4 text-gray-400">Đang tải thêm...</p>}
-            >
-              {dataCompany.map((item, index) => (
-                <CompanyOpenPosition key={index} item={item} />
-              ))}
-            </InfiniteScroll>
-          )}
+          <InfiniteScroll
+            dataLength={dataCompany.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            scrollableTarget="scrollableCompany"
+            className="space-y-[16px]"
+            loader={<LoadingCircle className={`${!dataCompany.length && 'h-[40vh]'} `} />}
+          >
+            {dataCompany.map((item, index) => (
+              <CompanyOpenPosition key={index} item={item} />
+            ))}
+          </InfiniteScroll>
         </div>
       </GlassCardBase>
     </div>
