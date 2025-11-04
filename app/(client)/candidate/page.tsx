@@ -8,17 +8,13 @@ import { FilterCandidate } from '@/components/client/Filters/FilterCandidate';
 import { CustomRadioGroup } from '@/components/client/RadioGroup/CustomRadioGroup';
 import { Separator } from '@/components/ui/separator';
 import { Slider } from '@/components/ui/slider';
-import {
-  jobLevels as candidateLevel,
-  educations,
-  experiences,
-  genders,
-} from '@/constants/mockedData';
+
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import * as _ from 'lodash';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CandidateService } from '@/services/candidate.services';
+import { educations, experiences, genders } from '@/constants/mockedData';
 
 const CandidatePage = () => {
   const initFilter = {
@@ -98,7 +94,7 @@ const CandidatePage = () => {
               <Separator className="bg-gray-500 my-2" />
 
               {/* Candidate level */}
-              <CustomCollapsible
+              {/* <CustomCollapsible
                 title={
                   <div className="flex items-baseline text-sm font-medium space-x-1">
                     <span>Level ứng viên</span>
@@ -111,7 +107,7 @@ const CandidatePage = () => {
                   value={filters.candidateLevel}
                   onValueChange={val => handleFilter('candidateLevel', val)}
                 />
-              </CustomCollapsible>
+              </CustomCollapsible> */}
               <Separator className="bg-gray-500 my-2" />
 
               {/* Experiences */}

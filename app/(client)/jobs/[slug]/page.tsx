@@ -18,7 +18,7 @@ import { CandidateService } from '@/services/candidate.services';
 import { JobServices } from '@/services/job.services';
 import { JobDetail } from '@/types/job';
 import { format } from 'date-fns';
-import { ArrowRightIcon, HeartIcon } from 'lucide-react';
+import { ArrowRightIcon, CheckCheckIcon, HeartIcon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -88,13 +88,19 @@ const JobDetailPage = () => {
             >
               <HeartIcon className="size-6" fill={job.isFavorite ? 'red' : 'none'} />
             </CustomButton>
-            <CustomButton
-              onClick={() => setShowApplyJobModal(true)}
-              className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
-            >
-              Apply now
-              <ArrowRightIcon />
-            </CustomButton>
+            {job.isApplied ? (
+              <CustomButton className="bg-green-500 text-white hover:bg-green-500">
+                Applied <CheckCheckIcon />
+              </CustomButton>
+            ) : (
+              <CustomButton
+                onClick={() => setShowApplyJobModal(true)}
+                className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
+              >
+                Apply now
+                <ArrowRightIcon />
+              </CustomButton>
+            )}
           </div>
           <p className="text-sm mt-3">
             Job expired in:{' '}
@@ -122,9 +128,7 @@ const JobDetailPage = () => {
       <Separator className="my-5 bg-gray-500" />
       <RelatedJob />
 
-      {showApplyJobModal && (
-        <ApplyJobForm title={job.title} onClose={() => setShowApplyJobModal(false)} />
-      )}
+      {showApplyJobModal && <ApplyJobForm job={job} onClose={() => setShowApplyJobModal(false)} />}
     </GlassCard>
   );
 };

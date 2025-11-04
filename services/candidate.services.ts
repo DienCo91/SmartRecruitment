@@ -61,4 +61,9 @@ export const CandidateService = {
     const res = await http.delete(`${endpointPrefix}/jobs/unfollow/${jobId}`);
     return res.data;
   },
+
+  async applyJob(payload: { jobId: string; resumeId: string; coverLetter: string }) {
+    const res = await http.post(`${endpointPrefix}/jobs/apply`, payload);
+    return res.data;
+  },
 };

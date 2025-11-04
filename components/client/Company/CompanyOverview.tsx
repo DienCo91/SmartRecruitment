@@ -1,10 +1,9 @@
-import { organizationType } from '@/constants';
 import { CompanyInfo } from '@/types';
+import { getLabelTeamSize } from '@/utils';
 import { format } from 'date-fns';
 import { GlassCard } from '../Cards/GlassCard';
 import { CompanyOverViewHeader } from './CompanyOverViewHeader';
 import { CompanyOverViewItem } from './CompanyOverViewItem';
-import { getLabelOrganization, getLabelTeamSize } from '@/utils';
 
 interface Props {
   company: CompanyInfo;
