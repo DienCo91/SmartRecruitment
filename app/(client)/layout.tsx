@@ -9,7 +9,7 @@ const ClientLayout = async ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="w-screen  overflow-hidden relative theme-default ">
+    <div className="overflow-x-hidden relative theme-default ">
       <div className="flex flex-col min-h-screen">
         <Suspense fallback={<LoadingDoubleCircle />}>
           <NavBar />

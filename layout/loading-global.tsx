@@ -1,6 +1,6 @@
 'use client';
 
-import LoadingCustom from '@/components/ui/loading-custom';
+import { LoadingDoubleCircle } from '@/components/Loadings/LoadingDoubleCircle';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
 
@@ -9,5 +9,5 @@ export default function LoadingOverlay() {
 
   if (!isLoading) return null;
 
-  return <LoadingCustom />;
+  return <LoadingDoubleCircle />;
 }
