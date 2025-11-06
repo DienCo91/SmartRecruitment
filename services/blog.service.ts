@@ -10,4 +10,9 @@ export const BlogService = {
     });
     return res.data;
   },
+
+  getBlogBySlug: async (slug: string) => {
+    const res = await http.get(`${endpointPrefix}/slug/${slug}`);
+    return res.data;
+  },
 };

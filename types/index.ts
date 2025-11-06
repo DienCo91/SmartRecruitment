@@ -13,3 +13,12 @@ export interface TOptions {
   value: string;
   label: string;
 }
+
+export interface Pagination {
+  page?: number;
+  limit?: number;
+  totalElements?: number;
+  totalPages?: number;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
+}

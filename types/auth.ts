@@ -16,3 +16,12 @@ export interface ISettingCandidate {
   location?: string;
   phoneNumber?: string;
 }
+
+export interface AuthorOfBlog {
+  firebaseUid: string;
+  fullName: string;
+  userName: string;
+  email: string;
+  // role: CANDIDATE,
+  companySetup: boolean;
+}

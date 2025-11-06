@@ -6,21 +6,44 @@ import { PopularBlogTags } from '@/components/client/Blogs/PopularBlogTags';
 import { RecentBlogs } from '@/components/client/Blogs/RecentBlogs';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { Comments } from '@/components/client/Comments/Comments';
-import { mockedPost } from '@/constants/mockedData';
-import { Post } from '@/types/post';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { BlogService } from '@/services/blog.service';
+import { Blog } from '@/types/blog';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
-const JobDetailPage = () => {
+const BlogDetailPage = () => {
   const { slug } = useParams();
-  console.log(slug);
-  const [post, setPost] = useState<Post>(mockedPost);
+  const [blog, setBlog] = useState<Blog>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const fetchBlog = useCallback(async () => {
+    try {
+      setLoading(true);
+      const blog = (await BlogService.getBlogBySlug(String(slug))).data as Blog;
+      console.log(blog);
+      setBlog(blog);
+    } catch {
+      toast.error('Đã có lỗi xảy ra');
+    } finally {
+      setLoading(false);
+    }
+  }, [slug]);
 
+  useEffect(() => {
+    fetchBlog();
+  }, [fetchBlog]);
   return (
     <GlassCard className="mt-10 hover:bg-transparent" title="" action footer={<Comments />}>
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-8">
-          <BlogDetail post={post} />
+          {loading ? (
+            <LoadingCircle />
+          ) : blog ? (
+            <BlogDetail blog={blog} />
+          ) : (
+            <p>Không tìm thấy blog.</p>
+          )}
         </div>
         <div className="col-span-4 flex flex-col gap-5">
           <FilterBlog />
@@ -32,4 +55,4 @@ const JobDetailPage = () => {
   );
 };
 
-export default JobDetailPage;
+export default BlogDetailPage;

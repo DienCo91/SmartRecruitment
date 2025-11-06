@@ -11,7 +11,6 @@ interface Props {
 }
 
 export function BlogCardPrimary({ blog }: Props) {
-  console.log(blog);
   return (
     <GlassCard title="" action classContentName="px-0">
       <div className="flex">

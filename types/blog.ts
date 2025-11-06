@@ -1,6 +1,8 @@
+import { AuthorOfBlog } from './auth';
+
 export interface ISpecificationParams {
   page?: number;
-  size?: number;
+  limit?: number;
   sort?: string;
   keyword?: string;
 }
@@ -18,4 +20,5 @@ export interface Blog {
   publishedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
+  author: AuthorOfBlog;
 }
