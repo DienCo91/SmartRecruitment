@@ -6,9 +6,10 @@ interface IGlassCardBase extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   children: React.ReactNode;
 }
-const GlassCardBase: React.FC<IGlassCardBase> = ({ className, children }) => {
+const GlassCardBase: React.FC<IGlassCardBase> = ({ className, children, ...rest }) => {
   return (
     <Card
+      {...rest}
       className={cn(
         'bg-white/5 border-none group text-neutral-300 relative overflow-visible\
         rounded-xl p-4 backdrop-blur-lg transition-all duration-300\
