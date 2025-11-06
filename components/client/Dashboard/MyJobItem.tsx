@@ -5,21 +5,25 @@ import { Button } from '@/components/ui/button';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { Router } from '@/constants';
+import { MyJobPageResponse } from '@/types';
 
-const MyJobItem = () => {
-  const onViewDetail = () => {};
+interface IMyJobItem {
+  item: MyJobPageResponse;
+}
+
+const MyJobItem: React.FC<IMyJobItem> = ({ item }) => {
   const onMakeItExpire = () => {};
 
-  const isExpired = true;
+  const isExpired = item.status === 'EXPIRED';
 
   return (
     <GlassCardBase className="grid grid-cols-[2fr_1fr_1.5fr_1.5fr] items-center text-[12px] font-bold cursor-pointer">
       <div>
-        <h1 className="text-[16px] font-bold">UI/UX Designer</h1>
+        <h1 className="text-[16px] font-bold">{item.title}</h1>
         <div>
-          <span>Full Time</span>
+          <span>{item.status}</span>
           <span>•</span>
-          <span>27 days remaining</span>
+          <span>{item.daysRemaining} days remaining</span>
         </div>
       </div>
       <div className="flex items-center">
@@ -37,7 +41,7 @@ const MyJobItem = () => {
       </div>
       <div className="flex items-center">
         <Users size={18} />
-        <span className="ml-[8px]">798 Applications</span>
+        <span className="ml-[8px]">{item.numberOfApplications} Applications</span>
       </div>
       <div className="flex items-center">
         <Link href={Router.DASHBOARD.VIEW_APPLICATIONS('1')}>
@@ -56,11 +60,7 @@ const MyJobItem = () => {
               sideOffset={8}
               className="z-50 w-40 rounded-md bg-white shadow-md overflow-hidden cursor-pointer"
             >
-              <Link
-                href={Router.JOB.DETAIL(
-                  'chuyen-vien-kinh-doanh-giai-phap-thanh-toan-tu-van-tin-dung-doanh-nghiep'
-                )}
-              >
+              <Link href={Router.JOB.DETAIL(item.slug)}>
                 <DropdownMenu.Item
                   className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
                          hover:bg-blue-100 hover:text-blue-700 

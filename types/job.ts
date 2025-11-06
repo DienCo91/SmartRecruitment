@@ -113,3 +113,11 @@ export interface JobCategory {
   id?: number;
   name?: string;
 }
+export interface MyJobPageResponse {
+  id: string;
+  slug: string;
+  title: string;
+  daysRemaining: string;
+  status: string;
+  numberOfApplications: string;
+}

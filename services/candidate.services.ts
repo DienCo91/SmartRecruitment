@@ -51,6 +51,10 @@ export const CandidateService = {
     const res = await http.post(`${endpointPrefix}/save-company/${companyId}`);
     return res.data;
   },
+  async unfollowCompany(companyId: string) {
+    const res = await http.delete(`${endpointPrefix}/save-company/${companyId}`);
+    return res.data;
+  },
 
   async followJob(jobId: string) {
     const res = await http.post(`${endpointPrefix}/jobs/follow/${jobId}`);
@@ -59,6 +63,11 @@ export const CandidateService = {
 
   async unfollowJob(jobId: string) {
     const res = await http.delete(`${endpointPrefix}/jobs/unfollow/${jobId}`);
+    return res.data;
+  },
+
+  async applyJob(payload: { jobId: string; resumeId: string; coverLetter: string }) {
+    const res = await http.post(`${endpointPrefix}/jobs/apply`, payload);
     return res.data;
   },
 };

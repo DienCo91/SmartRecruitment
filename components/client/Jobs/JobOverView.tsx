@@ -17,7 +17,7 @@ export function JobOverView({ job }: { job: JobDetail }) {
         />
         <JobOverViewItems.Location
           content={
-            job.location.commune + '/' + job.location.provinceCity + '/' + job.location.country
+            job.location.commune + ', ' + job.location.provinceCity + ', ' + job.location.country
           }
         />
         <JobOverViewItems.JobType content={getLabelJobType(job.jobType) || ''} />
