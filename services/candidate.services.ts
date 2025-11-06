@@ -51,6 +51,10 @@ export const CandidateService = {
     const res = await http.post(`${endpointPrefix}/save-company/${companyId}`);
     return res.data;
   },
+  async unfollowCompany(companyId: string) {
+    const res = await http.delete(`${endpointPrefix}/save-company/${companyId}`);
+    return res.data;
+  },
 
   async followJob(jobId: string) {
     const res = await http.post(`${endpointPrefix}/jobs/follow/${jobId}`);

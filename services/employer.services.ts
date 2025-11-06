@@ -39,4 +39,11 @@ export const EmployerService = {
     const res = await http.delete(`${endpointPrefix}/saved-candidates/${candidateId}`);
     return res.data;
   },
+  async getMyJobs(page: number, size: number, jobStatus?: string) {
+    const params: Record<string, string | number> = { page, size };
+    if (jobStatus && jobStatus !== 'ALL') params.jobStatus = jobStatus;
+
+    const res = await http.get(`${endpointPrefix}/jobs`, { params });
+    return res.data;
+  },
 };
