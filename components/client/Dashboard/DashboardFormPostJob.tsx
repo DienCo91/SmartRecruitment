@@ -102,7 +102,7 @@ const DashboardFormPostJob = () => {
       return;
     }
     try {
-      dispatch(setLoading(true));
+      // dispatch(setLoading(true));
       await EmployerService.createJob({
         categoryIds: data.category.map(c => c.id),
         tagIds: [1],
@@ -123,9 +123,10 @@ const DashboardFormPostJob = () => {
       form.reset();
       descriptionRef.current.setValue('');
       responsibilitiesRef.current.setValue('');
-    } catch (e) {
+    } catch {
+      toast.error('Đã xảy ra lỗi');
     } finally {
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
     }
   };
 

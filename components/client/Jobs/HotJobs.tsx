@@ -1,20 +1,39 @@
 'use client';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { JobServices } from '@/services/job.services';
+import { HotJob } from '@/types';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
-import { JobCard } from './JobCard';
-import * as _ from 'lodash';
 import { CustomPagination } from '../Paginations/CustomPagination';
-import { useMemo, useState } from 'react';
+import { JobCard } from './JobCard';
 
 export function HotJobs() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [jobs, setJobs] = useState<HotJob[]>([]);
+
   const [pagination, setPagination] = useState({
     current: 1,
     total: 20,
     limit: 5,
   });
 
-  const pages = useMemo(() => {
-    return _.range(0, pagination.limit, 1).map((_, i) => <JobCard key={i} />);
-  }, [pagination]);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setLoading(true);
+        const jobs = (await JobServices.getJobs()).data as HotJob[];
+        console.log(jobs);
+        setJobs(jobs);
+      } catch {
+        toast.error('Đã xảy ra lỗi');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void getData();
+  }, []);
 
   return (
     <GlassCard
@@ -31,7 +50,15 @@ export function HotJobs() {
         />
       }
     >
-      <div className="flex flex-col">{pages}</div>
+      <div className="flex flex-col">
+        {loading ? (
+          <LoadingCircle />
+        ) : Boolean(jobs.length) ? (
+          jobs.map(job => <JobCard key={job.id} job={job} />)
+        ) : (
+          <p className="text-center">Không có hot job</p>
+        )}
+      </div>
     </GlassCard>
   );
 }
