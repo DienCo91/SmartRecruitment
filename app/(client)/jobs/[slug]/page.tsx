@@ -126,9 +126,11 @@ const JobDetailPage = () => {
         </div>
       </div>
       <Separator className="my-5 bg-gray-500" />
-      <RelatedJob />
+      <RelatedJob category={job.jobCategories[0].name} />
 
-      {showApplyJobModal && <ApplyJobForm job={job} onClose={() => setShowApplyJobModal(false)} />}
+      {showApplyJobModal && (
+        <ApplyJobForm job={job} onClose={() => setShowApplyJobModal(false)} setJob={setJob} />
+      )}
     </GlassCard>
   );
 };

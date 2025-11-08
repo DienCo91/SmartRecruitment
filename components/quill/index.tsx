@@ -49,7 +49,7 @@ const QuillCustom = forwardRef<QuillCustomRef, Props>((props, ref) => {
     <div spellCheck={false}>
       <ReactQuill
         theme="snow"
-        value={value}
+        value={value || props.initValue}
         onChange={setValue}
         className={cn(
           'rounded-[6px] bg-white/15 fill-white placeholder:text-white text-base',

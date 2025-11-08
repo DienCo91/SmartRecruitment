@@ -15,21 +15,26 @@ import { COMPANY_SIZE, INDUSTRY_TYPE, ORGANIZATION_TYPE } from '@/constants/comp
 interface IFoundingContent {
   goToNext: (values?: Partial<DataSubmitFormProps>) => void;
   goToPrev: () => void;
+  initValue: DataSubmitFormProps;
+  hasInitData: boolean;
 }
 
 const formSchema = z.object({
   organizationType: z.string().min(1, 'Organization Type is required'),
   industryTypes: z.string().min(1, 'Industry Type is required'),
   teamSize: z.string().min(1, 'Team Size is required'),
-  yearOfEstablishment: z.coerce.date({
-    required_error: 'Year of establishment is required',
-  }),
+  yearOfEstablishment: z.string().min(1, 'Year of Establishment is required'),
   companyWebsite: z.string().url('Invalid URL').optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
-const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => {
+const FoundingContent: React.FC<IFoundingContent> = ({
+  goToNext,
+  goToPrev,
+  initValue,
+  hasInitData,
+}) => {
   const editorRef = useRef<QuillCustomRef>(null);
 
   const {
@@ -44,18 +49,19 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
       organizationType: '',
       industryTypes: '',
       teamSize: '',
-      yearOfEstablishment: new Date(),
+      yearOfEstablishment: '',
       companyWebsite: '',
     },
   });
 
   const onSubmit = (data: FormData) => {
     if (editorRef.current?.getValue() && editorRef.current.getValue().length > 20) {
+      const year = data.yearOfEstablishment.split('-')[0];
       goToNext({
         organizationType: data.organizationType,
         industryTypes: data.industryTypes,
         teamSize: data.teamSize,
-        yearOfEstablishment: data.yearOfEstablishment.getFullYear(),
+        yearOfEstablishment: +year,
         companyWebsite: data.companyWebsite,
         companyVision: editorRef.current?.getValue(),
       });
@@ -73,7 +79,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           options={ORGANIZATION_TYPE}
           register={register}
           setValue={setValue}
-          value={watch('organizationType')}
+          value={watch('organizationType') || initValue.organizationType}
           error={errors.organizationType}
         />
 
@@ -83,7 +89,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           options={INDUSTRY_TYPE}
           register={register}
           setValue={setValue}
-          value={watch('industryTypes')}
+          value={watch('industryTypes') || initValue.industryTypes}
           error={errors.industryTypes}
         />
 
@@ -92,7 +98,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           label="Team Size"
           options={COMPANY_SIZE}
           register={register}
-          value={watch('teamSize')}
+          value={watch('teamSize') || initValue.teamSize}
           setValue={setValue}
           error={errors.teamSize}
         />
@@ -105,9 +111,12 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
           </label>
           <div className="relative">
             <Input
-              type="date"
+              type={watch('yearOfEstablishment') ? 'date' : 'number'}
               id="yearOfEstablishment"
               placeholder="dd/mm/yyyy"
+              value={
+                !hasInitData ? String(watch('yearOfEstablishment')) : initValue.yearOfEstablishment
+              }
               {...register('yearOfEstablishment')}
             />
           </div>
@@ -125,6 +134,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
               type="url"
               id="companyWebsite"
               placeholder="Website url..."
+              value={watch('companyWebsite') || initValue.companyWebsite}
               {...register('companyWebsite')}
               className="pl-10"
             />
@@ -138,14 +148,16 @@ const FoundingContent: React.FC<IFoundingContent> = ({ goToNext, goToPrev }) => 
 
       <div className="mt-[20px]">
         <h1 className="mb-[8px] text-sm font-medium">Company Vision</h1>
-        <QuillCustom ref={editorRef} />
+        <QuillCustom ref={editorRef} initValue={initValue.companyVision} />
       </div>
 
-      <div>
-        <ButtonAccountSetup title="Previous" isPrevious type="button" onClick={goToPrev} />
+      {!hasInitData && (
+        <div>
+          <ButtonAccountSetup title="Previous" isPrevious type="button" onClick={goToPrev} />
 
-        <ButtonAccountSetup title="Save & Next" className="ml-[8px]" type="submit" />
-      </div>
+          <ButtonAccountSetup title="Save & Next" className="ml-[8px]" type="submit" />
+        </div>
+      )}
     </form>
   );
 };

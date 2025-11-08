@@ -26,8 +26,8 @@ export const EmployerService = {
   },
 
   async getMyCompany() {
-    // const res = await http.get(`${endpointPrefix}/company/metadata`);
-    // return res.data;
+    const res = await http.get(`${endpointPrefix}/company/me`);
+    return res.data;
   },
 
   async saveCandidate(candidateId: number) {

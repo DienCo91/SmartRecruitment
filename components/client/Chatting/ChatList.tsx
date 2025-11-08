@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { Dot } from 'lucide-react';
@@ -38,8 +39,7 @@ const ChatList = () => {
         next={fetchMoreData}
         hasMore={hasMore}
         scrollableTarget="scrollableDiv"
-        loader={<h4 className="text-center py-3">Loading...</h4>}
-        endMessage={<p className="text-center py-3 text-gray-400">No more chats 🎉</p>}
+        loader={<LoadingCircle />}
       >
         <div className="flex flex-col">
           {items.map((item, index) => {

@@ -21,6 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ButtonAccountSetup from './button-account-setup';
 import { DataSubmitFormProps } from './AccountSetupTabView';
 import { getIconSocialLink } from '@/utils/common';
+import { useEffect } from 'react';
 
 const socialList = [
   { label: 'Facebook', value: 'FACEBOOK' },
@@ -35,6 +36,8 @@ const socialList = [
 interface ISocialMediaProfile {
   goToNext: (values?: Partial<DataSubmitFormProps>) => void;
   goToPrev: () => void;
+  initValue: DataSubmitFormProps;
+  hasInitData: boolean;
 }
 
 const socialLinkSchema = z.object({
@@ -48,10 +51,16 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev }) => {
+const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({
+  goToNext,
+  goToPrev,
+  initValue,
+  hasInitData,
+}) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,6 +73,17 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
     control,
     name: 'socialLinks',
   });
+
+  useEffect(() => {
+    if (initValue?.socialLinks && initValue.socialLinks.length > 0) {
+      reset({
+        socialLinks: initValue.socialLinks.map(link => ({
+          platformName: link.platformName || '',
+          url: link.url || '',
+        })),
+      });
+    }
+  }, [initValue, reset]);
 
   const onSubmit = (data: FormValues) => {
     goToNext({ socialLinks: data.socialLinks });
@@ -142,27 +162,31 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({ goToNext, goToPrev 
         </div>
       ))}
 
-      <Button
-        type="button"
-        onClick={() => append({ platformName: '', url: '' })}
-        className="w-full bg-grey-primary mt-[18px] text-black hover:shadow-md hover:bg-grey-primary hover:translate-y-[-2px] active:translate-y-0"
-      >
-        <IoMdAddCircleOutline className="mr-2" />
-        Add New Social Link
-      </Button>
+      {!hasInitData && (
+        <Button
+          type="button"
+          onClick={() => append({ platformName: '', url: '' })}
+          className="w-full bg-grey-primary mt-[18px] text-black hover:shadow-md hover:bg-grey-primary hover:translate-y-[-2px] active:translate-y-0"
+        >
+          <IoMdAddCircleOutline className="mr-2" />
+          Add New Social Link
+        </Button>
+      )}
 
-      <div>
+      {!hasInitData && (
         <div>
-          <ButtonAccountSetup
-            type="button"
-            title="Previous"
-            onClick={goToPrev}
-            isPrevious
-            className="mr-[16px]"
-          />
-          <ButtonAccountSetup title="Save & Next" type="submit" />
+          <div>
+            <ButtonAccountSetup
+              type="button"
+              title="Previous"
+              onClick={goToPrev}
+              isPrevious
+              className="mr-[16px]"
+            />
+            <ButtonAccountSetup title="Save & Next" type="submit" />
+          </div>
         </div>
-      </div>
+      )}
     </form>
   );
 };

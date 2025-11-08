@@ -15,6 +15,8 @@ import { DataSubmitFormProps } from './AccountSetupTabView';
 
 interface ICompanyInfo {
   goToNext: (values?: Partial<DataSubmitFormProps>) => void;
+  initValue: DataSubmitFormProps;
+  hasInitData: boolean;
 }
 
 const formSchema = z.object({
@@ -39,7 +41,7 @@ const formSchema = z.object({
 });
 type FormValues = z.infer<typeof formSchema>;
 
-const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
+const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData }) => {
   const editorRef = useRef<QuillCustomRef>(null);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -61,6 +63,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
     }
   };
 
+  console.log('description', initValue.description);
   return (
     <div className="mt-[32px]">
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -72,6 +75,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
             render={({ field }) => (
               <div className="w-[30%]">
                 <UploadInfo
+                  initImage={initValue.logo as string}
                   title="Upload Logo"
                   desc="A photo larger than 400 pixels work best. Max 5 MB."
                   classNameDropWrap="border-[2px] border-dashed"
@@ -92,6 +96,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
             render={({ field }) => (
               <div className="w-[70%] ml-[16px]">
                 <UploadInfo
+                  initImage={initValue.banner as string}
                   title="Banner Image"
                   desc="Banner images 1520x400. Supported JPEG, PNG. Max 5 MB."
                   onChange={file => field.onChange(file)}
@@ -112,6 +117,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
           <h1>Company name</h1>
           <Input
             type="text"
+            value={form.watch('nameCompany') || initValue.nameCompany}
             placeholder="Company name ..."
             className="rounded-[6px] p-[8px] mt-[8px]"
             {...form.register('nameCompany')}
@@ -123,10 +129,10 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext }) => {
 
         <div className="mt-[20px]">
           <h1 className="mb-[8px]">About us</h1>
-          <QuillCustom ref={editorRef} />
+          <QuillCustom ref={editorRef} initValue={initValue.description} />
         </div>
 
-        <ButtonAccountSetup title="Save & Next" type="submit" />
+        {!hasInitData && <ButtonAccountSetup title="Save & Next" type="submit" />}
       </form>
     </div>
   );

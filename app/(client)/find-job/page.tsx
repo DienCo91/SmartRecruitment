@@ -3,22 +3,9 @@
 import { FilterJob, IFilter } from '@/components/client/Filters/FilterJob';
 import ListJob from '@/components/client/FindJobs/list-job';
 import { JobServices } from '@/services/job.services';
-import { JobItem } from '@/types';
+import { JobItem, ParamGetJob } from '@/types';
 import { getLabelLocationByValue, parseSalaryRange } from '@/utils/common';
 import { useEffect, useState } from 'react';
-
-export interface ParamGetJob {
-  page: number;
-  size?: number;
-  keyword?: string;
-  location?: string;
-  category?: string;
-  minSalary?: number;
-  maxSalary?: number;
-  experienceLevel?: string;
-  educationLevels?: string[];
-  jobTypes?: string[];
-}
 
 const FindJob = () => {
   const [items, setItems] = useState<JobItem[]>([]);

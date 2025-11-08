@@ -14,6 +14,8 @@ import { useState } from 'react';
 interface IContact {
   goToPrev: () => void;
   goToNext: (values?: Partial<DataSubmitFormProps>) => void;
+  initValue: DataSubmitFormProps;
+  hasInitData: boolean;
 }
 
 const contactSchema = z.object({
@@ -29,7 +31,7 @@ const contactSchema = z.object({
 
 type FormValues = z.infer<typeof contactSchema>;
 
-const Contact: React.FC<IContact> = ({ goToPrev, goToNext }) => {
+const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitData }) => {
   const {
     control,
     handleSubmit,
@@ -73,7 +75,11 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext }) => {
         name="location"
         render={({ field: { onChange, value } }) => (
           <LocationInputOSM
-            value={value}
+            value={
+              !hasInitData
+                ? value
+                : `${initValue.location?.commune}, ${initValue.location?.provinceCity}, ${initValue.location?.country}`
+            }
             onChange={onChange}
             onSelect={handleLocationSelect}
             error={errors.location?.message}
@@ -86,7 +92,7 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext }) => {
         control={control}
         name="phoneNumber"
         render={({ field: { onChange, value } }) => (
-          <PhoneInput onChange={onChange} value={value} />
+          <PhoneInput onChange={onChange} value={value || initValue.phoneNumber} />
         )}
       />
       {errors.phoneNumber?.message && (
@@ -107,7 +113,7 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext }) => {
                 placeholder="Email address"
                 className="border-none rounded-l-none"
                 onChange={onChange}
-                value={value}
+                value={value || initValue.email}
               />
             </div>
           </>
@@ -116,16 +122,18 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext }) => {
       {errors.email?.message && (
         <p className="text-red-500 text-xs mt-1">{errors.email?.message}</p>
       )}
-      <div>
-        <ButtonAccountSetup
-          title="Previous"
-          isPrevious
-          type="button"
-          className="mr-[16px]"
-          onClick={goToPrev}
-        />
-        <ButtonAccountSetup title="Finish Editing" type="submit" />
-      </div>
+      {!hasInitData && (
+        <div>
+          <ButtonAccountSetup
+            title="Previous"
+            isPrevious
+            type="button"
+            className="mr-[16px]"
+            onClick={goToPrev}
+          />
+          <ButtonAccountSetup title="Finish Editing" type="submit" />
+        </div>
+      )}
     </form>
   );
 };

@@ -1,4 +1,5 @@
 'use client';
+import { AppImage } from '@/common';
 import { cn } from '@/lib/utils';
 import { Upload, FileText } from 'lucide-react';
 import Image from 'next/image';
@@ -9,10 +10,11 @@ interface IUploadInfo {
   desc: string;
   className?: string;
   classNameDropWrap?: string;
-  value?: File | null; // nhận file để preview
-  onChange?: (file: File | null) => void; // callback khi chọn file
+  value?: File | null;
+  onChange?: (file: File | null) => void;
   accept?: string;
   disabled?: boolean;
+  initImage?: string;
 }
 
 const UploadInfo: React.FC<IUploadInfo> = ({
@@ -24,6 +26,7 @@ const UploadInfo: React.FC<IUploadInfo> = ({
   accept = 'image/*',
   onChange,
   disabled,
+  initImage = '',
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,7 +41,6 @@ const UploadInfo: React.FC<IUploadInfo> = ({
     }
   };
 
-  // kiểm tra file có phải ảnh không
   const isImage = value && value.type.startsWith('image/');
 
   return (
@@ -51,7 +53,9 @@ const UploadInfo: React.FC<IUploadInfo> = ({
           classNameDropWrap
         )}
       >
-        {value ? (
+        {initImage && !value ? (
+          <Image src={initImage} alt="preview" className="object-contain" fill />
+        ) : value ? (
           isImage ? (
             <Image src={URL.createObjectURL(value)} alt="preview" className="object-contain" fill />
           ) : (

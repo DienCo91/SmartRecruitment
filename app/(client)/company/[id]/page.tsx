@@ -21,7 +21,6 @@ import { toast } from 'sonner';
 
 const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.common.isLoading);
   const { id } = use(props.params);
   const [company, setCompany] = useState<CompanyDetail | null>(null);
 
@@ -113,7 +112,7 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
         </div>
       </GlassCard>
 
-      <CompanyDetailPosition />
+      <CompanyDetailPosition companyId={company.id} />
     </div>
   );
 };

@@ -1,28 +1,28 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Router } from '@/constants';
 import { useProgressAccountSetup } from '@/contexts';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { cn } from '@/lib/utils';
 import { EmployerService } from '@/services/employer.services';
 import { Location } from '@/types';
 import { AtSign, Globe, User, Users } from 'lucide-react';
-import React, { use, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import CompanyInfo from './company-infor';
 import Contact from './contact';
 import FoundingContent from './founding-content';
 import SocialMediaProfile from './social-media-profile';
-import { da } from 'date-fns/locale';
-import { useRouter } from 'next/navigation';
-import { Router } from '@/constants';
+import { Button } from '@/components/ui/button';
 
 export interface DataSubmitFormProps {
   nameCompany: string;
   description: string;
-  logo: File;
-  banner: File;
+  logo: File | string;
+  banner: File | string;
   organizationType: string;
   industryTypes: string;
   teamSize: string;
@@ -50,6 +50,23 @@ interface IAccountSetupTabView {
   classNameTabTrigger?: string;
 }
 
+const initData = {
+  nameCompany: '',
+  description: '',
+  logo: '',
+  banner: '',
+  organizationType: '',
+  industryTypes: '',
+  teamSize: '',
+  yearOfEstablishment: new Date().getFullYear(),
+  companyWebsite: '',
+  socialLinks: [],
+  location: null,
+  phoneNumber: '',
+  email: '',
+  companyVision: '',
+};
+
 const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
   classNameTabList,
   classNameTabTrigger,
@@ -58,22 +75,8 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<string>(tabs[0].value);
   const { setProgress } = useProgressAccountSetup();
-  const [dataSubmitForm, setDataSubmitForm] = useState<DataSubmitFormProps>({
-    nameCompany: '',
-    description: '',
-    logo: new File([], ''),
-    banner: new File([], ''),
-    organizationType: '',
-    industryTypes: '',
-    teamSize: '',
-    yearOfEstablishment: new Date().getFullYear(),
-    companyWebsite: '',
-    socialLinks: [],
-    location: null,
-    phoneNumber: '',
-    email: '',
-    companyVision: '',
-  });
+  const [dataSubmitForm, setDataSubmitForm] = useState<DataSubmitFormProps>(initData);
+  const [hasInitData, setHasInitData] = useState(false);
 
   const currentIndex = tabs.findIndex(tab => tab.value === activeTab);
 
@@ -85,10 +88,29 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
     dispatch(setLoading(true));
     try {
       const res = await EmployerService.getMyCompany();
-      console.log('res', res);
+      if (res.data) {
+        setDataSubmitForm({
+          nameCompany: res.data.name,
+          description: res.data.description,
+          logo: res.data.logoUrl,
+          banner: res.data.bannerUrl,
+          organizationType: res.data.organizationType,
+          industryTypes: res.data.industryType,
+          teamSize: res.data.teamSize,
+          yearOfEstablishment: res.data.foundedIn,
+          companyWebsite: res.data.website,
+          socialLinks: res.data.socialLinks,
+          location: res.data.location,
+          phoneNumber: res.data.phone,
+          email: res.data.email,
+          companyVision: res.data.companyVision,
+        });
+
+        setHasInitData(true);
+      }
     } catch (error) {
       console.log('error', error);
-      toast.error('Get my company failed');
+      toast.error('You have not created a company yet');
     } finally {
       dispatch(setLoading(false));
     }
@@ -112,8 +134,8 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
           foundedIn: data.yearOfEstablishment,
           socialLinks: [...data.socialLinks],
         },
-        data.logo,
-        data.banner
+        data.logo as File,
+        data.banner as File
       );
       router.push(Router.CONGRATULATIONS);
     } catch (error) {
@@ -147,51 +169,78 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
       window.scrollTo(0, 0);
     }
   };
-  return (
-    <Tabs
-      defaultValue="company"
-      value={activeTab}
-      onValueChange={setActiveTab}
-      className="w-full mt-[60px]"
-    >
-      <TabsList
-        className={cn(
-          'flex justify-start w-full border-b border-gray-200 bg-transparent p-0 rounded-none px-[0px] lg:px-[200px] ',
-          classNameTabList
-        )}
-      >
-        {tabs.map(tab => (
-          <TabsTrigger
-            disabled
-            key={tab.value}
-            value={tab.value}
-            style={{ boxShadow: 'none' }}
-            className={cn(
-              `flex border-0 mb-[-3px]  rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2
-             border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500
-            hover:text-gray-700 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default `,
-              classNameTabTrigger
-            )}
-          >
-            <tab.icon className="w-4 h-4" />
-            {tab.label}
-          </TabsTrigger>
-        ))}
-      </TabsList>
 
-      <TabsContent forceMount value="company" className="data-[state=inactive]:hidden">
-        <CompanyInfo goToNext={goToNext} />
-      </TabsContent>
-      <TabsContent forceMount value="founding" className="data-[state=inactive]:hidden">
-        <FoundingContent goToNext={goToNext} goToPrev={goToPrev} />
-      </TabsContent>
-      <TabsContent forceMount value="social" className="data-[state=inactive]:hidden">
-        <SocialMediaProfile goToNext={goToNext} goToPrev={goToPrev} />
-      </TabsContent>
-      <TabsContent forceMount value="contact" className="data-[state=inactive]:hidden">
-        <Contact goToNext={goToNext} goToPrev={goToPrev} />
-      </TabsContent>
-    </Tabs>
+  const handleActiveUpdate = () => {
+    setDataSubmitForm(initData);
+    setHasInitData(false);
+  };
+  return (
+    <div className="mt-[60px]">
+      {hasInitData && (
+        <Button className="mb-[20px]" onClick={handleActiveUpdate}>
+          Update
+        </Button>
+      )}
+      <Tabs
+        defaultValue="company"
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full "
+      >
+        <TabsList
+          className={cn(
+            'flex justify-start w-full border-b border-gray-200 bg-transparent p-0 rounded-none px-[0px] lg:px-[200px] ',
+            classNameTabList
+          )}
+        >
+          {tabs.map(tab => (
+            <TabsTrigger
+              disabled={!hasInitData}
+              key={tab.value}
+              value={tab.value}
+              style={{ boxShadow: 'none' }}
+              className={cn(
+                `flex border-0 mb-[-3px]  rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2
+             border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500
+            hover:text-gray-600 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default `,
+                classNameTabTrigger
+              )}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        <TabsContent forceMount value="company" className="data-[state=inactive]:hidden">
+          <CompanyInfo goToNext={goToNext} initValue={dataSubmitForm} hasInitData={hasInitData} />
+        </TabsContent>
+        <TabsContent forceMount value="founding" className="data-[state=inactive]:hidden">
+          <FoundingContent
+            goToNext={goToNext}
+            goToPrev={goToPrev}
+            initValue={dataSubmitForm}
+            hasInitData={hasInitData}
+          />
+        </TabsContent>
+        <TabsContent forceMount value="social" className="data-[state=inactive]:hidden">
+          <SocialMediaProfile
+            goToNext={goToNext}
+            goToPrev={goToPrev}
+            initValue={dataSubmitForm}
+            hasInitData={hasInitData}
+          />
+        </TabsContent>
+        <TabsContent forceMount value="contact" className="data-[state=inactive]:hidden">
+          <Contact
+            goToNext={goToNext}
+            goToPrev={goToPrev}
+            initValue={dataSubmitForm}
+            hasInitData={hasInitData}
+          />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
