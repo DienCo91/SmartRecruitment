@@ -81,7 +81,6 @@ const BoxChatting = () => {
         inverse={true}
         scrollableTarget="scrollableChat"
         loader={<LoadingCircle className="mt-[40px]" />}
-        endMessage={<p className="text-center m-3">— Hết —</p>}
         style={{ display: 'flex', flexDirection: 'column-reverse', overflow: 'visible' }}
       >
         {messages.map((msg, idx, arr) => {

@@ -21,4 +21,19 @@ export const CompanyService = {
     const res = await http.get(`${endpointPrefix}/company/${companyId}`);
     return res.data;
   },
+
+  async getJobCompany({
+    companyId,
+    page = 1,
+    size = 10,
+  }: {
+    companyId: string | number;
+    page?: number;
+    size?: number;
+  }) {
+    const res = await http.get(`${endpointPrefix}/company/${companyId}/jobs`, {
+      params: { page, size },
+    });
+    return res.data;
+  },
 };

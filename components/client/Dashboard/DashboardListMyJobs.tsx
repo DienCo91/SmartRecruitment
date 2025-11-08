@@ -31,7 +31,7 @@ const DashboardListMyJobs: React.FC<IDashboardListMyJobs> = ({
         <h1>ACTIONS</h1>
       </GlassCardBase>
 
-      <div className="space-y-4 mt-[20px]">
+      <div className="space-y-4 mt-[20px] flex-1">
         {loading ? (
           <LoadingCircle />
         ) : data.length > 0 ? (

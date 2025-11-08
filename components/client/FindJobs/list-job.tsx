@@ -20,12 +20,12 @@ interface IListJob {
   fetchMoreData: () => void;
 }
 
-const ListJob = ({ items, hasMore, fetchMoreData }: IListJob) => {
+const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
   return (
     <div className="mt-[30px] hover:translate-y-[0px] ">
       <GlassCardBase className="text-white font-bold text-[20px] mb-[20px]">Việc Làm</GlassCardBase>
 
-      {!hasMore && items.length === 0 && (
+      {!hasMore && items && items.length === 0 && (
         <div className="flex flex-col justify-center items-center py-20 text-gray-400">
           <p className="text-lg">Không tìm thấy công việc nào phù hợp</p>
         </div>
@@ -37,7 +37,7 @@ const ListJob = ({ items, hasMore, fetchMoreData }: IListJob) => {
       >
         <InfiniteScroll
           className="pt-[8px]"
-          dataLength={items.length}
+          dataLength={items?.length}
           next={fetchMoreData}
           scrollableTarget="scrollableDiv"
           hasMore={hasMore}

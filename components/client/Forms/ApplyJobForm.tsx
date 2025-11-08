@@ -3,29 +3,30 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import QuillCustom, { QuillCustomRef } from '@/components/quill';
 import { Label } from '@/components/ui/label';
-import { JobDetail } from '@/types';
-import { ArrowRightIcon, Check, FileText, Loader2, Plus } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { GlassDialog } from '../Dialogs/GlassDialog';
+import { Router } from '@/constants';
+import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
-import { ICvItem } from '../Dashboard/DashboardSettingPersonal';
 import { ApplicationServices } from '@/services/application.services';
-import GlassCardBase from '../Cards/GlassCardBase';
-import clsx from 'clsx';
 import { CandidateService } from '@/services/candidate.services';
-import { toast } from 'sonner';
-import { useDispatch } from 'react-redux';
-import { setLoading } from '@/lib/features/common/commonSlice';
+import { JobDetail } from '@/types';
+import clsx from 'clsx';
+import { ArrowRightIcon, Check, FileText, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { Router } from '@/constants';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'sonner';
+import GlassCardBase from '../Cards/GlassCardBase';
+import { ICvItem } from '../Dashboard/DashboardSettingPersonal';
+import { GlassDialog } from '../Dialogs/GlassDialog';
 
 interface Props {
   onClose: () => void;
   job: JobDetail;
+  setJob: Dispatch<SetStateAction<JobDetail | undefined>>;
 }
 
-export function ApplyJobForm({ onClose, job }: Props) {
+export function ApplyJobForm({ onClose, job, setJob }: Props) {
   const dispatch = useDispatch();
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
   const [listCv, setListCv] = useState<ICvItem[]>([]);
@@ -70,6 +71,7 @@ export function ApplyJobForm({ onClose, job }: Props) {
         resumeId: selectedCvId,
         coverLetter,
       });
+      setJob(prev => (prev ? { ...prev, isApplied: true } : prev));
       onClose();
       toast.success('Apply job successfully!');
     } catch (error) {

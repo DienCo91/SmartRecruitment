@@ -130,3 +130,43 @@ export interface MyJobPageResponse {
   status: string;
   numberOfApplications: string;
 }
+
+export interface CompanyJobPageResponse {
+  id: number;
+  slug: string;
+  jobTitle: string;
+  jobType: 'FULL_TIME' | 'PART_TIME' | 'INTERNSHIP' | 'CONTRACT' | string;
+  minSalary: number;
+  maxSalary: number;
+  salaryType: 'MONTHLY' | 'YEARLY' | 'HOURLY' | string;
+  isFavorite: boolean;
+  isApplied: boolean;
+}
+
+export interface ParamGetJob {
+  page: number;
+  size?: number;
+  keyword?: string;
+  location?: string;
+  category?: string;
+  minSalary?: number;
+  maxSalary?: number;
+  experienceLevel?: string;
+  educationLevels?: string[];
+  jobTypes?: string[];
+}
+
+export interface AppliedJobResponse {
+  id: number;
+  slug: string;
+  jobTitle: string;
+  provinceCity: string;
+  companyName: string;
+  companyLogoUrl: string;
+  minSalary: string;
+  maxSalary: string;
+  salaryType: 'MONTHLY' | 'HOURLY' | 'YEARLY' | string;
+  type: 'FULL_TIME' | 'PART_TIME' | 'INTERNSHIP' | 'CONTRACT' | string;
+  jobStatus: 'ACTIVE' | 'INACTIVE' | 'CLOSED' | string;
+  appliedDate: string;
+}

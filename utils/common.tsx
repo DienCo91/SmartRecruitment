@@ -59,3 +59,17 @@ export const parseSalaryRange = (salaryString: string) => {
 
   return { minSalary, maxSalary };
 };
+
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  return date
+    .toLocaleString('en-US', {
+      month: 'short', // "Feb"
+      day: 'numeric', // 2
+      year: 'numeric', // 2019
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false, // 24h format, remove if you want AM/PM
+    })
+    .replace(',', '');
+}

@@ -44,6 +44,7 @@ export interface CompanyItem {
 }
 
 export interface CompanyDetail {
+  id: string;
   name: string;
   description: string;
   logoUrl: string;
