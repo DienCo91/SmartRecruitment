@@ -1,26 +1,30 @@
+import { Blog } from '@/types/blog';
+import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export function BlogCard() {
+interface Props {
+  blog: Blog;
+}
+
+export function BlogCard({ blog }: Props) {
   return (
     <div className="flex justify-between bg-white/5 p-0 rounded-sm shadow-sm hover:bg-white/15 hover:shadow-lg group/blog-card">
       <div className="p-2 flex flex-col gap-2">
         <Link
-          href={'/blogs/ly-do-nghi-viec-cong-ty-cu'}
+          href={`/blogs/${blog.slug}`}
           className="font-semibold line-clamp-2 hover:text-blue-400 hover:cursor-pointer"
         >
-          Ngành IT là gì? Mô tả chi tiết công việc của ngành IT
+          {blog.title}
         </Link>
-        <span className="text-xs text-gray-400">Đăng vào ngày 12/09/2025</span>
-        <span className="text-xs text-neutral-300 line-clamp-2">
-          Trong thời đại công nghệ thông tin ngày càng phát triển, ngành IT đã và đang trở thành
-          công việc “hot” được nhiều bạn trẻ theo đuổi. Tuy nhiên, ngành IT là gì? Đâu là những công
-          việc chính của
+        <span className="text-xs text-gray-400">
+          Đăng vào ngày {format(blog.publishedAt!, 'dd/MM/yyyy')}
         </span>
+        <span className="text-xs text-neutral-300 line-clamp-2">{blog.description}</span>
       </div>
-      <div className="relative h-[150px] w-[500px] rounded-r-sm overflow-hidden">
+      <div className="relative h-[150px] w-[700px] rounded-r-sm overflow-hidden">
         <Image
-          src="https://cdn-new.topcv.vn/unsafe/300x/https://static.topcv.vn/cms/nganh-it-la-gi-topcv-0.png66fa10014a87b.png"
+          src={blog.thumbnail}
           alt="thumbnail"
           fill
           className="object-cover rounded-r-sm group-hover/blog-card:scale-110 duration-300"
