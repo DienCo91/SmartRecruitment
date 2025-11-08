@@ -1,37 +1,72 @@
 'use client';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { JobServices } from '@/services/job.services';
+import { HotJob, Pagination } from '@/types';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
-import { JobCard } from './JobCard';
-import * as _ from 'lodash';
 import { CustomPagination } from '../Paginations/CustomPagination';
-import { useMemo, useState } from 'react';
+import { JobCard } from './JobCard';
 
 export function HotJobs() {
-  const [pagination, setPagination] = useState({
-    current: 1,
-    total: 20,
-    limit: 5,
+  const [loading, setLoading] = useState<boolean>(false);
+  const [jobs, setJobs] = useState<HotJob[]>([]);
+
+  const [pagination, setPagination] = useState<Pagination>({
+    page: 1,
+    limit: 10,
   });
 
-  const pages = useMemo(() => {
-    return _.range(0, pagination.limit, 1).map((_, i) => <JobCard key={i} />);
-  }, [pagination]);
+  const fetchHotJobs = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await JobServices.getJobs({
+        page: pagination.page,
+        size: pagination.limit,
+      });
+      const jobs = response.data as HotJob[];
+      const paginate = response.meta as Pagination;
+      setJobs(jobs);
+      setPagination(paginate);
+    } catch {
+      toast.error('Đã xảy ra lỗi');
+    } finally {
+      setLoading(false);
+    }
+  }, [pagination.page, pagination.limit]);
+
+  useEffect(() => {
+    fetchHotJobs();
+  }, [fetchHotJobs]);
 
   return (
     <GlassCard
       icon="🔥"
       title="Việc làm hot"
       footer={
-        <CustomPagination
-          className="w-full"
-          curPage={pagination.current}
-          totalPage={pagination.total}
-          onPageChange={page => {
-            setPagination(prev => ({ ...prev, current: page }));
-          }}
-        />
+        <>
+          {Boolean(pagination.totalPages) && (
+            <CustomPagination
+              className="w-full"
+              curPage={pagination.page!}
+              totalPage={pagination.totalPages!}
+              onPageChange={page => {
+                setPagination(prev => ({ ...prev, page: page }));
+              }}
+            />
+          )}
+        </>
       }
     >
-      <div className="flex flex-col">{pages}</div>
+      <div className="flex flex-col">
+        {loading ? (
+          <LoadingCircle />
+        ) : Boolean(jobs.length) ? (
+          jobs.map(job => <JobCard key={job.id} job={job} />)
+        ) : (
+          <p className="text-center">Không có hot job</p>
+        )}
+      </div>
     </GlassCard>
   );
 }

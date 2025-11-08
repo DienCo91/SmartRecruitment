@@ -51,4 +51,9 @@ export const JobServices = {
     const res = await http.get(`${endpointPrefix}/job/${slug}`);
     return res.data;
   },
+
+  async getFavoriteJobIds() {
+    const res = await http.get(`${endpointPrefix}/candidate/jobs/favorites`);
+    return res.data;
+  },
 };

@@ -5,12 +5,12 @@ import { Location } from './candidate';
 export interface Company {
   id: number;
   user_id: number;
-  company_name: string;
-  logo_url: string;
+  name: string;
+  logoUrl: string;
   cover_photo_url: string;
   description: string;
-  organization_type: OrganizationType;
-  industry_type: string;
+  organizationType: OrganizationType;
+  industryType: string;
   team_size: TeamSize;
   founded_in: Date;
   website: string;
@@ -18,9 +18,12 @@ export interface Company {
   company_benefits: string;
   phone: string;
   email: string;
-  // is_deleted (BOOLEAN): Cờ xóa mềm (mặc định false).
-  // created_date (DATETIME): Thời điểm tạo.
-  // last_modified_date (DATETIME): Thời điểm cập nhật cuối.
+  location: Location;
+}
+
+export interface TopCompany
+  extends Pick<Company, 'id' | 'name' | 'logoUrl' | 'location' | 'industryType'> {
+  numberOfJobs: number;
 }
 
 export interface IPlace {

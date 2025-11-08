@@ -11,7 +11,7 @@ export function CustomImage({ src, alt, className }: Props) {
   return (
     <div
       className={cn(
-        'w-20 h-20 relative rounded-md overflow-hidden bg-white shadow-sm shadow-blue-900',
+        'w-20 h-20 relative rounded-md overflow-hidden bg-white/80 shadow-sm shadow-blue-900',
         className
       )}
     >

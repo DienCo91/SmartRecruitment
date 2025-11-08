@@ -70,4 +70,9 @@ export const CandidateService = {
     const res = await http.post(`${endpointPrefix}/jobs/apply`, payload);
     return res.data;
   },
+
+  async getJobIdsFavorite() {
+    const res = await http.get(`${endpointPrefix}/jobs/favorites`);
+    return res.data;
+  },
 };

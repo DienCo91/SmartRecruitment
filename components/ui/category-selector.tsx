@@ -12,12 +12,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Check, ChevronDown } from 'lucide-react';
 
 const allCategories = [
-  { id: 1, name: 'Java' },
-  { id: 2, name: 'React' },
-  { id: 3, name: 'Python' },
-  { id: 4, name: 'AWS' },
-  { id: 5, name: 'TypeScript' },
-  { id: 6, name: 'MySQL' },
+  { id: 1, name: 'IT & Software' },
+  { id: 2, name: 'DevOps & Cloud' },
+  { id: 3, name: 'AI / Machine Learning' },
+  { id: 4, name: 'Data Analyst / Data Engineer' },
 ];
 
 interface Categories {

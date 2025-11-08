@@ -1,21 +1,43 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { CompanyService } from '@/services/company.services';
+import { Pagination, TopCompany } from '@/types';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
-import { CompanyCard } from './CompanyCard';
-import * as _ from 'lodash';
 import { CustomPagination } from '../Paginations/CustomPagination';
+import { CompanyCard } from './CompanyCard';
 
 export function TopCompanies() {
-  const [pagination, setPagination] = useState({
-    current: 1,
-    total: 20,
+  const [loading, setLoading] = useState<boolean>(false);
+  const [topCompanies, setTopCompanies] = useState<TopCompany[]>([]);
+  const [pagination, setPagination] = useState<Pagination>({
+    page: 1,
     limit: 6,
   });
 
-  const pages = useMemo(() => {
-    return _.range(0, pagination.limit, 1).map((_, i) => <CompanyCard key={i} />);
-  }, [pagination]);
+  const fetchAllCompany = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data: companies, meta } = await CompanyService.getAllCompanies({
+        page: pagination.page,
+        size: pagination.limit,
+      });
+
+      setTopCompanies(companies);
+      setPagination(meta);
+    } catch (e) {
+      console.error(e);
+      toast.error('Đã xảy ra lỗi');
+    } finally {
+      setLoading(false);
+    }
+  }, [pagination.limit, pagination.page]);
+
+  useEffect(() => {
+    fetchAllCompany();
+  }, [fetchAllCompany]);
 
   return (
     <GlassCard
@@ -23,17 +45,31 @@ export function TopCompanies() {
       title="Top công ty"
       className="mt-5"
       footer={
-        <CustomPagination
-          className="w-full"
-          curPage={pagination.current}
-          totalPage={pagination.total}
-          onPageChange={page => {
-            setPagination(prev => ({ ...prev, current: page }));
-          }}
-        />
+        !loading && (
+          <>
+            <CustomPagination
+              className="w-full"
+              curPage={pagination.page ?? 1}
+              totalPage={pagination.totalPages ?? 6}
+              onPageChange={page => {
+                setPagination(prev => ({ ...prev, current: page }));
+              }}
+            />
+          </>
+        )
       }
     >
-      <div className="grid grid-cols-2 gap-3">{pages}</div>
+      {loading ? (
+        <LoadingCircle />
+      ) : Boolean(topCompanies.length) ? (
+        <div className="grid grid-cols-2 gap-3">
+          {topCompanies.map(company => (
+            <CompanyCard key={company.id} company={company} />
+          ))}
+        </div>
+      ) : (
+        <p>Không có top công ty nào.</p>
+      )}
     </GlassCard>
   );
 }

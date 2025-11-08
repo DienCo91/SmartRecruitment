@@ -12,48 +12,6 @@ export enum Size {
 }
 
 // Job
-export enum SalaryType {
-  Monthly = 'MONTHLY',
-  Yearly = 'YEARLY',
-  Hourly = 'HOURLY',
-}
-
-export const salaryType = {
-  [SalaryType.Hourly]: 'hour',
-  [SalaryType.Monthly]: 'month',
-  [SalaryType.Yearly]: 'year',
-};
-
-export enum EducationLevel {
-  HighSchool = 'HIGH_SCHOOL',
-}
-
-export const educationLevel = {
-  [EducationLevel.HighSchool]: 'High school',
-};
-
-export enum ExperienceLevel {
-  Fresher = 'FRESHER',
-}
-
-export const experienceLevel = {
-  [ExperienceLevel.Fresher]: 'Fresher',
-};
-
-export enum JobType {
-  FullTime = 'FULL_TIME',
-  PartTime = 'PART_TIME',
-}
-
-export enum StatusJob {
-  Active = 'ACTIVE',
-  Inactive = 'INACTIVE',
-}
-
-export const jobType = {
-  [JobType.FullTime]: 'Full time',
-  [JobType.PartTime]: 'Part time',
-};
 
 // Company
 export enum OrganizationType {

@@ -36,7 +36,6 @@ export function Combobox({
   const [search, setSearch] = useState<string>('');
 
   const filteredOptions = useMemo(() => {
-    console.log(options.filter(o => normalize(String(o.label)).includes(normalize(search))));
     return options.filter(o => normalize(String(o.label)).includes(normalize(search)));
   }, [search, options]);
 
