@@ -1,15 +1,17 @@
 import { Post } from '@/types/post';
-import {
-  EducationLevel,
-  ExperienceLevel,
-  JobType,
-  OrganizationType,
-  SalaryType,
-  StatusJob,
-  TeamSize,
-} from '.';
+// import {
+//   EducationLevel,
+//   ExperienceLevel,
+//   JobType,
+//   OrganizationType,
+//   SalaryType,
+//   StatusJob,
+//   TeamSize,
+// } from '.';
 import { Company, Job, TOptions } from '@/types';
 import { Comment } from '@/types/comment';
+import { OrganizationType, TeamSize } from '.';
+import { EducationLevel, ExperienceLevel, JobType, SalaryType, StatusJob } from './job';
 
 export const mockedCompany: Company = {
   id: 1,
@@ -43,17 +45,17 @@ export const mockedJob: Job = {
   description:
     'Integer aliquet pretium consequat. Donec et sapien id leo accumsan pellentesque eget maximus tellus. Duis et est ac leo rhoncus tincidunt vitae vehicula augue. Donec in suscipit diam. Pellentesque quis justo sit amet arcu commodo sollicitudin. Integer finibus blandit condimentum. Vivamus sit amet ligula ullamcorper, pulvinar ante id, tristique erat. Quisque sit amet aliquam urna. Maecenas blandit felis id massa sodales finibus. Integer bibendum eu nulla eu sollicitudin. Sed lobortis diam tincidunt accumsan faucibus. Quisque blandit augue quis turpis auctor, dapibus euismod ante ultricies. Ut non felis lacinia turpis feugiat euismod at id magna. Sed ut orci arcu. Suspendisse sollicitudin faucibus aliquet.',
   education_level: EducationLevel.HighSchool,
-  experience_level: ExperienceLevel.Fresher,
-  expiration_date: new Date('2025-12-31'),
+  experienceLevel: ExperienceLevel.Fresher,
+  expirationDate: new Date('2025-12-31'),
   is_featured: true,
-  job_type: JobType.FullTime,
+  jobType: JobType.FullTime,
   location_id: 0,
-  min_salary: 2_000,
-  max_salary: 5_000,
-  salary_type: SalaryType.Monthly,
+  minSalary: 2_000,
+  maxSalary: 5_000,
+  salaryType: SalaryType.Monthly,
   slug: 'chuyen-vien-kinh-doanh-giai-phap-thanh-toan-tu-van-tin-dung-doanh-nghiep',
   status: StatusJob.Active,
-  title: 'Chuyên Viên Kinh Doanh Giải Pháp Thanh Toán / Tư Vấn Tín Dụng Doanh Nghiệp',
+  jobTitle: 'Chuyên Viên Kinh Doanh Giải Pháp Thanh Toán / Tư Vấn Tín Dụng Doanh Nghiệp',
   vacancies: 100,
   company_id: 40,
   responsibilities:

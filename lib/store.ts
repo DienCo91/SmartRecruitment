@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import authReducer from './features/auth/authSlice';
 import commonReducer from './features/common/commonSlice';
+import favoriteJobsReducer from './features/favorites/favotiteSlice';
 import storage from './storage';
 
 const rootReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
+  favoriteJobs: favoriteJobsReducer,
 });
 
 //default is whitelist

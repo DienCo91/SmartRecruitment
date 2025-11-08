@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { CandidateService } from '@/services/candidate.services';
 import { CompanyService } from '@/services/company.services';
 import type { CompanyDetail } from '@/types';
-import { CircleX, Divide, Plus } from 'lucide-react';
+import { CircleX, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { FaArrowRight, FaYoutube } from 'react-icons/fa';

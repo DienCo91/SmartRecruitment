@@ -1,13 +1,19 @@
-// import { BaseProps } from "@/types";
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import { experienceLevel, ExperienceLevel, Router } from '@/constants';
-import { formatDistanceNow, formatSalary } from '@/lib/utils';
+import { Router } from '@/constants';
+import { experienceLevel, jobType } from '@/constants/job';
+import { addFavoriteJob, removeFavoriteJob } from '@/lib/features/favorites/favotiteSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { cn, formatDistanceNow, formatSalary } from '@/lib/utils';
+import { CandidateService } from '@/services/candidate.services';
 import { HotJob } from '@/types';
+import { debounce } from 'lodash';
 import { ArrowRightIcon, CalendarIcon, HeartIcon, MapPinIcon, WalletIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useCallback, useState } from 'react';
+import { toast } from 'sonner';
 import { CustomImage } from '../Images/CustomImage';
 
 interface Props {
@@ -15,7 +21,37 @@ interface Props {
 }
 
 export function JobCard({ job }: Props) {
-  console.log(job);
+  const { jobIds: favoriteJobIds } = useAppSelector(state => state.favoriteJobs);
+  const isFavorited = favoriteJobIds.includes(job.id);
+
+  const [isfavoriteJob, setIsFavotiteJob] = useState<boolean>(isFavorited);
+  const dispatch = useAppDispatch();
+
+  const favoriteApi = debounce(async (id: number, isFavorite: boolean) => {
+    try {
+      if (isFavorite) {
+        await CandidateService.followJob(String(id));
+        toast.success('Đã theo dõi công việc thành công');
+      } else {
+        await CandidateService.unfollowJob(String(id));
+        toast.success('Đã bỏ theo dõi công việc thành công');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Đã xảy ra lỗi');
+    }
+  }, 1000);
+
+  const handleTogglerFavorite = useCallback((id: number, isFavorite: boolean) => {
+    if (isFavorite) {
+      dispatch(addFavoriteJob(id));
+    } else {
+      dispatch(removeFavoriteJob(id));
+    }
+
+    favoriteApi(id, isFavorite);
+  }, []);
+
   return (
     <div className="flex mt-3 gap-3 bg-white/5 p-3 rounded-xl shadow-sm hover:bg-white/15 hover:shadow-lg">
       <CustomImage src={job.companyLogoUrl} alt="" className="w-[80px]" />
@@ -34,7 +70,7 @@ export function JobCard({ job }: Props) {
               Nổi bật
             </Badge>
             <Badge variant="secondary" className="block">
-              Fulltime
+              {jobType[job.jobType]}
             </Badge>
           </div>
         </div>
@@ -65,8 +101,17 @@ export function JobCard({ job }: Props) {
             </Badge>
           </div>
           <div className="flex items-center">
-            <CustomButton className="hover:bg-transparent hover:text-red-500">
-              <HeartIcon className="size-6" fill="red" />
+            <CustomButton
+              className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
+              title={isFavorited ? 'Bỏ theo dõi công việc' : 'Theo dõi công việc'}
+              onClick={() => {
+                setIsFavotiteJob(!isfavoriteJob);
+                handleTogglerFavorite(job.id, !isfavoriteJob);
+              }}
+            >
+              <HeartIcon
+                className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
+              />
             </CustomButton>
             <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
               Apply now

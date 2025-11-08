@@ -1,4 +1,4 @@
-import { EducationLevel, ExperienceLevel, JobType, SalaryType, StatusJob } from '@/constants';
+import { EducationLevel, ExperienceLevel, JobType, SalaryType, StatusJob } from '@/constants/job';
 import { Company } from './company';
 
 export interface Job {
