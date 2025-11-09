@@ -10,13 +10,7 @@ import {
 } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Check, ChevronDown } from 'lucide-react';
-
-const allCategories = [
-  { id: 1, name: 'IT & Software' },
-  { id: 2, name: 'DevOps & Cloud' },
-  { id: 3, name: 'AI / Machine Learning' },
-  { id: 4, name: 'Data Analyst / Data Engineer' },
-];
+import { jobCategories } from '@/constants/job';
 
 interface Categories {
   id: number;
@@ -47,7 +41,7 @@ export default function CategorySelector({ onChange, value }: CategorySelectorPr
   };
 
   const filteredCategories = React.useMemo(() => {
-    return allCategories.filter(tag => tag.name.toLowerCase().includes(search.toLowerCase()));
+    return jobCategories.filter(tag => tag.name.toLowerCase().includes(search.toLowerCase()));
   }, [search]);
 
   return (
