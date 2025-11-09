@@ -1,3 +1,5 @@
+import { jobType, JobType } from './job';
+
 export const ORGANIZATION_TYPE = [
   { value: 'GOVERNMENT', label: 'Government' },
   { value: 'SEMI_GOVERNMENT', label: 'Semi-government' },
@@ -32,10 +34,10 @@ export const COMPANY_SIZE = [
 ];
 
 export const JOB_TYPE = [
-  { value: 'FULL_TIME', label: 'Full Time' },
-  { value: 'PART_TIME', label: 'Part Time' },
-  { value: 'INTERNSHIP', label: 'Internship' },
-  { value: 'REMOTE', label: 'Remote' },
-  { value: 'TEMPORARY', label: 'Temporary' },
-  { value: 'CONTRACT_BASE', label: 'Contract Base' },
+  { value: JobType.FullTime, label: jobType[JobType.FullTime] },
+  { value: JobType.PartTime, label: jobType[JobType.PartTime] },
+  { value: JobType.InternShip, label: jobType[JobType.InternShip] },
+  { value: JobType.Remote, label: jobType[JobType.Remote] },
+  { value: JobType.Temporary, label: jobType[JobType.Temporary] },
+  { value: JobType.ContractBase, label: jobType[JobType.ContractBase] },
 ];

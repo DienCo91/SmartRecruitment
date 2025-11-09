@@ -19,8 +19,8 @@ interface IFilterJob {
 
 export interface IFilter {
   search: string;
-  location: null;
-  categories: null;
+  location: string;
+  categories: string;
   exp: string;
   salary: string;
   jobType: string[];
@@ -30,12 +30,12 @@ export interface IFilter {
 export function FilterJob({ handleSubmit }: IFilterJob) {
   const initFilter = {
     search: '',
-    location: null,
-    categories: null,
+    location: '',
+    categories: '',
     exp: '',
     salary: '',
-    jobType: [''],
-    education: [''],
+    jobType: [] as string[],
+    education: [] as string[],
   };
 
   type Filter = typeof initFilter;

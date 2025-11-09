@@ -11,15 +11,23 @@ export const salaryType = {
 };
 
 export enum EducationLevel {
-  HighSchool = 'HIGH_SCHOOL',
+  HIGH_SCHOOL = 'HIGH_SCHOOL',
+  INTERMEDIATE = 'INTERMEDIATE',
+  BACHELOR_DEGREE = 'BACHELOR_DEGREE',
+  MASTER_DEGREE = 'MASTER_DEGREE',
+  DOCTORATE = 'DOCTORATE',
 }
 
 export const educationLevel = {
-  [EducationLevel.HighSchool]: 'High school',
+  [EducationLevel.HIGH_SCHOOL]: 'Trung học phổ thông',
+  [EducationLevel.INTERMEDIATE]: 'Trung cấp',
+  [EducationLevel.BACHELOR_DEGREE]: 'Cử nhân',
+  [EducationLevel.MASTER_DEGREE]: 'Thạc sĩ',
+  [EducationLevel.DOCTORATE]: 'Tiến sĩ',
 };
 
 export enum ExperienceLevel {
-  Fresher = 'FRESHER',
+  FRESHER = 'FRESHER',
   ONE_TO_TWO_YEARS = 'ONE_TO_TWO_YEARS',
   TWO_TO_FOUR_YEARS = 'TWO_TO_FOUR_YEARS',
   FOUR_TO_SIX_YEARS = 'FOUR_TO_SIX_YEARS',
@@ -28,12 +36,12 @@ export enum ExperienceLevel {
 }
 
 export const experienceLevel = {
-  [ExperienceLevel.Fresher]: 'Fresher',
+  [ExperienceLevel.FRESHER]: 'Fresher',
   [ExperienceLevel.ONE_TO_TWO_YEARS]: '1 - 2 năm kinh nghiệm',
   [ExperienceLevel.TWO_TO_FOUR_YEARS]: '2 - 4 năm kinh nghiệm',
   [ExperienceLevel.FOUR_TO_SIX_YEARS]: '4 - 6 năm kinh nghiệm',
   [ExperienceLevel.SIX_TO_TEN_YEARS]: '6 - 10 năm kinh nghiệm',
-  [ExperienceLevel.TEN_PLUS_YEARS]: '10+ năm kinh nghiệm',
+  [ExperienceLevel.TEN_PLUS_YEARS]: 'Trên 10 kinh nghiệm',
 };
 
 export enum JobType {
@@ -46,15 +54,22 @@ export enum JobType {
 }
 
 export const jobType = {
-  [JobType.FullTime]: 'FullTime',
-  [JobType.PartTime]: 'PartTime',
-  [JobType.InternShip]: 'Intern',
-  [JobType.Remote]: 'Remote',
-  [JobType.Temporary]: 'Temporary',
-  [JobType.ContractBase]: 'ContractBase',
+  [JobType.FullTime]: 'Toàn thời gian',
+  [JobType.PartTime]: 'Bán thời gian',
+  [JobType.InternShip]: 'Thực tập',
+  [JobType.Remote]: 'Làm việc từ xa',
+  [JobType.Temporary]: 'Tạm thời',
+  [JobType.ContractBase]: 'Hợp đồng',
 };
 
 export enum StatusJob {
   Active = 'ACTIVE',
   Inactive = 'INACTIVE',
 }
+
+export const jobCategories = [
+  { id: 1, name: 'IT & Software' },
+  { id: 2, name: 'DevOps & Cloud' },
+  { id: 3, name: 'AI / Machine Learning' },
+  { id: 4, name: 'Data Analyst / Data Engineer' },
+];

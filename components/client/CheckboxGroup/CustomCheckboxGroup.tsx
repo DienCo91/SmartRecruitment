@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { BaseProps, TOptions } from '@/types';
+import { BaseProps } from '@/types';
 
 interface Props extends BaseProps {
   values: string[];
@@ -22,7 +22,7 @@ export function CustomCheckboxGroup({ values, onCheckedValues, options }: Props)
                 : onCheckedValues(values.filter(v => v !== o.value))
             }
           />
-          <Label htmlFor={o.label + ''} className="font-normal text-xs">
+          <Label htmlFor={o.label} className="font-normal text-xs">
             {o.label}
           </Label>
         </div>

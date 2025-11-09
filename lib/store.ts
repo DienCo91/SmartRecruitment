@@ -3,12 +3,14 @@ import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } fro
 import authReducer from './features/auth/authSlice';
 import commonReducer from './features/common/commonSlice';
 import favoriteJobsReducer from './features/favorites/favotiteSlice';
+import filterReducer from './features/filters/filterSlice';
 import storage from './storage';
 
 const rootReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
   favoriteJobs: favoriteJobsReducer,
+  filter: filterReducer,
 });
 
 //default is whitelist

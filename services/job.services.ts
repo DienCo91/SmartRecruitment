@@ -8,7 +8,7 @@ export const JobServices = {
     size = 10,
     keyword,
     location,
-    category,
+    categoryId,
     minSalary,
     maxSalary,
     experienceLevel,
@@ -19,7 +19,7 @@ export const JobServices = {
     size?: number;
     keyword?: string;
     location?: string;
-    category?: string;
+    categoryId?: string;
     minSalary?: number;
     maxSalary?: number;
     experienceLevel?: string;
@@ -35,7 +35,7 @@ export const JobServices = {
     // optional filters
     if (keyword) params.append('keyword', keyword);
     if (location) params.append('location', location);
-    if (category) params.append('category', category);
+    if (categoryId) params.append('categoryId', categoryId);
     if (minSalary) params.append('minSalary', String(minSalary));
     if (maxSalary) params.append('maxSalary', String(maxSalary));
     if (experienceLevel) params.append('experienceLevel', experienceLevel);

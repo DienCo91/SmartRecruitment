@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomPagination } from '../Paginations/CustomPagination';
 import { CompanyCard } from './CompanyCard';
+import { useAppSelector } from '@/lib/hooks';
 
 export function TopCompanies() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,6 +17,7 @@ export function TopCompanies() {
     page: 1,
     limit: 6,
   });
+  const filter = useAppSelector(state => state.filter);
 
   const fetchAllCompany = useCallback(async () => {
     try {
@@ -23,6 +25,8 @@ export function TopCompanies() {
       const { data: companies, meta } = await CompanyService.getAllCompanies({
         page: pagination.page,
         size: pagination.limit,
+        keyword: filter.keyword,
+        location: filter.location,
       });
 
       setTopCompanies(companies);
@@ -33,7 +37,7 @@ export function TopCompanies() {
     } finally {
       setLoading(false);
     }
-  }, [pagination.limit, pagination.page]);
+  }, [filter.keyword, filter.location, pagination.limit, pagination.page]);
 
   useEffect(() => {
     fetchAllCompany();

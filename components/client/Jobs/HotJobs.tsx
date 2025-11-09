@@ -7,10 +7,13 @@ import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomPagination } from '../Paginations/CustomPagination';
 import { JobCard } from './JobCard';
+import { useAppSelector } from '@/lib/hooks';
+import * as _ from 'lodash';
 
 export function HotJobs() {
   const [loading, setLoading] = useState<boolean>(false);
   const [jobs, setJobs] = useState<HotJob[]>([]);
+  const filter = useAppSelector(state => state.filter);
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
@@ -20,10 +23,15 @@ export function HotJobs() {
   const fetchHotJobs = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await JobServices.getJobs({
-        page: pagination.page,
-        size: pagination.limit,
-      });
+      const response = await JobServices.getJobs(
+        _.assign(
+          {
+            page: pagination.page,
+            size: pagination.limit,
+          },
+          filter
+        )
+      );
       const jobs = response.data as HotJob[];
       const paginate = response.meta as Pagination;
       setJobs(jobs);
@@ -33,7 +41,7 @@ export function HotJobs() {
     } finally {
       setLoading(false);
     }
-  }, [pagination.page, pagination.limit]);
+  }, [pagination.page, pagination.limit, filter]);
 
   useEffect(() => {
     fetchHotJobs();

@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
+import * as _ from 'lodash';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
