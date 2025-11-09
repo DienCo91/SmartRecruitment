@@ -34,8 +34,8 @@ export default function RootLayout({
               - use middleware.ts for Authorization */}
 
           {/* <ProtectedRoute> */}
-          {children}
           <LoadingOverlay />
+          {children}
           <Toaster richColors theme="light" />
           {/* </ProtectedRoute> */}
         </StoreProvider>

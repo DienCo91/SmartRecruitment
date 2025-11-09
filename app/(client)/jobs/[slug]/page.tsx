@@ -9,7 +9,6 @@ import { JobHeader } from '@/components/client/Jobs/JobHeader';
 import { JobOverView } from '@/components/client/Jobs/JobOverView';
 import { Jobtags } from '@/components/client/Jobs/JobTags';
 import { RelatedJob } from '@/components/client/Jobs/RelatedJob';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { Separator } from '@/components/ui/separator';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppSelector } from '@/lib/hooks';
@@ -126,7 +125,7 @@ const JobDetailPage = () => {
         </div>
       </div>
       <Separator className="my-5 bg-gray-500" />
-      <RelatedJob category={job.jobCategories[0].name} />
+      <RelatedJob category={job.jobCategories[0]?.name} />
 
       {showApplyJobModal && (
         <ApplyJobForm job={job} onClose={() => setShowApplyJobModal(false)} setJob={setJob} />

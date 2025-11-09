@@ -21,12 +21,11 @@ const FindJob = () => {
         page: data.page,
         size: size,
       });
-      const content = res?.data?.content || [];
-      const total = res?.data?.totalElements || 0;
+
+      const content = res?.data || [];
 
       setItems(prev => (data.page === 1 ? content : [...prev, ...content]));
-      setHasMore(data.page * size < total);
-      setItems(res.data.content);
+      setHasMore(res?.meta.hasNext);
     } catch (error) {
       console.log('error', error);
     }

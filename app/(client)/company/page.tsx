@@ -45,11 +45,10 @@ const Company = () => {
         foundedIn: filter?.yearRange,
       });
 
-      const content = res?.data?.content || [];
-      const total = res?.data?.totalElements || 0;
+      const content = res?.data || [];
 
       setDataCompany(prev => (pageNum === 1 ? content : [...prev, ...content]));
-      setHasMore(pageNum * size < total);
+      setHasMore(res?.meta.hasNext);
     } catch (error) {
       console.error('getCompany error', error);
     } finally {
