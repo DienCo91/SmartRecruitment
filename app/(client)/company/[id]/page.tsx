@@ -23,21 +23,20 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
   const dispatch = useAppDispatch();
   const { id } = use(props.params);
   const [company, setCompany] = useState<CompanyDetail | null>(null);
+  const getCompanyDetail = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await CompanyService.getCompanyById(id);
+      setCompany(res.data);
+    } catch (error) {
+      console.error('Error fetching company detail:', error);
+      setCompany(null);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   useEffect(() => {
-    const getCompanyDetail = async () => {
-      try {
-        dispatch(setLoading(true));
-        const res = await CompanyService.getCompanyById(id);
-        setCompany(res.data);
-      } catch (error) {
-        console.error('Error fetching company detail:', error);
-        setCompany(null);
-      } finally {
-        dispatch(setLoading(false));
-      }
-    };
-
     if (id) getCompanyDetail();
   }, [id]);
 
