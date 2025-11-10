@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import { CheckCheck } from 'lucide-react';
 import React, { useEffect } from 'react';

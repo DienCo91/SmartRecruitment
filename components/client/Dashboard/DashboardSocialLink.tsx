@@ -16,20 +16,8 @@ import { useAppDispatch } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
 import { getIconSocialLink } from '@/utils/common';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ca, fi } from 'date-fns/locale';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import {
-  FaGithub,
-  FaGitlab,
-  FaGlobe,
-  FaLinkedin,
-  FaReddit,
-  FaSkype,
-  FaYoutube,
-} from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
 import { IoMdAddCircleOutline, IoMdCloseCircleOutline } from 'react-icons/io';
-import { TiSocialFacebook, TiSocialInstagram } from 'react-icons/ti';
 import { toast } from 'sonner';
 import z from 'zod/v3';
 

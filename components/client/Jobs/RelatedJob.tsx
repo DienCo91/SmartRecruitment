@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { JobCardMini } from './JobCardMini';
 
-export function RelatedJob({ category }: { category?: string }) {
+export function RelatedJob({ categoryId }: { categoryId?: string }) {
   const [jobs, setJobs] = useState<CompanyJobPageResponse[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -20,7 +20,7 @@ export function RelatedJob({ category }: { category?: string }) {
       const res = await JobServices.getJobs({
         page: page,
         size: size,
-        category: category,
+        categoryId: categoryId,
       });
       const content = res?.data?.content || [];
       const total = res?.data?.totalElements || 0;

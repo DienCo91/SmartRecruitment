@@ -8,7 +8,6 @@ import CategorySelector from '@/components/ui/category-selector';
 import { Form } from '@/components/ui/form';
 import { JOB_TYPE } from '@/constants/company';
 import { educations, experiences } from '@/constants/mockedData';
-import { setLoading } from '@/lib/features/common/commonSlice';
 import { cn } from '@/lib/utils';
 import { EmployerService } from '@/services/employer.services';
 import { zodResolver } from '@hookform/resolvers/zod';

@@ -1,10 +1,9 @@
-import { Job, JobDetail } from '@/types';
-import { AvatarCompany } from '../Avatar/AvatarUser';
 import { Badge } from '@/components/ui/badge';
+import { JobDetail } from '@/types';
+import { getLabelJobType } from '@/utils';
 import { LinkIcon, MailIcon, PhoneIcon } from 'lucide-react';
 import Link from 'next/link';
-import { jobType } from '@/constants';
-import { getLabelJobType } from '@/utils';
+import { AvatarCompany } from '../Avatar/AvatarUser';
 
 export function JobHeader({ job }: { job: JobDetail }) {
   return (

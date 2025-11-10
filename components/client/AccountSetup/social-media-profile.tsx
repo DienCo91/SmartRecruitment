@@ -11,17 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FaGithub, FaGitlab, FaGlobe, FaReddit, FaSkype, FaYoutube } from 'react-icons/fa';
-import { FaLinkedin, FaXTwitter } from 'react-icons/fa6';
-import { IoMdAddCircleOutline, IoMdCloseCircleOutline } from 'react-icons/io';
-import { TiSocialFacebook, TiSocialInstagram } from 'react-icons/ti';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { z } from 'zod/v3';
-import { zodResolver } from '@hookform/resolvers/zod';
-import ButtonAccountSetup from './button-account-setup';
-import { DataSubmitFormProps } from './AccountSetupTabView';
 import { getIconSocialLink } from '@/utils/common';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { IoMdAddCircleOutline, IoMdCloseCircleOutline } from 'react-icons/io';
+import { z } from 'zod/v3';
+import { DataSubmitFormProps } from './AccountSetupTabView';
+import ButtonAccountSetup from './button-account-setup';
 
 const socialList = [
   { label: 'Facebook', value: 'FACEBOOK' },

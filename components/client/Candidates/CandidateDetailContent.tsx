@@ -1,9 +1,8 @@
-import { Separator } from '@/components/ui/separator';
+import { ICandidateDetail } from '@/types';
 import { DecorateContent as CandidateContent } from '../Jobs/DecorateContent';
+import { CandidateContactInformation } from './CandidateContactInformation';
 import { CandidateOverView } from './CandidateOverView';
 import { DownloadCandidateResume } from './DownloadCandidateResume';
-import { CandidateContactInformation } from './CandidateContactInformation';
-import { ICandidateDetail } from '@/types';
 
 export function CandidateDetailContent({
   candidateDetail,

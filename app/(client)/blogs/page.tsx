@@ -56,7 +56,7 @@ const BlogsPage = () => {
       <GlassCard
         title=""
         className="col-span-8"
-        classContentName="flex flex-col gap-3"
+        classContentName="flex flex-col gap-3 flex-1"
         footer={
           Boolean(blogs.length) && (
             <CustomPagination

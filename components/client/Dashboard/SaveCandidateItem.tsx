@@ -52,8 +52,8 @@ const SaveCandidateItem = () => {
                 >
                   <DropdownMenu.Item
                     onSelect={handleSendMail}
-                    className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
-                         hover:bg-blue-100 hover:text-blue-700 
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600
+                         hover:bg-blue-100 hover:text-blue-700
                          focus:outline-none focus:ring-0"
                   >
                     <Mail className="w-4 h-4" />
@@ -62,8 +62,8 @@ const SaveCandidateItem = () => {
 
                   <DropdownMenu.Item
                     onSelect={handleDownloadCV}
-                    className="flex items-center gap-2 px-3 py-2 text-sm  text-blue-600 
-                         hover:bg-blue-100 hover:text-blue-700 
+                    className="flex items-center gap-2 px-3 py-2 text-sm  text-blue-600
+                         hover:bg-blue-100 hover:text-blue-700
                          focus:outline-none focus:ring-0"
                   >
                     <ArrowDownToLine className="w-4 h-4" />
@@ -80,9 +80,9 @@ const SaveCandidateItem = () => {
           size="xl"
           open
           onClose={() => setShowDetailUserModel(false)}
-          title={<CandidateDetailHeader />}
+          title={<CandidateDetailHeader candidateDetail={null} />}
         >
-          <CandidateDetailContent />
+          <CandidateDetailContent candidateDetail={null} />
         </GlassDialog>
       )}
     </>

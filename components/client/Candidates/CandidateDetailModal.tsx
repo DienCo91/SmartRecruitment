@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { GlassDialog } from '../Dialogs/GlassDialog';
 import { CandidateDetailContent } from './CandidateDetailContent';

@@ -1,13 +1,10 @@
-import { GlassCard } from '../Cards/GlassCard';
-import * as _ from 'lodash';
-import { RecentBlogCard } from './RecentBlogCard';
-import { useCallback, useEffect, useState } from 'react';
-import { Blog } from '@/types/blog';
-import { BlogService } from '@/services/blog.service';
-import { toast } from 'sonner';
-import { LoadingDot } from '@/components/Loadings/LoadingDot';
-import { Size } from '@/constants';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { BlogService } from '@/services/blog.service';
+import { Blog } from '@/types/blog';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { GlassCard } from '../Cards/GlassCard';
+import { RecentBlogCard } from './RecentBlogCard';
 
 export function RecentBlogs() {
   const [loading, setLoading] = useState<boolean>(false);
