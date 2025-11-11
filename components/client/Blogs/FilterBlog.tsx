@@ -1,33 +1,58 @@
 import { CustomInput } from '@/components/Inputs/CustomInput';
 import { Separator } from '@/components/ui/separator';
-import { categoriesBlog } from '@/constants/mockedData';
+import { QueryType } from '@/constants';
+import { BlogService } from '@/services/blog.service';
+import { TOptions } from '@/types';
+import { BlogCategory, ISpecificationParams } from '@/types/blog';
 import { SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomCheckboxGroup } from '../CheckboxGroup/CustomCheckboxGroup';
 import { CustomCollapsible } from '../Collapsibles/CustomCollapsible';
 
 export function FilterBlog() {
-  const initFilter = {
-    keyword: '',
-    categoryBlog: [''],
-  };
-  type Filter = typeof initFilter;
-  const [filters, setFilters] = useState<Filter>(initFilter);
+  const [filters, setFilters] = useState<ISpecificationParams>({ keyword: '', categoryIds: [] });
+  const [categoriyOptions, setCategoryOptions] = useState<TOptions[]>([]);
   const router = useRouter();
+  const params = new URLSearchParams(window.location.search);
 
-  const handleFilter = (key: keyof Filter, value: Filter[typeof key]) =>
+  const handleFilter = (key: keyof ISpecificationParams, value: ISpecificationParams[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
 
   const handleSearch = (e: { key: string }) => {
-    if (e.key === 'Enter') {
-      const params = new URLSearchParams(window.location.search);
-      params.set('keyword', filters.keyword);
+    if (e.key === 'Enter' && filters) {
+      params.set('keyword', filters.keyword!);
       if (!filters.keyword) params.delete('keyword');
       router.push(`/blogs?${params.toString()}`);
     }
   };
+
+  const fetchBlogCategories = useCallback(async () => {
+    const categories = (await BlogService.getBlogCategories()).data as BlogCategory[];
+    const options = categories.map(item => ({
+      value: String(item.id),
+      label: item.name,
+    })) as TOptions[];
+    setCategoryOptions(options);
+  }, []);
+
+  useEffect(() => {
+    fetchBlogCategories();
+  }, [fetchBlogCategories]);
+
+  const pushParam = useDebouncedCallback((categoryIds: number[]) => {
+    params.delete(QueryType.QUERY_CATEGORY);
+    categoryIds.forEach(id => {
+      params.append(QueryType.QUERY_CATEGORY, String(id));
+    });
+    router.push(`/blogs?${params.toString()}`);
+  }, 1000);
+
+  useEffect(() => {
+    pushParam(filters.categoryIds!);
+  }, [filters.categoryIds, pushParam]);
 
   return (
     <GlassCard title="" classContentName="px-0">
@@ -38,7 +63,7 @@ export function FilterBlog() {
             startIcon={<SearchIcon size={18} />}
             placeholder="Nhập tên blog"
             className="focus-within:ring-0 border-0 bg-white/10"
-            value={filters.keyword}
+            value={filters?.keyword}
             onChange={e => handleFilter('keyword', e.target.value)}
             onKeyDown={handleSearch}
           />
@@ -51,9 +76,9 @@ export function FilterBlog() {
         >
           <div className="mt-3" />
           <CustomCheckboxGroup
-            options={categoriesBlog}
-            values={filters.categoryBlog}
-            onCheckedValues={vals => handleFilter('categoryBlog', vals)}
+            options={categoriyOptions}
+            values={filters?.categoryIds!.map(String)}
+            onCheckedValues={vals => handleFilter('categoryIds', vals.map(Number))}
           />
         </CustomCollapsible>
       </div>

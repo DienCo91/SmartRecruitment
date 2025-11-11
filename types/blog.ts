@@ -5,6 +5,8 @@ export interface ISpecificationParams {
   limit?: number;
   sort?: string;
   keyword?: string;
+  categoryIds?: number[];
+  tagId?: number;
 }
 
 export interface Blog {
@@ -21,4 +23,9 @@ export interface Blog {
   createdAt?: Date;
   updatedAt?: Date;
   author: AuthorOfBlog;
+}
+
+export interface BlogCategory {
+  id: number;
+  name: string;
 }

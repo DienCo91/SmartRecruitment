@@ -7,6 +7,7 @@ import { RecentBlogs } from '@/components/client/Blogs/RecentBlogs';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CustomPagination } from '@/components/client/Paginations/CustomPagination';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { QueryType } from '@/constants';
 import { BlogService } from '@/services/blog.service';
 import { Pagination } from '@/types';
 import { Blog } from '@/types/blog';
@@ -28,6 +29,8 @@ const BlogsPage = () => {
         keyword: params.get('keyword') ?? '',
         page: Number(params.get('page')) - 1 < 0 ? 0 : Number(params.get('page')) - 1,
         limit: 10,
+        categoryIds: params.getAll(QueryType.QUERY_CATEGORY).map(Number),
+        tagId: Number(params.get(QueryType.QUEY_TAG)),
       });
       setBlogs(response.data as Blog[]);
       setPagination(response.meta as Pagination);
@@ -41,10 +44,6 @@ const BlogsPage = () => {
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
-
-  useEffect(() => {
-    console.log(pagination.page);
-  }, [pagination]);
 
   return (
     <div className="grid grid-cols-12 gap-3 mt-[60px]">

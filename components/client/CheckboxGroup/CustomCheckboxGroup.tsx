@@ -1,10 +1,10 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { BaseProps } from '@/types';
+import { BaseProps, TOptions } from '@/types';
 
 interface Props extends BaseProps {
   values: string[];
-  options: { value: string; label: string }[];
+  options: TOptions[];
   onCheckedValues: (vals: string[]) => void;
 }
 
