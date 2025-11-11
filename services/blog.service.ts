@@ -1,5 +1,6 @@
 import { ISpecificationParams } from '@/types/blog';
 import http from '.';
+import qs from 'qs';
 
 const endpointPrefix = '/api/blogs';
 
@@ -7,12 +8,25 @@ export const BlogService = {
   getListBlogs: async (data?: ISpecificationParams) => {
     const res = await http.get(`${endpointPrefix}`, {
       params: data,
+      paramsSerializer: params => {
+        return qs.stringify(params, { arrayFormat: 'repeat' });
+      },
     });
     return res.data;
   },
 
   getBlogBySlug: async (slug: string) => {
     const res = await http.get(`${endpointPrefix}/slug/${slug}`);
+    return res.data;
+  },
+
+  getBlogCategories: async () => {
+    const res = await http.get(`${endpointPrefix}/categories`);
+    return res.data;
+  },
+
+  getPopularTags: async () => {
+    const res = await http.get(`${endpointPrefix}/popular-tags`);
     return res.data;
   },
 };

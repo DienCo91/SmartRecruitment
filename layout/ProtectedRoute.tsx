@@ -20,7 +20,7 @@ const ProtectedRoute = ({ children }: Props) => {
 
     if (role === ROLE_USER.ADMIN) return;
 
-    let allowedRoutes: (string | ((slug: string) => string))[] = [];
+    let allowedRoutes: (string | ((slug: string) => string) | ((slug: number) => string))[] = [];
 
     switch (role) {
       case ROLE_USER.CANDIDATE:

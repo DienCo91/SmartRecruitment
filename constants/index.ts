@@ -11,7 +11,10 @@ export enum Size {
   '2XL' = '2xl',
 }
 
-// Job
+export enum QueryType {
+  QUERY_CATEGORY = 'ca',
+  QUEY_TAG = 'tg',
+}
 
 // Company
 export enum OrganizationType {

@@ -4,7 +4,7 @@ import { ROUTER_CANDIDATE, ROUTER_EMPLOYER, ROUTER_GUESS } from './constants';
 const ROLE_KEY = 'userRole';
 
 function isAuthorized(path: string, role: string | undefined): boolean {
-  let allowedRoutes: (string | ((slug: string) => string))[] = [];
+  let allowedRoutes: (string | ((slug: string) => string) | ((slug: number) => string))[] = [];
 
   switch (role) {
     case 'ADMIN':
