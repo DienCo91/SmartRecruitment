@@ -25,7 +25,7 @@ const JobAlert = () => {
           ''
         )}
       </DashboardHeader>
-      <FavoriteJobsList isEditing={isEditing} />
+      {/* <FavoriteJobsList isEditing={isEditing} /> */}
     </div>
   );
 };

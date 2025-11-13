@@ -12,7 +12,7 @@ import { HotJob } from '@/types';
 import { debounce } from 'lodash';
 import { ArrowRightIcon, CalendarIcon, HeartIcon, MapPinIcon, WalletIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { CustomImage } from '../Images/CustomImage';
 
@@ -24,28 +24,27 @@ export function JobCard({ job }: Props) {
   const { jobIds: favoriteJobIds } = useAppSelector(state => state.favoriteJobs);
   const isFavorited = favoriteJobIds.includes(job.id);
 
-  const [isfavoriteJob, setIsFavotiteJob] = useState<boolean>(isFavorited);
   const dispatch = useAppDispatch();
 
-  const currentUser = useAppSelector(state => state.auth.currentUser);
-  const isCandidate = currentUser?.role === ROLE_USER.CANDIDATE;
-
-  const favoriteApi = debounce(async (id: number, isFavorite: boolean) => {
-    try {
-      if (isFavorite) {
-        await CandidateService.followJob(String(id));
-        toast.success('Đã theo dõi công việc thành công');
-      } else {
-        await CandidateService.unfollowJob(String(id));
-        toast.success('Đã bỏ theo dõi công việc thành công');
+  const favoriteApi = useCallback(
+    debounce(async (id: number, isFavorite: boolean) => {
+      try {
+        if (isFavorite) {
+          await CandidateService.followJob(String(id));
+          toast.success('Đã theo dõi công việc thành công');
+        } else {
+          await CandidateService.unfollowJob(String(id));
+          toast.success('Đã bỏ theo dõi công việc thành công');
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('Đã xảy ra lỗi');
       }
-    } catch (error) {
-      console.error(error);
-      toast.error('Đã xảy ra lỗi');
-    }
-  }, 1000);
+    }, 400),
+    []
+  );
 
-  const handleTogglerFavorite = useCallback((id: number, isFavorite: boolean) => {
+  const handleTogglerFavorite = (id: number, isFavorite: boolean) => {
     if (isFavorite) {
       dispatch(addFavoriteJob(id));
     } else {
@@ -53,7 +52,7 @@ export function JobCard({ job }: Props) {
     }
 
     favoriteApi(id, isFavorite);
-  }, []);
+  };
 
   return (
     <div className="flex mt-3 gap-3 bg-white/5 p-3 rounded-xl shadow-sm hover:bg-white/15 hover:shadow-lg">
@@ -103,26 +102,22 @@ export function JobCard({ job }: Props) {
               {experienceLevel[job.experienceLevel]}
             </Badge>
           </div>
-          {isCandidate && (
-            <div className="flex items-center">
-              <CustomButton
-                className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
-                title={isFavorited ? 'Bỏ theo dõi công việc' : 'Theo dõi công việc'}
-                onClick={() => {
-                  setIsFavotiteJob(!isfavoriteJob);
-                  handleTogglerFavorite(job.id, !isfavoriteJob);
-                }}
-              >
-                <HeartIcon
-                  className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
-                />
-              </CustomButton>
-              <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
-                Apply now
-                <ArrowRightIcon />
-              </CustomButton>
-            </div>
-          )}
+          <div className="flex items-center">
+            <CustomButton
+              className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
+              onClick={() => {
+                handleTogglerFavorite(job.id, !isFavorited);
+              }}
+            >
+              <HeartIcon
+                className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
+              />
+            </CustomButton>
+            <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
+              Apply now
+              <ArrowRightIcon />
+            </CustomButton>
+          </div>
         </div>
       </div>
     </div>

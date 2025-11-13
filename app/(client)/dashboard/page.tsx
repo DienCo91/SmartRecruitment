@@ -46,6 +46,7 @@ const INFO_CARD_EMPLOYER = [
 
 const DashBoardOverView = () => {
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
+  console.log('currentUser', currentUser);
   const canChangePassword = !isLoginWithOAuth2();
 
   if (!currentUser) return null;

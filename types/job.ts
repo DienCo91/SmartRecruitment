@@ -170,3 +170,7 @@ export interface AppliedJobResponse {
   jobStatus: 'ACTIVE' | 'INACTIVE' | 'CLOSED' | string;
   appliedDate: string;
 }
+
+export interface JobFav extends AppliedJobResponse {
+  daysRemaining: number;
+}

@@ -1,18 +1,17 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CardContent } from '@/components/ui/card';
+import { Router } from '@/constants';
+import { JobItem } from '@/types';
+import { getLabelJobType } from '@/utils';
+import { formatNumber } from '@/utils/common';
 import { MapPin } from 'lucide-react';
-import { FaReddit } from 'react-icons/fa';
+import Link from 'next/link';
 import { LuDot } from 'react-icons/lu';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlassCardBase from '../Cards/GlassCardBase';
-import { JobItem } from '@/types';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { getLabelJobType } from '@/utils';
-import { formatNumber } from '@/utils/common';
-import Link from 'next/link';
-import { Router } from '@/constants';
+import Image from 'next/image';
 
 interface IListJob {
   items: JobItem[];
@@ -50,10 +49,16 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
                   <CardContent>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <FaReddit
-                          className="text-white bg-orange-600 w-[60px] h-[60px] p-[16px] rounded-sm"
-                          size={40}
-                        />
+                        <div>
+                          <Image
+                            src={job.companyLogoUrl}
+                            alt="Logo"
+                            width={50}
+                            height={50}
+                            className="rounded-md object-cover flex-shrink-0 "
+                            unoptimized
+                          />
+                        </div>
                         <div>
                           <span className="font-semibold">{job.companyName}</span>
                           <div className="flex items-center text-sm text-gray-500 mb-2 opacity-80">

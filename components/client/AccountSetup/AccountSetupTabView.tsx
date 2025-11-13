@@ -178,7 +178,7 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
     <div className="mt-[60px]">
       {hasInitData && (
         <Button className="mb-[20px]" onClick={handleActiveUpdate}>
-          Update
+          Edit
         </Button>
       )}
       <Tabs
