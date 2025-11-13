@@ -27,9 +27,9 @@ const JobAlertsList = () => {
         </Button>
       </div>
       <div className="space-y-4">
-        {data.map((_, index) => (
+        {/* {data.map((_, index) => (
           <DashBoardJobItem key={index} />
-        ))}
+        ))} */}
       </div>
       <CustomPagination
         className="mt-[20px]"

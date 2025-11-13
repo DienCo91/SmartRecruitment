@@ -84,4 +84,13 @@ export const CandidateService = {
     const res = await http.get(`${endpointPrefix}/jobs/applied-jobs`, { params });
     return res.data;
   },
+
+  async getFavoriteJob(page = 1, size = 10, keyword?: string, status?: string) {
+    const params: Record<string, string | number> = { page, size };
+    if (keyword) params.keyword = keyword;
+    if (status) params.status = status;
+
+    const res = await http.get(`${endpointPrefix}/jobs/favorite-jobs`, { params });
+    return res.data;
+  },
 };

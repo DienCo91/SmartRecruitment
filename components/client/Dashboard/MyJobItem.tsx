@@ -44,7 +44,7 @@ const MyJobItem: React.FC<IMyJobItem> = ({ item }) => {
         <span className="ml-[8px]">{item.numberOfApplications} Applications</span>
       </div>
       <div className="flex items-center">
-        <Link href={Router.DASHBOARD.VIEW_APPLICATIONS('1')}>
+        <Link href={Router.DASHBOARD.VIEW_APPLICATIONS(item.id)}>
           <Button className="cursor-pointer">View Applications</Button>
         </Link>
         <DropdownMenu.Root>

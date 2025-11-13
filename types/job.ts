@@ -170,3 +170,24 @@ export interface AppliedJobResponse {
   jobStatus: 'ACTIVE' | 'INACTIVE' | 'CLOSED' | string;
   appliedDate: string;
 }
+
+export interface JobFav extends AppliedJobResponse {
+  daysRemaining: number;
+}
+
+export interface ApplicationBriefResponse {
+  applicationId: number;
+  candidateId: number;
+  candidateName: string | null;
+  candidateAvatarUrl: string | null;
+  candidateHeadline: string | null;
+  experienceLevel: string | null;
+  educationLevel: string | null;
+  appliedAt: string; // ISO datetime string
+  resumeUrl: string;
+  coverLetter: string | null;
+  score: {
+    source: string; // "0.0"
+    parsedValue: number; // 0
+  };
+}

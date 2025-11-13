@@ -46,4 +46,11 @@ export const EmployerService = {
     const res = await http.get(`${endpointPrefix}/jobs`, { params });
     return res.data;
   },
+
+  async getAllCvByJob(page: number, size: number, jobId: string) {
+    const params: Record<string, string | number> = { page, size, jobId };
+
+    const res = await http.get(`${endpointPrefix}/job/${jobId}/applications`, { params });
+    return res.data;
+  },
 };

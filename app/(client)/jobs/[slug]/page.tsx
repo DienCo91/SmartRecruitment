@@ -17,9 +17,10 @@ import { CandidateService } from '@/services/candidate.services';
 import { JobServices } from '@/services/job.services';
 import { JobDetail } from '@/types/job';
 import { format } from 'date-fns';
+import { debounce } from 'lodash';
 import { ArrowRightIcon, CheckCheckIcon, HeartIcon } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 
@@ -43,26 +44,41 @@ const JobDetailPage = () => {
     }
   };
 
-  const handleToggleFollowJob = async () => {
+  const handleFetchToggleFollowJob = useCallback(
+    debounce(
+      async (isFav: boolean, id: string) => {
+        try {
+          if (isFav) {
+            await CandidateService.unfollowJob(id);
+            setJob(prev => (prev ? { ...prev, isFavorite: false } : prev));
+            toast.success('Unfollow job successfully!');
+          } else {
+            await CandidateService.followJob(id);
+            setJob(prev => (prev ? { ...prev, isFavorite: true } : prev));
+            toast.success('Follow job successfully!');
+          }
+        } catch (err) {
+          console.error('Toggle follow error:', err);
+        }
+      },
+      400,
+      { trailing: true }
+    ),
+    []
+  );
+
+  const handleToggleFollowJob = () => {
     if (!job) return;
 
-    try {
-      dispatch(setLoading(true));
+    const isFav = job.isFavorite;
 
-      if (job.isFavorite) {
-        await CandidateService.unfollowJob(job.id);
-        setJob(prev => (prev ? { ...prev, isFavorite: false } : prev));
-        toast.success('Unfollow job successfully!');
-      } else {
-        await CandidateService.followJob(job.id);
-        setJob(prev => (prev ? { ...prev, isFavorite: true } : prev));
-        toast.success('Follow job successfully!');
-      }
-    } catch (err) {
-      console.error('Toggle follow error:', err);
-    } finally {
-      dispatch(setLoading(false));
+    if (isFav) {
+      setJob(prev => (prev ? { ...prev, isFavorite: false } : prev));
+    } else {
+      setJob(prev => (prev ? { ...prev, isFavorite: true } : prev));
     }
+
+    handleFetchToggleFollowJob(isFav, job.id);
   };
 
   useEffect(() => {

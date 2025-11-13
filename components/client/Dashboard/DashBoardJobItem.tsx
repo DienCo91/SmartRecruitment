@@ -1,24 +1,30 @@
 'use client';
-import React, { useState } from 'react';
-import GlassCardBase from '../Cards/GlassCardBase';
-import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { FaLocationDot } from 'react-icons/fa6';
+import { JobFav } from '@/types';
+import { getLabelJobType } from '@/utils';
+import { formatNumber } from '@/utils/common';
+import { HeartIcon, X } from 'lucide-react';
+import Image from 'next/image';
+import React, { useState } from 'react';
 import { BiDollar } from 'react-icons/bi';
+import { FaLocationDot } from 'react-icons/fa6';
 import { MdOutlineDateRange } from 'react-icons/md';
-import { FaBookmark } from 'react-icons/fa';
-import ButtonDashboard from './ButtonDashboard';
-import { X } from 'lucide-react';
+import GlassCardBase from '../Cards/GlassCardBase';
 import { GlassDialog } from '../Dialogs/GlassDialog';
-import DashboardConfirmDeleteHeader from './DashboardConfirmDeleteHeader';
+import ButtonDashboard from './ButtonDashboard';
 import DashboardConfirmDeleteContent from './DashboardConfirmDeleteContent';
 import DashboardConfirmDeleteFooter from './DashboardConfirmDeleteFooter';
+import DashboardConfirmDeleteHeader from './DashboardConfirmDeleteHeader';
+import { useRouter } from 'next/navigation';
+import { Router } from '@/constants';
 
 interface IDashBoardJobItem {
   onDeleteById?: (id: string) => void;
+  item: JobFav;
 }
 
-const DashBoardJobItem: React.FC<IDashBoardJobItem> = ({ onDeleteById }) => {
+const DashBoardJobItem: React.FC<IDashBoardJobItem> = ({ onDeleteById, item }) => {
+  const router = useRouter();
   const [isShowDialog, setIsShowDialog] = useState(false);
 
   const onCloseDialog = () => {
@@ -33,7 +39,7 @@ const DashBoardJobItem: React.FC<IDashBoardJobItem> = ({ onDeleteById }) => {
   return (
     <GlassCardBase className="flex flex-row flex-wrap relative">
       <Image
-        src="https://images.pexels.com/photos/33199238/pexels-photo-33199238.jpeg"
+        src={item.companyLogoUrl}
         alt="Logo"
         width={48}
         height={48}
@@ -43,30 +49,36 @@ const DashBoardJobItem: React.FC<IDashBoardJobItem> = ({ onDeleteById }) => {
 
       <div className="space-y-2 flex flex-col flex-1">
         <div className="flex space-x-2 flex-wrap">
-          <h1 className="font-bold text-[14px]">Technical Support Specialist</h1>
+          <h1 className="font-bold text-[14px]">{item.jobTitle}</h1>
           <Badge variant="secondary" className="bg-blue-50 text-blue-600">
-            Full Time
+            {getLabelJobType(item.type)}
           </Badge>
         </div>
         <div className="flex space-x-2 flex-wrap text-[12px]">
           <div className="flex items-center gap-1">
-            <FaLocationDot /> Washington
+            <FaLocationDot /> {item.provinceCity}
           </div>
           <div className="flex items-center gap-1">
-            <BiDollar size={14} /> 50k-80k/month
+            <BiDollar size={14} /> ${formatNumber(item.minSalary)} - ${formatNumber(item.maxSalary)}
           </div>
           {/* TODO: add case expire date */}
           <div className="flex items-center gap-1">
-            <MdOutlineDateRange size={14} /> 4 Days Remaining
+            <MdOutlineDateRange size={14} />{' '}
+            {item.daysRemaining > 0 ? `${item.daysRemaining} days` : 'Expired'}
           </div>
         </div>
       </div>
 
       <div className="flex items-center gap-3">
         <GlassCardBase className="p-[12px] hover:translate-y-[0px]">
-          <FaBookmark size={14} />
+          <HeartIcon className={'size-4 border-0 text-red-500 fill-red-500'} />
         </GlassCardBase>
-        <ButtonDashboard title="Apply Now" />
+        {item.daysRemaining > 0 && (
+          <ButtonDashboard
+            title="View Detail"
+            onClick={() => router.push(Router.JOB.DETAIL(item.slug))}
+          />
+        )}
       </div>
 
       {onDeleteById && (

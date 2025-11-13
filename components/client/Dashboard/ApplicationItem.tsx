@@ -4,20 +4,36 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ApplicationBriefResponse } from '@/types';
+import { getLabelEducation, getLabelExperience } from '@/utils';
+import { formatDate } from '@/utils/common';
 
-const info = ['7 Years Experience', 'Education: Master Degree', 'Applied: Jan 23, 2022'];
+interface IApplicationItem {
+  item: ApplicationBriefResponse;
+}
 
-const ApplicationItem = () => {
+const ApplicationItem: React.FC<IApplicationItem> = ({ item }) => {
+  const info = [
+    getLabelExperience(item.experienceLevel || 'NO_EXPERIENCE'),
+    `Education: ${getLabelEducation(item.educationLevel || 'NO_EDUCATION')}`,
+    `Applied:${formatDate(item.appliedAt)}`,
+  ];
+
   return (
     <GlassCardBase>
       <div className="flex space-x-2 p-[10px]">
         <Avatar className="w-[44px] h-[44px] shadow-md">
-          <AvatarImage src="https://images.pexels.com/photos/33514898/pexels-photo-33514898.jpeg" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage
+            src={
+              item?.candidateAvatarUrl ||
+              'https://images.pexels.com/photos/33514898/pexels-photo-33514898.jpeg'
+            }
+          />
+          <AvatarFallback>{item.candidateName?.slice(0, 2)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span>Ronald Richards</span>
-          <span>UI/UX Designer</span>
+          <span>{item?.candidateName}</span>
+          <span>{item?.candidateHeadline}</span>
         </div>
       </div>
       <Separator className=" " />
