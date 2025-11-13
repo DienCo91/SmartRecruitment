@@ -5,15 +5,19 @@ import { BlogService } from '@/services/blog.service';
 import { TOptions } from '@/types';
 import { BlogCategory, ISpecificationParams } from '@/types/blog';
 import { SearchIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomCheckboxGroup } from '../CheckboxGroup/CustomCheckboxGroup';
 import { CustomCollapsible } from '../Collapsibles/CustomCollapsible';
 
 export function FilterBlog() {
-  const [filters, setFilters] = useState<ISpecificationParams>({ keyword: '', categoryIds: [] });
+  const searchParam = useSearchParams();
+  const [filters, setFilters] = useState<ISpecificationParams>({
+    keyword: searchParam.get('keyword') || '',
+    categoryIds: searchParam.getAll('ca').map(Number) || [],
+  });
   const [categoriyOptions, setCategoryOptions] = useState<TOptions[]>([]);
   const router = useRouter();
   const params = new URLSearchParams(window.location.search);
@@ -50,7 +54,14 @@ export function FilterBlog() {
     router.push(`/blogs?${params.toString()}`);
   }, 1000);
 
+  const isMounted = useRef(false);
+
   useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
+
     pushParam(filters.categoryIds!);
   }, [filters.categoryIds, pushParam]);
 

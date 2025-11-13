@@ -2,15 +2,6 @@ body:has(.theme-default) {
   background-image: url('/images/bg-main.png');
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-/* body:has(.theme-default) a,
-body:has(.theme-default) p,
-body:has(.theme-default) span,
-body:has(.theme-default) input
-{
-  color: #d4d4d4;
-} */
-
-body:has(.theme-default) .body:has(.theme-default) {
+  background-position: top center;
+  background-attachment: fixed;
 }

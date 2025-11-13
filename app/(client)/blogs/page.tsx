@@ -14,6 +14,7 @@ import { Blog } from '@/types/blog';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import _ from 'lodash';
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -25,13 +26,18 @@ const BlogsPage = () => {
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await BlogService.getListBlogs({
-        keyword: params.get('keyword') ?? '',
-        page: Number(params.get('page')) - 1 < 0 ? 0 : Number(params.get('page')) - 1,
-        limit: 10,
-        categoryIds: params.getAll(QueryType.QUERY_CATEGORY).map(Number),
-        tagId: Number(params.get(QueryType.QUEY_TAG)),
-      });
+      const query = _.omitBy(
+        {
+          keyword: params.get('keyword') || undefined,
+          page: !isNaN(Number(params.get('page')))
+            ? Math.max(0, Number(params.get('page')) - 1)
+            : undefined,
+          categoryIds: params.getAll(QueryType.QUERY_CATEGORY).map(Number),
+          tagId: Number(params.get(QueryType.QUEY_TAG)) || undefined,
+        },
+        _.isNil
+      );
+      const response = await BlogService.getListBlogs(query);
       setBlogs(response.data as Blog[]);
       setPagination(response.meta as Pagination);
     } catch {

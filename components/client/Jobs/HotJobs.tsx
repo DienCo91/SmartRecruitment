@@ -1,14 +1,14 @@
 'use client';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { useAppSelector } from '@/lib/hooks';
 import { JobServices } from '@/services/job.services';
 import { HotJob, Pagination } from '@/types';
+import * as _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomPagination } from '../Paginations/CustomPagination';
 import { JobCard } from './JobCard';
-import { useAppSelector } from '@/lib/hooks';
-import * as _ from 'lodash';
 
 export function HotJobs() {
   const [loading, setLoading] = useState<boolean>(false);

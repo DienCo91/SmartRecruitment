@@ -21,7 +21,6 @@ const BlogDetailPage = () => {
     try {
       setLoading(true);
       const blog = (await BlogService.getBlogBySlug(String(slug))).data as Blog;
-      console.log(blog);
       setBlog(blog);
     } catch {
       toast.error('Đã có lỗi xảy ra');
@@ -32,9 +31,9 @@ const BlogDetailPage = () => {
 
   useEffect(() => {
     fetchBlog();
-  }, [fetchBlog]);
+  }, []);
   return (
-    <GlassCard className="mt-10 hover:bg-transparent" title="" action footer={<Comments />}>
+    <GlassCard className="mt-10" title="" action footer={<Comments />}>
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-8">
           {loading ? (

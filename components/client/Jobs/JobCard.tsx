@@ -2,7 +2,7 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import { Router } from '@/constants';
+import { ROLE_USER, Router } from '@/constants';
 import { experienceLevel, jobType } from '@/constants/job';
 import { addFavoriteJob, removeFavoriteJob } from '@/lib/features/favorites/favotiteSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -26,6 +26,9 @@ export function JobCard({ job }: Props) {
 
   const [isfavoriteJob, setIsFavotiteJob] = useState<boolean>(isFavorited);
   const dispatch = useAppDispatch();
+
+  const currentUser = useAppSelector(state => state.auth.currentUser);
+  const isCandidate = currentUser?.role === ROLE_USER.CANDIDATE;
 
   const favoriteApi = debounce(async (id: number, isFavorite: boolean) => {
     try {
@@ -100,24 +103,26 @@ export function JobCard({ job }: Props) {
               {experienceLevel[job.experienceLevel]}
             </Badge>
           </div>
-          <div className="flex items-center">
-            <CustomButton
-              className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
-              title={isFavorited ? 'Bỏ theo dõi công việc' : 'Theo dõi công việc'}
-              onClick={() => {
-                setIsFavotiteJob(!isfavoriteJob);
-                handleTogglerFavorite(job.id, !isfavoriteJob);
-              }}
-            >
-              <HeartIcon
-                className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
-              />
-            </CustomButton>
-            <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
-              Apply now
-              <ArrowRightIcon />
-            </CustomButton>
-          </div>
+          {isCandidate && (
+            <div className="flex items-center">
+              <CustomButton
+                className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
+                title={isFavorited ? 'Bỏ theo dõi công việc' : 'Theo dõi công việc'}
+                onClick={() => {
+                  setIsFavotiteJob(!isfavoriteJob);
+                  handleTogglerFavorite(job.id, !isfavoriteJob);
+                }}
+              >
+                <HeartIcon
+                  className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
+                />
+              </CustomButton>
+              <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
+                Apply now
+                <ArrowRightIcon />
+              </CustomButton>
+            </div>
+          )}
         </div>
       </div>
     </div>

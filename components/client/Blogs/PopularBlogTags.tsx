@@ -5,9 +5,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { Tag } from '../Tags/Tag';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export function PopularBlogTags() {
+  const searchParam = useSearchParams();
   const [tags, setTags] = useState<TagData[]>();
   const params = new URLSearchParams(window.location.search);
   const router = useRouter();
@@ -33,7 +34,12 @@ export function PopularBlogTags() {
   return (
     <GlassCard title="Tag phổ biến" action classContentName="flex flex-wrap p-0">
       {tags?.map(tag => (
-        <Tag key={tag.id} content={tag.name} onClick={() => handleFilterTag(tag.id)} />
+        <Tag
+          key={tag.id}
+          content={tag.name}
+          onClick={() => handleFilterTag(tag.id)}
+          active={tag.id === Number(searchParam.get(QueryType.QUEY_TAG))}
+        />
       ))}
     </GlassCard>
   );
