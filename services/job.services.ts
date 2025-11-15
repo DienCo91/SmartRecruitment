@@ -14,6 +14,7 @@ export const JobServices = {
     experienceLevel,
     educationLevels,
     jobTypes,
+    tagId,
   }: {
     page?: number;
     size?: number;
@@ -25,6 +26,7 @@ export const JobServices = {
     experienceLevel?: string;
     educationLevels?: string[];
     jobTypes?: string[];
+    tagId?: number;
   } = {}) {
     const params = new URLSearchParams();
 
@@ -42,6 +44,7 @@ export const JobServices = {
     if (educationLevels?.length)
       educationLevels.forEach(level => params.append('educationLevels', level));
     if (jobTypes?.length) jobTypes.forEach(type => params.append('jobTypes', type));
+    if (tagId) params.append('tagId', String(tagId));
 
     const res = await http.get(`${endpointPrefix}/jobs?${params.toString()}`);
     return res.data;
@@ -54,6 +57,11 @@ export const JobServices = {
 
   async getFavoriteJobIds() {
     const res = await http.get(`${endpointPrefix}/candidate/jobs/favorites`);
+    return res.data;
+  },
+
+  async getPopularTags() {
+    const res = await http.get(`${endpointPrefix}/jobs/popular-tags`);
     return res.data;
   },
 };
