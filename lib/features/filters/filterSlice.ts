@@ -10,6 +10,7 @@ export interface FilterState {
   experienceLevel?: ExperienceLevel;
   educationLevels?: EducationLevel[];
   jobTypes?: JobType[];
+  tagId?: number;
 }
 
 const initialState: FilterState = {};

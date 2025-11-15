@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['common'], // Add slices you don't want to persist here
+  blacklist: ['common', 'filter'], // Add slices you don't want to persist here
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
