@@ -106,12 +106,12 @@ const DashboardSettingPersonal = () => {
 
   return (
     <div>
-      <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">Basic Information</h1>
+      <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">Thông tin cơ bản</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           {currentUser?.role === 'CANDIDATE' && (
             <TextField
-              label="Full Name"
+              label="Họ và tên"
               placeholder="Họ và tên"
               control={form.control}
               name="fullName"
@@ -122,9 +122,9 @@ const DashboardSettingPersonal = () => {
           )}
           <TextField
             control={form.control}
-            label="Title/headline"
+            label="Giới thiệu ngắn"
             name="headline"
-            placeholder="Title/headline..."
+            placeholder="Nhập giới thiệu ngắn"
             className="bg-transparent"
             classNameLabel="!text-white"
             isActiveBorderRedError
@@ -133,7 +133,8 @@ const DashboardSettingPersonal = () => {
             <SelectField
               value={form.getValues('experience')}
               name="experience"
-              label="Experience"
+              label="Kinh nghiệm"
+              placeholder="Chọn kinh nghiệm làm việc"
               options={experiences}
               register={form.register}
               setValue={form.setValue}
@@ -142,7 +143,8 @@ const DashboardSettingPersonal = () => {
             <SelectField
               value={form.getValues('education')}
               name="education"
-              label="Education"
+              label="Trình độ học vấn"
+              placeholder="Chọn trình độ học vấn"
               options={educations}
               register={form.register}
               setValue={form.setValue}
@@ -152,21 +154,21 @@ const DashboardSettingPersonal = () => {
 
           <TextField
             control={form.control}
-            label="Personal Website"
+            label="Website cá nhân"
             name="personalWebsite"
             startIcon={<Link size={20} color="#fff" />}
-            placeholder="Website url..."
+            placeholder="Nhập url"
             className="bg-transparent"
             classNameLabel="!text-white"
             isActiveBorderRedError
           />
 
           <Button type="submit" size={'lg'}>
-            <span>Save & Change</span>
+            <span>Lưu thay đổi</span>
           </Button>
         </form>
       </Form>
-      <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">Your Cv/Resume</h1>
+      <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">CV của bạn</h1>
       <div className="grid grid-cols-2 2xl:grid-cols-3 gap-[16px]">
         {listCv.map(item => (
           <CvItem key={item.id} size={`${(item?.size).toFixed(2)} MB`} title={item.title} />
@@ -178,8 +180,10 @@ const DashboardSettingPersonal = () => {
           >
             <CirclePlus className="text-blue-500" size={32} />
             <div>
-              <h1 className="font-semibold text-[14px]">Add Cv/Resume</h1>
-              <span className="text-[12px] text-gray-400">Browse file or drop here. only pdf</span>
+              <h1 className="font-semibold text-[14px]">Thêm CV</h1>
+              <span className="text-[12px] text-gray-400">
+                Chọn file hoặc kéo thả file tại đây (PDF)
+              </span>
             </div>
           </div>
         </GlassCardBase>

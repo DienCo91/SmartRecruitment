@@ -60,7 +60,7 @@ const DashboardProfile = () => {
         <div className="grid grid-cols-2 gap-[16px]">
           <CountrySelectField
             name="nationality"
-            label="Nationality"
+            label="Quốc tịch"
             control={form.control}
             error={form.formState.errors.nationality?.message}
             className="w-full"
@@ -68,28 +68,30 @@ const DashboardProfile = () => {
 
           <DatePickerField
             name="dateOfBirth"
-            label="Date of Birth"
+            label="Sinh nhật"
             setValue={form.setValue}
+            placeholder="Chọn nhày sinh nhật"
             value={form.getValues('dateOfBirth')}
             error={form.formState.errors.dateOfBirth}
           />
 
           <SelectField
             name="gender"
-            label="Gender"
+            label="Giới tính"
             value={form.getValues('gender')}
             options={[
-              { value: 'MALE', label: 'Male' },
-              { value: 'FEMALE', label: 'Female' },
-              { value: 'OTHERS', label: 'Others' },
+              { value: 'MALE', label: 'Nam' },
+              { value: 'FEMALE', label: 'Nữ' },
+              { value: 'OTHERS', label: 'Khác' },
             ]}
+            placeholder="Chọn giới tính"
             register={form.register}
             setValue={form.setValue}
             error={form.formState.errors.gender}
           />
         </div>
         <div className="mt-[20px]">
-          <h1 className="mb-[8px] font-bold text-[14px]">Biography</h1>
+          <h1 className="mb-[8px] font-bold text-[14px]">Bio</h1>
           <QuillCustom
             ref={editorRef}
             placeholder="Write down your biography here. Let the employers know who you are..."

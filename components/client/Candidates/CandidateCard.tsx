@@ -9,6 +9,7 @@ import { EmployerService } from '@/services/employer.services';
 import { toast } from 'sonner';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/common/commonSlice';
+import { AppImage } from '@/common';
 
 export function CandidateCard({ candidate }: { candidate: Candidate }) {
   const dispatch = useAppDispatch();
@@ -47,7 +48,7 @@ export function CandidateCard({ candidate }: { candidate: Candidate }) {
   return (
     <GlassCard title="" classContentName="px-0" className="my-4 bg-transparent">
       <div className="flex gap-3">
-        <AvatarUser className="size-16" src={avatarUrl || '/images/default-avatar.png'} />
+        <AvatarUser className="size-16" src={avatarUrl || AppImage.avatarFallback.src} />
 
         <div className="grid grid-cols-12 w-full">
           <div className="col-span-9">
