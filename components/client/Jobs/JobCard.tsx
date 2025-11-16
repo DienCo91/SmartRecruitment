@@ -2,7 +2,7 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import { Router } from '@/constants';
+import { ROLE_USER, Router } from '@/constants';
 import { experienceLevel, jobType } from '@/constants/job';
 import { addFavoriteJob, removeFavoriteJob } from '@/lib/features/favorites/favotiteSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -23,6 +23,9 @@ interface Props {
 export function JobCard({ job }: Props) {
   const { jobIds: favoriteJobIds } = useAppSelector(state => state.favoriteJobs);
   const isFavorited = favoriteJobIds.includes(job.id);
+
+  const curUser = useAppSelector(store => store.auth.currentUser);
+  const isCandidate = curUser?.role === ROLE_USER.CANDIDATE;
 
   const dispatch = useAppDispatch();
 
@@ -102,22 +105,24 @@ export function JobCard({ job }: Props) {
               {experienceLevel[job.experienceLevel]}
             </Badge>
           </div>
-          <div className="flex items-center">
-            <CustomButton
-              className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
-              onClick={() => {
-                handleTogglerFavorite(job.id, !isFavorited);
-              }}
-            >
-              <HeartIcon
-                className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
-              />
-            </CustomButton>
-            <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
-              Apply now
-              <ArrowRightIcon />
-            </CustomButton>
-          </div>
+          {isCandidate && (
+            <div className="flex items-center">
+              <CustomButton
+                className={cn('hover:bg-transparent', !isFavorited ? 'hover:text-red-500' : '')}
+                onClick={() => {
+                  handleTogglerFavorite(job.id, !isFavorited);
+                }}
+              >
+                <HeartIcon
+                  className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
+                />
+              </CustomButton>
+              <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
+                Apply now
+                <ArrowRightIcon />
+              </CustomButton>
+            </div>
+          )}
         </div>
       </div>
     </div>

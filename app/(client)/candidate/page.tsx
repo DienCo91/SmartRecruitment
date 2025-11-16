@@ -94,21 +94,6 @@ const CandidatePage = () => {
               </CustomCollapsible>
               <Separator className="bg-gray-500 my-2" />
 
-              {/* Candidate level */}
-              {/* <CustomCollapsible
-                title={
-                  <div className="flex items-baseline text-sm font-medium space-x-1">
-                    <span>Level ứng viên</span>
-                  </div>
-                }
-              >
-                <div className="mt-3"></div>
-                <CustomRadioGroup
-                  options={candidateLevel}
-                  value={filters.candidateLevel}
-                  onValueChange={val => handleFilter('candidateLevel', val)}
-                />
-              </CustomCollapsible> */}
               <Separator className="bg-gray-500 my-2" />
 
               {/* Experiences */}

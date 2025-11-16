@@ -15,7 +15,7 @@ const Setting = () => {
 
   return (
     <>
-      <DashboardHeader title="Setting" />
+      <DashboardHeader title="Hồ sơ cá nhân" />
       {!isRoleEmployer ? (
         <DashboardSettingTabView />
       ) : (

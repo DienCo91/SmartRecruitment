@@ -14,7 +14,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title, count, classNa
   return (
     <div className={cn('flex items-center gap-2 justify-between', className)}>
       <div>
-        <span className="font-bold text-white">{title}</span>
+        <span className="text-white font-medium">{title}</span>
         {count !== undefined && <span className="text-white">({count})</span>}
       </div>
 

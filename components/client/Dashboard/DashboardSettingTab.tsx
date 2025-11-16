@@ -12,10 +12,10 @@ import DashboardChangePassword from './DashboardChangePassword';
 import { isLoginWithOAuth2 } from '@/utils';
 
 const tabs = [
-  { value: 'personal', label: 'Personal', icon: User },
+  { value: 'personal', label: 'Cá nhân', icon: User },
   { value: 'profile', label: 'Profile', icon: CircleUser },
-  { value: 'social', label: 'Social Links', icon: Globe },
-  { value: 'account-setting', label: 'Account Setting', icon: Settings },
+  { value: 'social', label: 'Liên kết', icon: Globe },
+  { value: 'account-setting', label: 'Cài đặt tài khoản', icon: Settings },
 ];
 
 const DashboardSettingTabView = () => {
