@@ -70,12 +70,14 @@ const MyJobs = () => {
           </Select>
         </div>
       </DashboardHeader>
+
       <DashboardListMyJobs
         data={data}
         page={page}
         setPage={setPage}
         loading={loading}
         total={total}
+        setData={setData}
       />
     </div>
   );

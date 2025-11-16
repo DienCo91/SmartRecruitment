@@ -3,17 +3,16 @@ import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { ACCEPT_TYPE_CV, ACCEPTED_IMAGE_TYPES_CV, MAX_FILE_SIZE_CV } from '@/constants';
-import { CandidateService } from '@/services/candidate.services';
+import { ApplicationServices } from '@/services/application.services';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react'; // icon loading
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod/v3';
 import UploadInfo from '../AccountSetup/upload-info';
 import { GlassDialog } from '../Dialogs/GlassDialog';
-import { Loader2 } from 'lucide-react'; // icon loading
 import { ICvItem } from './DashboardSettingPersonal';
-import { ApplicationServices } from '@/services/application.services';
 
 interface IDialogAddCV {
   isShow: boolean;
@@ -58,9 +57,10 @@ const DialogAddCV: React.FC<IDialogAddCV> = ({ isShow, setIsShow, setListCv }) =
       toast.success('Add Cv/Resume successfully');
       setIsShow(false);
       setListCv(prev => [...prev, res.data]);
-    } catch (error) {
+    } catch (error: unknown) {
       console.log('error', error);
-      toast.error('Add Cv/Resume failed');
+      const err = error as { response?: { data?: { message?: string } } };
+      toast.error(err?.response?.data?.message ?? 'Add Cv/Resume failed');
     } finally {
       setIsLoading(false);
     }

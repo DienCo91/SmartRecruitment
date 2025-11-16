@@ -41,7 +41,7 @@ export const experienceLevel = {
   [ExperienceLevel.TWO_TO_FOUR_YEARS]: '2 - 4 năm kinh nghiệm',
   [ExperienceLevel.FOUR_TO_SIX_YEARS]: '4 - 6 năm kinh nghiệm',
   [ExperienceLevel.SIX_TO_TEN_YEARS]: '6 - 10 năm kinh nghiệm',
-  [ExperienceLevel.TEN_PLUS_YEARS]: 'Trên 10 kinh nghiệm',
+  [ExperienceLevel.TEN_PLUS_YEARS]: 'Trên 10 năm kinh nghiệm',
 };
 
 export enum JobType {

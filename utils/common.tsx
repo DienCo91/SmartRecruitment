@@ -73,3 +73,23 @@ export function formatDate(dateString: string) {
     })
     .replace(',', '');
 }
+
+export const handleSendMail = (email?: string) => {
+  const to = email || '';
+
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}`;
+
+  window.open(gmailUrl, '_blank');
+};
+
+export const downloadFile = async (url: string) => {
+  const filename = url.split('/').filter(Boolean).pop()?.split('?')[0] || 'download-file';
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};

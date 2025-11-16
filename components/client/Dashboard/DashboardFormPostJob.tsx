@@ -8,6 +8,7 @@ import CategorySelector from '@/components/ui/category-selector';
 import { Form } from '@/components/ui/form';
 import { JOB_TYPE } from '@/constants/company';
 import { educations, experiences } from '@/constants/mockedData';
+import { setLoading } from '@/lib/features/common/commonSlice';
 import { cn } from '@/lib/utils';
 import { EmployerService } from '@/services/employer.services';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,43 +31,48 @@ import z from 'zod/v3';
 //   { value: 'c-level', label: 'C-Level (CEO, CTO, CFO)' },
 // ];
 
-const FormPostJobSchema = z.object({
-  jobTitle: z.string().nonempty('Job Title is required'),
-  category: z
-    .array(
-      z.object({
-        id: z.number(),
-        name: z.string().min(1, 'Tag name is required'),
-      })
-    )
-    .min(1, 'At least one tag is required'),
-  minimumSalary: z.string().refine(
-    val => {
-      const num = Number(val);
-      return !isNaN(num) && num >= 1 && Number.isInteger(num);
-    },
-    { message: 'Minimum Salary must be a positive integer' }
-  ),
-  maximumSalary: z.string().refine(
-    val => {
-      const num = Number(val);
-      return !isNaN(num) && num >= 1 && Number.isInteger(num);
-    },
-    { message: 'Maximum Salary must be a positive integer' }
-  ),
-  salaryType: z.string().nonempty('Salary Type is required'),
-  education: z.string().nonempty('Education is required'),
-  experience: z.string().nonempty('Experience is required'),
-  jobType: z.string().nonempty('Job Type is required'),
-  vacancies: z.string().refine(
-    val => {
-      const num = Number(val);
-      return !isNaN(num) && num >= 1 && Number.isInteger(num);
-    },
-    { message: 'Quantity must be a positive integer' }
-  ),
-  expirationDate: z.date({ required_error: 'Expiration Date is required' }),
-});
+const FormPostJobSchema = z
+  .object({
+    jobTitle: z.string().nonempty('Job Title is required'),
+    category: z
+      .array(
+        z.object({
+          id: z.number(),
+          name: z.string().min(1, 'Tag name is required'),
+        })
+      )
+      .min(1, 'At least one tag is required'),
+    minimumSalary: z.string().refine(
+      val => {
+        const num = Number(val);
+        return !isNaN(num) && num >= 1 && Number.isInteger(num);
+      },
+      { message: 'Minimum Salary must be a positive integer' }
+    ),
+    maximumSalary: z.string().refine(
+      val => {
+        const num = Number(val);
+        return !isNaN(num) && num >= 1 && Number.isInteger(num);
+      },
+      { message: 'Maximum Salary must be a positive integer' }
+    ),
+    salaryType: z.string().nonempty('Salary Type is required'),
+    education: z.string().nonempty('Education is required'),
+    experience: z.string().nonempty('Experience is required'),
+    jobType: z.string().nonempty('Job Type is required'),
+    vacancies: z.string().refine(
+      val => {
+        const num = Number(val);
+        return !isNaN(num) && num >= 1 && Number.isInteger(num);
+      },
+      { message: 'Quantity must be a positive integer' }
+    ),
+    expirationDate: z.date({ required_error: 'Expiration Date is required' }),
+  })
+  .refine(data => Number(data.maximumSalary) > Number(data.minimumSalary), {
+    message: 'Maximum Salary must be greater than Minimum Salary',
+    path: ['maximumSalary'],
+  });
 
 type FormValues = z.infer<typeof FormPostJobSchema>;
 
@@ -101,7 +107,7 @@ const DashboardFormPostJob = () => {
       return;
     }
     try {
-      // dispatch(setLoading(true));
+      dispatch(setLoading(true));
       await EmployerService.createJob({
         categoryIds: data.category.map(c => c.id),
         tagIds: [1],
@@ -125,7 +131,7 @@ const DashboardFormPostJob = () => {
     } catch {
       toast.error('Đã xảy ra lỗi');
     } finally {
-      // dispatch(setLoading(false));
+      dispatch(setLoading(false));
     }
   };
 

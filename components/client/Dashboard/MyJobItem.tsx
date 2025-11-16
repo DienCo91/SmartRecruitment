@@ -6,28 +6,35 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { Router } from '@/constants';
 import { MyJobPageResponse } from '@/types';
+import { useRouter } from 'next/navigation';
 
 interface IMyJobItem {
   item: MyJobPageResponse;
+  onMakeItExpire: () => void;
 }
 
-const MyJobItem: React.FC<IMyJobItem> = ({ item }) => {
-  const onMakeItExpire = () => {};
+const MyJobItem: React.FC<IMyJobItem> = ({ item, onMakeItExpire }) => {
+  const router = useRouter();
 
   const isExpired = item.status === 'EXPIRED';
 
   return (
     <GlassCardBase className="grid grid-cols-[2fr_1fr_1.5fr_1.5fr] items-center text-[12px] font-bold cursor-pointer">
       <div>
-        <h1 className="text-[16px] font-bold">{item.title}</h1>
+        <h1
+          className="text-[16px] font-bold line-clamp-2"
+          onClick={() => router.push(Router.JOB.DETAIL(item.slug))}
+        >
+          {item.title}
+        </h1>
         <div>
           <span>{item.status}</span>
-          <span>•</span>
+          <span> • </span>
           <span>{item.daysRemaining} days remaining</span>
         </div>
       </div>
       <div className="flex items-center">
-        {isExpired ? (
+        {isExpired || Number(item.daysRemaining) <= 0 ? (
           <>
             <CircleX size={18} color="#E05151" />
             <span className="text-[#E05151] ml-[8px]">Expire</span>
@@ -71,15 +78,17 @@ const MyJobItem: React.FC<IMyJobItem> = ({ item }) => {
                 </DropdownMenu.Item>
               </Link>
 
-              <DropdownMenu.Item
-                onSelect={onMakeItExpire}
-                className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 
+              {!isExpired && Number(item.daysRemaining) > 0 && (
+                <DropdownMenu.Item
+                  onSelect={onMakeItExpire}
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 
                          hover:bg-red-100 hover:text-red-700 
                          focus:outline-none focus:ring-0"
-              >
-                <CircleX className="w-4 h-4" />
-                <span>Make it Expire</span>
-              </DropdownMenu.Item>
+                >
+                  <CircleX className="w-4 h-4" />
+                  <span>Make it Expire</span>
+                </DropdownMenu.Item>
+              )}
             </DropdownMenu.Content>
           </DropdownMenu.Portal>
         </DropdownMenu.Root>

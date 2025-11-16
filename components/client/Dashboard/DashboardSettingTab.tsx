@@ -1,15 +1,19 @@
 'use client';
+import { Separator } from '@/components/ui/separator';
 import { TabsContent } from '@/components/ui/tabs';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { CandidateService } from '@/services/candidate.services';
+import { ICandidateDetail } from '@/types';
+import { isLoginWithOAuth2 } from '@/utils';
 import { Tabs, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import { CircleUser, Globe, Settings, User } from 'lucide-react';
-import React, { useState } from 'react';
-import DashboardSettingPersonal from './DashboardSettingPersonal';
-import DashboardProfile from './DashboardProfile';
-import DashboardSocialLink from './DashboardSocialLink';
+import { useEffect, useState } from 'react';
 import DashboardAccountSetting from './DashboardAccountSetting';
-import { Separator } from '@/components/ui/separator';
 import DashboardChangePassword from './DashboardChangePassword';
-import { isLoginWithOAuth2 } from '@/utils';
+import DashboardProfile from './DashboardProfile';
+import DashboardSettingPersonal from './DashboardSettingPersonal';
+import DashboardSocialLink from './DashboardSocialLink';
+import { setLoading } from '@/lib/features/common/commonSlice';
 
 const tabs = [
   { value: 'personal', label: 'Cá nhân', icon: User },
@@ -19,8 +23,29 @@ const tabs = [
 ];
 
 const DashboardSettingTabView = () => {
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(state => state.common.isLoading);
   const [activeTab, setActiveTab] = useState<string>(tabs[0].value);
   const canChangePassword = !isLoginWithOAuth2();
+  const [data, setData] = useState<ICandidateDetail | null>(null);
+
+  const getMyProfile = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await CandidateService.getMyProfile();
+      setData(res.data);
+    } catch (error) {
+      console.log('e', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  useEffect(() => {
+    getMyProfile();
+  }, []);
+
+  if (isLoading) return;
 
   return (
     <Tabs
@@ -46,16 +71,16 @@ const DashboardSettingTabView = () => {
       </TabsList>
 
       <TabsContent forceMount value="personal" className="data-[state=inactive]:hidden">
-        <DashboardSettingPersonal />
+        <DashboardSettingPersonal data={data} />
       </TabsContent>
       <TabsContent forceMount value="profile" className="data-[state=inactive]:hidden">
-        <DashboardProfile />
+        <DashboardProfile data={data} />
       </TabsContent>
       <TabsContent forceMount value="social" className="data-[state=inactive]:hidden">
-        <DashboardSocialLink />
+        <DashboardSocialLink data={data} />
       </TabsContent>
       <TabsContent forceMount value="account-setting" className="data-[state=inactive]:hidden">
-        <DashboardAccountSetting />
+        <DashboardAccountSetting data={data} />
         {canChangePassword && (
           <>
             <Separator className="my-8 bg-gray-500" />

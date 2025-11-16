@@ -45,7 +45,7 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {items.map(job => (
               <Link key={job.id} href={Router.JOB.DETAIL(job.slug)}>
-                <GlassCardBase className="hover:shadow-md hover:shadow-blue-200 cursor-pointer border-[1px] hover:border-blue-primary transition-all duration-300 ease-in-out hover:-translate-y-1">
+                <GlassCardBase className="hover:shadow-md hover:shadow-blue-200 cursor-pointer border-[1px] hover:border-blue-primary transition-all duration-300 ease-in-out hover:-translate-y-1  h-[180px]">
                   <CardContent>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
                             alt="Logo"
                             width={50}
                             height={50}
-                            className="rounded-md object-cover flex-shrink-0 "
+                            className="rounded-md object-cover flex-shrink-0 w-[50px] h-[50px]"
                             unoptimized
                           />
                         </div>
@@ -77,7 +77,7 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
                     )} */}
                     </div>
 
-                    <h3 className="font-bold text-lg mb-2">{job.jobTitle}</h3>
+                    <h3 className="font-bold text-lg mb-2 line-clamp-2">{job.jobTitle}</h3>
                     <div className="flex items-center item opacity-80 ">
                       <div className="text-sm">{getLabelJobType(job.jobType)}</div>
                       <LuDot className="mx-[4px]" />

@@ -8,8 +8,9 @@ import { Form } from '@/components/ui/form';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
+import { ICandidateDetail } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod/v3';
@@ -22,16 +23,23 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const DashboardProfile = () => {
+const DashboardProfile = ({ data }: { data: ICandidateDetail | null }) => {
   const dispatch = useAppDispatch();
   const editorRef = useRef<QuillCustomRef>(null);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      nationality: '',
-      gender: '',
+      nationality: data?.nationality || '',
+      gender: data?.gender || '',
+      dateOfBirth: data?.dateOfBirth ? new Date(data?.dateOfBirth) : new Date(),
     },
   });
+
+  useEffect(() => {
+    if (data?.biography) {
+      editorRef.current?.setValue(data?.biography);
+    }
+  }, [data?.biography]);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -64,6 +72,7 @@ const DashboardProfile = () => {
             control={form.control}
             error={form.formState.errors.nationality?.message}
             className="w-full"
+            value={form.getValues('nationality')}
           />
 
           <DatePickerField

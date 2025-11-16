@@ -7,6 +7,7 @@ import { CountryRegion } from '../ui/helpers';
 interface CountrySelectFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
   label: string;
+  value?: string;
   control: Control<TFieldValues>;
   error?: string;
   priorityOptions?: string[];
@@ -26,6 +27,7 @@ export function CountrySelectField<TFieldValues extends FieldValues>({
   blacklist = [],
   className,
   placeholder = 'Country',
+  value,
 }: CountrySelectFieldProps<TFieldValues>) {
   return (
     <div className="space-y-1.5">
@@ -35,6 +37,7 @@ export function CountrySelectField<TFieldValues extends FieldValues>({
         control={control}
         render={({ field: { onChange } }) => (
           <CountrySelect
+            value={value}
             className={className}
             placeholder={placeholder}
             priorityOptions={priorityOptions}

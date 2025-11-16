@@ -53,4 +53,16 @@ export const EmployerService = {
     const res = await http.get(`${endpointPrefix}/job/${jobId}/applications`, { params });
     return res.data;
   },
+
+  async getSavedCandidate(page = 1, size = 10) {
+    const params: Record<string, string | number> = { page, size };
+
+    const res = await http.get(`${endpointPrefix}/saved-candidates`, { params });
+    return res.data;
+  },
+
+  async expireJob(jobId: string) {
+    const res = await http.patch(`${endpointPrefix}/job/${jobId}/expire`);
+    return res.data;
+  },
 };
