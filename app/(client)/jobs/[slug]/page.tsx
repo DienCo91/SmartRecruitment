@@ -10,6 +10,7 @@ import { JobOverView } from '@/components/client/Jobs/JobOverView';
 import { Jobtags } from '@/components/client/Jobs/JobTags';
 import { RelatedJob } from '@/components/client/Jobs/RelatedJob';
 import { Separator } from '@/components/ui/separator';
+import { ROLE_USER } from '@/constants';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
@@ -17,6 +18,7 @@ import { CandidateService } from '@/services/candidate.services';
 import { JobServices } from '@/services/job.services';
 import { JobDetail } from '@/types/job';
 import { format } from 'date-fns';
+import { vi } from 'date-fns/locale';
 import { debounce } from 'lodash';
 import { ArrowRightIcon, CheckCheckIcon, HeartIcon } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -31,6 +33,9 @@ const JobDetailPage = () => {
   const [job, setJob] = useState<JobDetail>();
   const params = useParams();
   const slug = Array.isArray(params?.slug) ? params.slug[0] : params?.slug;
+  const currentUser = useAppSelector(state => state.auth.currentUser);
+
+  const isCandidate = currentUser?.role === ROLE_USER.CANDIDATE;
 
   const fetchJobDetail = async (slugParam: string) => {
     try {
@@ -96,30 +101,34 @@ const JobDetailPage = () => {
       title={<JobHeader job={job} />}
       action={
         <>
-          <div className="flex items-center">
-            <CustomButton
-              className="hover:bg-transparent hover:text-red-500"
-              onClick={handleToggleFollowJob}
-            >
-              <HeartIcon className="size-6" fill={job.isFavorite ? 'red' : 'none'} />
-            </CustomButton>
-            {job.isApplied ? (
-              <CustomButton className="bg-green-500 text-white hover:bg-green-500">
-                Applied <CheckCheckIcon />
-              </CustomButton>
-            ) : (
+          {isCandidate && (
+            <div className="flex items-center">
               <CustomButton
-                onClick={() => setShowApplyJobModal(true)}
-                className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
+                className="hover:bg-transparent hover:text-red-500"
+                onClick={handleToggleFollowJob}
               >
-                Apply now
-                <ArrowRightIcon />
+                <HeartIcon className="size-6" fill={job.isFavorite ? 'red' : 'none'} />
               </CustomButton>
-            )}
-          </div>
+              {job.isApplied ? (
+                <CustomButton className="bg-green-500 text-white hover:bg-green-500">
+                  Applied <CheckCheckIcon />
+                </CustomButton>
+              ) : (
+                <CustomButton
+                  onClick={() => setShowApplyJobModal(true)}
+                  className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
+                >
+                  Ứng tuyển nhay
+                  <ArrowRightIcon />
+                </CustomButton>
+              )}
+            </div>
+          )}
           <p className="text-sm mt-3">
-            Job expired in:{' '}
-            <span className="text-red-400">{format(job.expirationDate, 'MMM dd, yyy')}</span>
+            Ngày hết hạn:{' '}
+            <span className="text-red-400 capitalize">
+              {format(job.expirationDate, 'dd MMM, yyy', { locale: vi })}
+            </span>
           </p>
         </>
       }

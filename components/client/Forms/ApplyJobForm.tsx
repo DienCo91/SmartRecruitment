@@ -91,20 +91,20 @@ export function ApplyJobForm({ onClose, job, setJob }: Props) {
       footer={
         <div className="flex gap-3">
           <CustomButton className="bg-blue-100 text-blue-600 hover:bg-blue-200" onClick={onClose}>
-            Cancel
+            Hủy
           </CustomButton>
           <CustomButton
             className="bg-blue-700 text-white hover:bg-blue-800 hover:text-gray-200"
             onClick={handleSubmit}
           >
-            Apply now
+            Ứng tuyển ngay
             <ArrowRightIcon />
           </CustomButton>
         </div>
       }
     >
       <div className="space-y-4 mb-5">
-        <Label htmlFor="select-file-cv">Choose Resume</Label>
+        <Label htmlFor="select-file-cv">Chọn CV của bạn</Label>
 
         {isLoadingCV ? (
           <div className="flex justify-center items-center h-24">
@@ -117,7 +117,7 @@ export function ApplyJobForm({ onClose, job, setJob }: Props) {
              transition-all duration-300 bg-blue-500/10 px-4 py-2 rounded-xl 
              hover:bg-blue-500/20 backdrop-blur-md border border-blue-400/20 shadow-sm"
           >
-            Create CV +
+            Thêm CV +
           </Link>
         ) : (
           <div className="grid grid-cols-2 xl:grid-cols-3 gap-[16px]">

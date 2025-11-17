@@ -4,30 +4,11 @@ import { Combobox } from '@/components/Combobox/Combobox';
 import { CustomInput } from '@/components/Inputs/CustomInput';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { TOptions } from '@/types';
+import { locations } from '@/constants/mockedData';
 import { LayersIcon, MapPinIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 
 export function FilterCandidate() {
-  const locations: TOptions[] = [
-    {
-      value: 'hanoi',
-      label: 'Hà Nội',
-    },
-    {
-      value: 'hochiminh',
-      label: 'Hồ Chí Minh',
-    },
-    {
-      value: 'danang',
-      label: 'Đà Nẵng',
-    },
-    {
-      value: 'thaibinh',
-      label: 'Thái Bình',
-    },
-  ];
-
   const categoties = [
     {
       value: 'it',

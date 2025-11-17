@@ -39,11 +39,11 @@ export const CandidateService = {
     return res.data;
   },
   async getAllCandidate(params?: Record<string, string | number>) {
-    const res = await http.get(`/api/candidates`, { params });
+    const res = await http.get(`/api/employer/candidates`, { params });
     return res.data;
   },
   async getCandidateDetail(id: number) {
-    const res = await http.get(`/api/candidate-detail/${id}`);
+    const res = await http.get(`/api/employer/candidate-detail/${id}`);
     return res.data;
   },
 

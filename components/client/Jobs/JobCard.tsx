@@ -118,7 +118,7 @@ export function JobCard({ job }: Props) {
                 />
               </CustomButton>
               <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
-                Apply now
+                Ứng tuyển ngay
                 <ArrowRightIcon />
               </CustomButton>
             </div>

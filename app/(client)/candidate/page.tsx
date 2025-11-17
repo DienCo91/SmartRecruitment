@@ -12,10 +12,11 @@ import { Slider } from '@/components/ui/slider';
 
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CandidateService } from '@/services/candidate.services';
 import { educations, experiences, genders } from '@/constants/mockedData';
+import { useSearchParams } from 'next/navigation';
 
 const CandidatePage = () => {
   const initFilter = {
@@ -32,6 +33,7 @@ const CandidatePage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
 
   const handleFilter = (key: keyof Filter, value: Filter[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -40,17 +42,21 @@ const CandidatePage = () => {
     if (loading) return;
     setLoading(true);
     try {
-      const params = {
-        page: pageNumber,
-        // size: 10,
-        // location: '', // tuỳ nếu bạn có location filter riêng
-        // category: '',
-        // experienceLevel: filters.experience,
-        // educationLevels: filters.education,
-        // gender: filters.gender,
-      };
+      const params = _.omitBy(
+        {
+          page: pageNumber,
+          keyword: searchParams.get('keyword') || undefined,
+          // size: 10,
+          location: 'hanoi',
+          // category: '',
+          // experienceLevel: filters.experience,
+          // educationLevels: filters.education,
+          // gender: filters.gender,
+        },
+        _.isNil
+      );
 
-      const res = await CandidateService.getAllCandidate(params);
+      const res = await CandidateService.getAllCandidate(params as Record<string, string | number>);
       const newData = res.data.content;
 
       setCandidates(prev => (pageNumber === 1 ? newData : [...prev, ...newData]));

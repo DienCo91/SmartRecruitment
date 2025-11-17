@@ -1,5 +1,3 @@
-'use client';
-
 import { useTheme } from '@/contexts/theme';
 import React from 'react';
 
