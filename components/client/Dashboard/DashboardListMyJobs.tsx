@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { EmployerService } from '@/services/employer.services';
+import { MyJobPageResponse } from '@/types';
+import React from 'react';
+import { toast } from 'sonner';
 import GlassCardBase from '../Cards/GlassCardBase';
 import { CustomPagination } from '../CustomPagination';
 import MyJobItem from './MyJobItem';
-import { MyJobPageResponse } from '@/types';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 
 interface IDashboardListMyJobs {
   setPage: React.Dispatch<React.SetStateAction<number>>;
@@ -11,6 +15,7 @@ interface IDashboardListMyJobs {
   page: number;
   loading: boolean;
   total: number;
+  setData: React.Dispatch<React.SetStateAction<MyJobPageResponse[]>>;
 }
 
 const DashboardListMyJobs: React.FC<IDashboardListMyJobs> = ({
@@ -19,8 +24,30 @@ const DashboardListMyJobs: React.FC<IDashboardListMyJobs> = ({
   page,
   loading,
   total,
+  setData,
 }) => {
+  const dispatch = useAppDispatch();
   const totalPage = total / 10; // 10 items per page
+
+  const onMakeItExpire = async (id: string) => {
+    dispatch(setLoading(true));
+    try {
+      const res = await EmployerService.expireJob(id);
+
+      console.log('res', res);
+      toast.success('Make expire job successfully');
+      const newData = data.map(item => {
+        if (item.id === id) return { ...item, status: 'EXPIRED' };
+        return item;
+      });
+
+      setData(newData);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   return (
     <div className="mt-[32px] min-h-[600px] flex flex-col justify-between ">
@@ -35,7 +62,9 @@ const DashboardListMyJobs: React.FC<IDashboardListMyJobs> = ({
         {loading ? (
           <LoadingCircle />
         ) : data.length > 0 ? (
-          data.map(item => <MyJobItem key={item.id} item={item} />)
+          data.map(item => (
+            <MyJobItem key={item.id} item={item} onMakeItExpire={() => onMakeItExpire(item.id)} />
+          ))
         ) : (
           <div className="flex items-center justify-center w-full h-full">No jobs found</div>
         )}

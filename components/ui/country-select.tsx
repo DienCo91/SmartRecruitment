@@ -29,6 +29,7 @@ interface CountrySelectProps {
   onChange?: (value: CountryRegion) => void;
   className?: string;
   placeholder?: string;
+  value?: string;
 }
 
 function CountrySelect({
@@ -38,12 +39,19 @@ function CountrySelect({
   onChange = () => {},
   className,
   placeholder = 'Country',
+  value = '',
 }: CountrySelectProps) {
   const [countries, setCountries] = useState<CountryRegion[]>([]);
 
   useEffect(() => {
     setCountries(filterCountries(countryRegionData, priorityOptions, whitelist, blacklist));
   }, []);
+
+  const valueInit = countries.find(
+    (country: CountryRegion) => country.countryName.toLowerCase() === value.toLowerCase()
+  );
+
+  if (!countries.length) return null;
 
   return (
     <Select
@@ -53,13 +61,14 @@ function CountrySelect({
         );
         onChange(data);
       }}
+      defaultValue={valueInit?.countryShortCode}
     >
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         {countries.map(({ countryName, countryShortCode }) => (
-          <SelectItem key={countryShortCode} value={countryShortCode}>
+          <SelectItem key={countryName} value={countryShortCode}>
             {countryName}
           </SelectItem>
         ))}

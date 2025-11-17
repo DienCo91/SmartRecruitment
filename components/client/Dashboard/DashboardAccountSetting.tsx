@@ -5,7 +5,7 @@ import { PhoneInput } from '@/components/ui/phone-input';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
-import { IPlace, OSMAddress } from '@/types';
+import { ICandidateDetail, IPlace, OSMAddress } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ import z from 'zod/v3';
 
 const accountSettingSchema = z.object({
   location: z.string().nonempty('Location is required'),
-  phoneNumber: z
+  phone: z
     .string()
     .nonempty('Phone Number is required')
     .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number')
@@ -24,7 +24,7 @@ const accountSettingSchema = z.object({
 
 type FormValues = z.infer<typeof accountSettingSchema>;
 
-const DashboardAccountSetting = () => {
+const DashboardAccountSetting = ({ data }: { data: ICandidateDetail | null }) => {
   const dispatch = useAppDispatch();
   const {
     control,
@@ -32,7 +32,10 @@ const DashboardAccountSetting = () => {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(accountSettingSchema),
-    defaultValues: { location: '', phoneNumber: '' },
+    defaultValues: {
+      location: `${data?.location?.commune || ''}, ${data?.location?.provinceCity || ''}, ${data?.location?.country || ''}`,
+      phone: data?.phone || '',
+    },
   });
 
   const [place, setPlace] = useState<IPlace | null>(null);
@@ -48,19 +51,19 @@ const DashboardAccountSetting = () => {
     setPlace(place);
   };
 
-  const handleSubmitForm = (data: FormValues) => {
-    if (!place) return;
+  const handleSubmitForm = (formData: FormValues) => {
+    if (!place && !formData.location) return;
     try {
       dispatch(setLoading(true));
       const res = CandidateService.updateContactInfo({
         location: {
-          commune: place?.address_detail?.suburb ?? '',
-          provinceCity: place?.address_detail?.city ?? '',
-          country: place?.address_detail?.country ?? '',
-          latitude: place?.lat ?? 0,
-          longitude: place?.lng ?? 0,
+          commune: place?.address_detail?.suburb ?? (data?.location?.commune || ''),
+          provinceCity: place?.address_detail?.city ?? (data?.location?.provinceCity || ''),
+          country: place?.address_detail?.country ?? (data?.location?.country || ''),
+          latitude: place?.lat ?? (data?.location?.latitude || 0) ?? 0,
+          longitude: place?.lng ?? (data?.location?.longitude || 0) ?? 0,
         },
-        phoneNumber: data.phoneNumber,
+        phone: formData.phone,
       });
       toast.success('Update contact info successfully');
       console.log('res', res);
@@ -92,13 +95,13 @@ const DashboardAccountSetting = () => {
       <h1 className="text-[14px] mt-[18px] mb-[8px]">Phone</h1>
       <Controller
         control={control}
-        name="phoneNumber"
+        name="phone"
         render={({ field: { onChange, value } }) => (
           <PhoneInput onChange={onChange} value={value} />
         )}
       />
-      {errors.phoneNumber?.message && (
-        <p className="text-red-500 text-xs mt-1">{errors.phoneNumber?.message}</p>
+      {errors.phone?.message && (
+        <p className="text-red-500 text-xs mt-1">{errors.phone?.message}</p>
       )}
 
       <Button type="submit" size={'lg'} className="mt-[32px]">

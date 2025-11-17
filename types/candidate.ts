@@ -1,3 +1,5 @@
+import { LocationInfo } from './job';
+
 export interface UpdateBasicInformation {
   fullName: string;
   headline: string;
@@ -27,7 +29,7 @@ export interface Location {
 
 export interface UpdateContactInfo {
   location: Location;
-  phoneNumber: string;
+  phone: string;
 }
 
 export type Candidate = {
@@ -45,6 +47,7 @@ export type Candidate = {
     longitude?: number | null;
   };
   follow?: boolean;
+  email?: string;
 };
 
 export interface ICandidateDetail {
@@ -63,6 +66,6 @@ export interface ICandidateDetail {
   phone: string | null;
   email: string | null;
   isPublic: boolean;
-  location: string | null;
-  socialLinks: string[];
+  location: Location;
+  socialLinks: { platformName: string; url: string }[];
 }

@@ -190,4 +190,5 @@ export interface ApplicationBriefResponse {
     source: string; // "0.0"
     parsedValue: number; // 0
   };
+  email: string;
 }

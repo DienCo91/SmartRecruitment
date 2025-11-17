@@ -3,21 +3,22 @@ import { SelectField } from '@/components/hookFormCustom/SelectField';
 import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { educations, experiences } from '@/constants/mockedData';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { RootState } from '@/lib/store';
+import { ApplicationServices } from '@/services/application.services';
+import { CandidateService } from '@/services/candidate.services';
+import { ICandidateDetail } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CirclePlus, Link } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import z from 'zod/v3';
-import CvItem from './CvItem';
-import GlassCardBase from '../Cards/GlassCardBase';
 import { useEffect, useState } from 'react';
-import DialogAddCV from './DialogAddCV';
-import { educations, experiences } from '@/constants/mockedData';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { RootState } from '@/lib/store';
-import { CandidateService } from '@/services/candidate.services';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { ApplicationServices } from '@/services/application.services';
+import z from 'zod/v3';
+import GlassCardBase from '../Cards/GlassCardBase';
+import CvItem from './CvItem';
+import DialogAddCV from './DialogAddCV';
 
 const formSchema = z.object({
   experience: z.string().nonempty('Experience is required'),
@@ -50,7 +51,7 @@ export interface ICvItem {
   id: string;
 }
 
-const DashboardSettingPersonal = () => {
+const DashboardSettingPersonal = ({ data }: { data: ICandidateDetail | null }) => {
   const dispatch = useAppDispatch();
   const [isShowDialogAddCV, setIsShowDialogAddCV] = useState<boolean>(false);
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
@@ -74,11 +75,11 @@ const DashboardSettingPersonal = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      experience: '',
-      education: '',
-      personalWebsite: '',
-      headline: '',
-      fullName: '',
+      experience: data?.experienceLevel || '',
+      education: data?.educationLevel || '',
+      personalWebsite: data?.personalWebsite || '',
+      headline: data?.headline || '',
+      fullName: data?.fullName || '',
     },
   });
 
@@ -102,6 +103,11 @@ const DashboardSettingPersonal = () => {
 
       console.log('done');
     }
+  };
+
+  const onDelete = async (id: string) => {
+    const newData = listCv.filter(item => item.id !== id);
+    setListCv(newData);
   };
 
   return (
@@ -171,7 +177,14 @@ const DashboardSettingPersonal = () => {
       <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">CV của bạn</h1>
       <div className="grid grid-cols-2 2xl:grid-cols-3 gap-[16px]">
         {listCv.map(item => (
-          <CvItem key={item.id} size={`${(item?.size).toFixed(2)} MB`} title={item.title} />
+          <CvItem
+            key={item.id}
+            size={`${(item?.size).toFixed(2)} MB`}
+            title={item.title}
+            id={item.id}
+            onDelete={() => onDelete(item.id)}
+            setListCv={setListCv}
+          />
         ))}
         <GlassCardBase className="flex flex-row items-center justify-between">
           <div
@@ -181,9 +194,7 @@ const DashboardSettingPersonal = () => {
             <CirclePlus className="text-blue-500" size={32} />
             <div>
               <h1 className="font-semibold text-[14px]">Thêm CV</h1>
-              <span className="text-[12px] text-gray-400">
-                Chọn file hoặc kéo thả file tại đây (PDF)
-              </span>
+              <span className="text-[12px] text-gray-400">Chọn file tại đây (PDF)</span>
             </div>
           </div>
         </GlassCardBase>

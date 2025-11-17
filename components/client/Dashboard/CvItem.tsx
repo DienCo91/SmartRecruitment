@@ -1,25 +1,41 @@
+'use client';
+import { ApplicationServices } from '@/services/application.services';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Ellipsis, FileText, Pencil, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
 import GlassCardBase from '../Cards/GlassCardBase';
-import { useState } from 'react';
 import { GlassDialog } from '../Dialogs/GlassDialog';
-import DashboardConfirmDeleteHeader from './DashboardConfirmDeleteHeader';
-import DashboardConfirmDeleteFooter from './DashboardConfirmDeleteFooter';
 import DashboardConfirmDeleteContent from './DashboardConfirmDeleteContent';
+import DashboardConfirmDeleteFooter from './DashboardConfirmDeleteFooter';
+import DashboardConfirmDeleteHeader from './DashboardConfirmDeleteHeader';
+import DialogEditCV from './DialogEditCV';
+import { ICvItem } from './DashboardSettingPersonal';
 
-interface ICvItem {
+interface ICvItemProps {
   title: string;
   size: string;
+  id: string;
+  onDelete: () => void;
+  setListCv: React.Dispatch<React.SetStateAction<ICvItem[]>>;
 }
 
-const CvItem: React.FC<ICvItem> = ({ title, size }) => {
+const CvItem: React.FC<ICvItemProps> = ({ title, size, id, onDelete, setListCv }) => {
   const [isShowDialog, setIsShowDialog] = useState(false);
+  const [isShowDialogEditCV, setIsShowDialogEditCV] = useState<boolean>(false);
 
   const onCloseDialog = () => {
     setIsShowDialog(false);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    try {
+      await ApplicationServices.deleteCV(id);
+      onDelete();
+    } catch (e) {
+      console.log('e', e);
+    } finally {
+    }
+  };
 
   return (
     <GlassCardBase className="flex flex-row items-center justify-between">
@@ -53,6 +69,15 @@ const CvItem: React.FC<ICvItem> = ({ title, size }) => {
               <Trash2 className="w-4 h-4" />
               <span>Delete</span>
             </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onSelect={() => setIsShowDialogEditCV(true)}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
+                         hover:bg-blue-100 hover:text-blue-700 
+                         focus:outline-none focus:ring-0"
+            >
+              <Pencil className="w-4 h-4" />
+              <span>Update CV</span>
+            </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
@@ -70,6 +95,15 @@ const CvItem: React.FC<ICvItem> = ({ title, size }) => {
           <DashboardConfirmDeleteContent />
         </GlassDialog>
       )}
+
+      <DialogEditCV
+        isShow={isShowDialogEditCV}
+        setIsShow={setIsShowDialogEditCV}
+        setListCv={setListCv}
+        name={title}
+        size={size}
+        id={id}
+      />
     </GlassCardBase>
   );
 };

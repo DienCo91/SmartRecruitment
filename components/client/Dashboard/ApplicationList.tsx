@@ -61,6 +61,8 @@ export const ApplicationList: React.FC<IApplicationList> = ({ title }) => {
       <div className="w-full">
         <h1 className="font-bold text-[16px] mb-[20px]">{title}</h1>
 
+        {!loading && !items.length && <p className="text-center">Chưa có đơn nào </p>}
+
         <InfiniteScroll
           dataLength={items.length}
           next={fetchApplications}

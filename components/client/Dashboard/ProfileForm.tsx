@@ -5,7 +5,7 @@ import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Camera } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod/v3';
 import { AvatarUser } from '../Avatar/AvatarUser';
@@ -13,6 +13,7 @@ import TextField from '@/components/hookFormCustom/TextField';
 import { Form } from '@/components/ui/form';
 import { CandidateService } from '@/services/candidate.services';
 import { toast } from 'sonner';
+import { EmployerService } from '@/services/employer.services';
 
 const profileSchema = z.object({
   email: z.string().nonempty('Email is required').email('Invalid email address'),
@@ -42,6 +43,36 @@ const ProfileForm: React.FC = () => {
       avatar: undefined,
     },
   });
+
+  const getMyCompany = async () => {
+    try {
+      const res = await EmployerService.getMyCompany();
+      if (res.data) {
+        setPreview(res.data.logoUrl);
+      }
+    } catch (error) {
+      console.log('error', error);
+      toast.error('You have not created a company yet');
+    } finally {
+    }
+  };
+
+  const getMyProfile = async () => {
+    try {
+      const res = await CandidateService.getMyProfile();
+      setPreview(res.data.avatarUrl);
+    } catch (error) {
+      console.log('e', error);
+    }
+  };
+
+  useEffect(() => {
+    if (currentUser?.role === 'EMPLOYER') {
+      getMyCompany();
+    } else {
+      getMyProfile();
+    }
+  }, []);
 
   const onSubmit = async (data: ProfileFormValues) => {
     try {
@@ -89,36 +120,38 @@ const ProfileForm: React.FC = () => {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          {!isEditing ? (
-            <Button type="button" onClick={() => setIsEditing(true)}>
-              Edit
-            </Button>
-          ) : (
-            <>
-              <Button
-                type="submit"
-                disabled={form.formState.isSubmitting}
-                onClick={form.handleSubmit(onSubmit)}
-              >
-                {form.formState.isSubmitting ? 'Saving...' : 'Save'}
+        {currentUser?.role !== 'EMPLOYER' && (
+          <div className="flex items-center gap-2">
+            {!isEditing ? (
+              <Button type="button" onClick={() => setIsEditing(true)}>
+                Edit
               </Button>
-              <Button
-                disabled={form.formState.isSubmitting}
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  form.reset();
-                  setPreview(null);
-                  setIsEditing(false);
-                }}
-                className="text-[#00000071]"
-              >
-                Cancel
-              </Button>
-            </>
-          )}
-        </div>
+            ) : (
+              <>
+                <Button
+                  type="submit"
+                  disabled={form.formState.isSubmitting}
+                  onClick={form.handleSubmit(onSubmit)}
+                >
+                  {form.formState.isSubmitting ? 'Saving...' : 'Save'}
+                </Button>
+                <Button
+                  disabled={form.formState.isSubmitting}
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    form.reset();
+                    setPreview(null);
+                    setIsEditing(false);
+                  }}
+                  className="text-[#00000071]"
+                >
+                  Cancel
+                </Button>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       <TextField label="Email" disabled placeholder="Email" control={form.control} name="email" />

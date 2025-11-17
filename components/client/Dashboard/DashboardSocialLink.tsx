@@ -14,6 +14,7 @@ import {
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
+import { ICandidateDetail } from '@/types';
 import { getIconSocialLink } from '@/utils/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
@@ -58,7 +59,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const DashboardSocialLink = () => {
+const DashboardSocialLink = ({ data }: { data: ICandidateDetail | null }) => {
   const dispatch = useAppDispatch();
 
   const {
@@ -68,7 +69,15 @@ const DashboardSocialLink = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      socialLinks: [{ platformName: '', url: '' }],
+      socialLinks: data?.socialLinks.map(item => ({
+        platformName: item.platformName,
+        url: item.url,
+      })) || [
+        {
+          platformName: '',
+          url: '',
+        },
+      ],
     },
   });
 

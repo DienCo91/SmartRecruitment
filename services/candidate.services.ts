@@ -93,4 +93,9 @@ export const CandidateService = {
     const res = await http.get(`${endpointPrefix}/jobs/favorite-jobs`, { params });
     return res.data;
   },
+
+  async getMyProfile() {
+    const res = await http.get(`${endpointPrefix}/profile/me`);
+    return res.data;
+  },
 };
