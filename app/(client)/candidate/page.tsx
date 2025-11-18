@@ -7,25 +7,22 @@ import { CustomCollapsible } from '@/components/client/Collapsibles/CustomCollap
 import { FilterCandidate } from '@/components/client/Filters/FilterCandidate';
 import { CustomRadioGroup } from '@/components/client/RadioGroup/CustomRadioGroup';
 import { Separator } from '@/components/ui/separator';
-import { Slider } from '@/components/ui/slider';
 
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { educations, experiences, genders } from '@/constants/mockedData';
+import { CandidateService } from '@/services/candidate.services';
+import { Candidate } from '@/types';
+import _ from 'lodash';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import _ from 'lodash';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { CandidateService } from '@/services/candidate.services';
-import { educations, experiences, genders } from '@/constants/mockedData';
-import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
-import { Candidate } from '@/types';
 
 const CandidatePage = () => {
   const initFilter = {
-    locationRadius: 5,
-    candidateLevel: 'midLevel',
     experience: '',
     educations: [] as string[],
-    gender: 'MALE',
+    gender: '',
   };
   type Filter = typeof initFilter;
   const [filters, setFilters] = useState<Filter>(initFilter);
@@ -46,12 +43,11 @@ const CandidatePage = () => {
         const query = _.omitBy(
           {
             page: pageNumber,
-            keyword: params.get('keyword') || undefined,
-            location: params.get('location') || undefined,
-            // category: '',
+            keyword: params.get('keyword') ?? undefined,
+            location: params.get('location') ?? undefined,
             experienceLevel: filters.experience,
             educationLevels: filters.educations,
-            gender: filters.gender,
+            gender: filters.gender ?? undefined,
           },
           _.isNil
         );

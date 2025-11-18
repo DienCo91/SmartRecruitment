@@ -7,7 +7,6 @@ interface IThemeWrapperProps {
 
 const ThemeWrapper: React.FC<IThemeWrapperProps> = ({ children }) => {
   const { theme } = useTheme();
-  console.log('theme', theme);
   return (
     <html lang="en" className={theme}>
       {children}
