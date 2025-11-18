@@ -127,8 +127,8 @@ export const salaries = [
 ];
 
 export const genders = [
-  { id: 'male', value: 'male', label: 'Nam' },
-  { id: 'female', value: 'female', label: 'Nữ' },
+  { id: 'male', value: 'MALE', label: 'Nam' },
+  { id: 'female', value: 'FEMALE', label: 'Nữ' },
 ];
 
 export const categoriesBlog = [
