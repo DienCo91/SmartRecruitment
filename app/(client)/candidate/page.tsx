@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { CandidateCard } from '@/components/client/Candidates/CandidateCard';
@@ -10,62 +9,73 @@ import { CustomRadioGroup } from '@/components/client/RadioGroup/CustomRadioGrou
 import { Separator } from '@/components/ui/separator';
 import { Slider } from '@/components/ui/slider';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CandidateService } from '@/services/candidate.services';
 import { educations, experiences, genders } from '@/constants/mockedData';
+import { useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
+import { Candidate } from '@/types';
 
 const CandidatePage = () => {
   const initFilter = {
     locationRadius: 5,
     candidateLevel: 'midLevel',
-    experience: '1-2Year',
-    education: ['graduation'],
-    gender: 'male',
+    experience: '',
+    educations: [] as string[],
+    gender: 'MALE',
   };
   type Filter = typeof initFilter;
   const [filters, setFilters] = useState<Filter>(initFilter);
 
-  const [candidates, setCandidates] = useState<[]>([]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const params = useSearchParams();
 
   const handleFilter = (key: keyof Filter, value: Filter[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
 
-  const getCandidates = async (pageNumber = 1) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const params = {
-        page: pageNumber,
-        // size: 10,
-        // location: '', // tuỳ nếu bạn có location filter riêng
-        // category: '',
-        // experienceLevel: filters.experience,
-        // educationLevels: filters.education,
-        // gender: filters.gender,
-      };
+  const fetchCandidates = useCallback(
+    async (pageNumber = 1) => {
+      setLoading(true);
+      try {
+        const query = _.omitBy(
+          {
+            page: pageNumber,
+            keyword: params.get('keyword') || undefined,
+            location: params.get('location') || undefined,
+            // category: '',
+            experienceLevel: filters.experience,
+            educationLevels: filters.educations,
+            gender: filters.gender,
+          },
+          _.isNil
+        );
+        const res = await CandidateService.getAllCandidate(
+          query as Record<string, string | number>
+        );
+        const newData = res.data.content;
 
-      const res = await CandidateService.getAllCandidate(params);
-      const newData = res.data.content;
-
-      setCandidates(prev => (pageNumber === 1 ? newData : [...prev, ...newData]));
-      setHasMore(!res.data.last);
-      setPage(pageNumber);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setCandidates(prev => (pageNumber === 1 ? newData : [...prev, ...newData]));
+        setHasMore(!res.data.last);
+        setPage(pageNumber);
+      } catch (err) {
+        console.error(err);
+        toast.error('Đã xảy ra lỗi');
+      } finally {
+        setLoading(false);
+      }
+    },
+    [params, filters]
+  );
 
   useEffect(() => {
-    getCandidates(1);
-  }, [filters]);
+    fetchCandidates(1);
+  }, [fetchCandidates]);
 
   return (
     <div>
@@ -74,28 +84,6 @@ const CandidatePage = () => {
         <div className="grid grid-cols-12 gap-5">
           <div className="col-span-4 mt-3">
             <GlassCard title="" classContentName="p-0" className="col-span-4 hover:bg-transparent ">
-              {/* Radius */}
-              <CustomCollapsible
-                title={
-                  <div className="flex items-baseline text-sm font-medium space-x-1">
-                    <span>Bán kính:</span>
-                    <span>{filters.locationRadius} Km</span>
-                  </div>
-                }
-              >
-                <div className="mt-3"></div>
-                <Slider
-                  defaultValue={[filters.locationRadius]}
-                  max={50}
-                  step={1}
-                  onValueChange={(vals: number[]) => handleFilter('locationRadius', vals[0])}
-                  className="[&_[data-slot=slider-range]]:bg-[#1d2954]"
-                />
-              </CustomCollapsible>
-              <Separator className="bg-gray-500 my-2" />
-
-              <Separator className="bg-gray-500 my-2" />
-
               {/* Experiences */}
               <CustomCollapsible
                 title={
@@ -124,8 +112,8 @@ const CandidatePage = () => {
                 <div className="mt-3"></div>
                 <CustomCheckboxGroup
                   options={educations}
-                  values={filters.education}
-                  onCheckedValues={vals => handleFilter('education', vals)}
+                  values={filters.educations}
+                  onCheckedValues={vals => handleFilter('educations', vals)}
                 />
               </CustomCollapsible>
               <Separator className="bg-gray-500 my-2" />
@@ -149,17 +137,23 @@ const CandidatePage = () => {
           </div>
 
           <div id="scrollable-candidates" className="col-span-8 h-[1000px] overflow-y-auto">
-            <InfiniteScroll
-              scrollableTarget="scrollable-candidates"
-              dataLength={candidates.length}
-              next={() => getCandidates(page + 1)}
-              hasMore={hasMore}
-              loader={<LoadingCircle />}
-            >
-              {candidates.map((item, i) => (
-                <CandidateCard key={i} candidate={item} />
-              ))}
-            </InfiniteScroll>
+            {loading ? (
+              <LoadingCircle />
+            ) : !Boolean(candidates.length) ? (
+              <div className="text-center py-10 text-gray-400">Không có ứng viên nào phù hợp</div>
+            ) : (
+              <InfiniteScroll
+                scrollableTarget="scrollable-candidates"
+                dataLength={candidates.length}
+                next={() => fetchCandidates(page + 1)}
+                hasMore={hasMore}
+                loader={<LoadingCircle />}
+              >
+                {candidates.map(item => (
+                  <CandidateCard key={item.id} candidate={item} />
+                ))}
+              </InfiniteScroll>
+            )}
           </div>
         </div>
       </GlassCard>

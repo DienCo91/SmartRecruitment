@@ -16,7 +16,7 @@ export function FilterBlog() {
   const searchParam = useSearchParams();
   const [filters, setFilters] = useState<ISpecificationParams>({
     keyword: searchParam.get('keyword') || '',
-    categoryIds: searchParam.getAll('ca').map(Number) || [],
+    categoryIds: searchParam.getAll(QueryType.QUERY_CATEGORY).map(Number) || [],
   });
   const [categoriyOptions, setCategoryOptions] = useState<TOptions[]>([]);
   const router = useRouter();

@@ -103,12 +103,12 @@ const DashboardProfile = ({ data }: { data: ICandidateDetail | null }) => {
           <h1 className="mb-[8px] font-bold text-[14px]">Bio</h1>
           <QuillCustom
             ref={editorRef}
-            placeholder="Write down your biography here. Let the employers know who you are..."
+            placeholder="Nhập tiểu sử của bạn để mọi người biết bạn là ai."
           />
         </div>
 
         <Button size={'lg'} type="submit">
-          Save Change
+          Lưu thay đổi
         </Button>
       </form>
     </Form>

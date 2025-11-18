@@ -152,7 +152,7 @@ const DashboardSocialLink = ({ data }: { data: ICandidateDetail | null }) => {
                   <Input
                     {...field}
                     type="text"
-                    placeholder="Profile link/url..."
+                    placeholder="URL"
                     className="border-0 shadow-none focus-visible:ring-0"
                   />
                 )}

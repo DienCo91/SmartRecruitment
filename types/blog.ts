@@ -7,6 +7,7 @@ export interface ISpecificationParams {
   keyword?: string;
   categoryIds?: number[];
   tagId?: number;
+  location?: string;
 }
 
 export interface Blog {
