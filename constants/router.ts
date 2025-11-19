@@ -40,6 +40,7 @@ export const Router = {
   FIND_JOB: '/find-job',
   CHATTING: '/chatting',
   BLOG: '/blogs',
+  MY_BLOG: '/my-blogs',
 };
 
 export const ROUTER_GUESS = [
@@ -68,6 +69,7 @@ export const ROUTER_CANDIDATE = [
   Router.FIND_JOB,
   Router.CHATTING,
   Router.BLOG,
+  Router.MY_BLOG,
 ];
 
 export const ROUTER_EMPLOYER = [
@@ -83,5 +85,6 @@ export const ROUTER_EMPLOYER = [
   Router.VERIFY_EMAIL,
   Router.CHATTING,
   Router.BLOG,
+  Router.MY_BLOG,
   Router.CONGRATULATIONS,
 ];
