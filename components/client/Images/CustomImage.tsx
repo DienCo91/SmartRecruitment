@@ -1,13 +1,18 @@
+import { AppImage } from '@/common';
 import { cn } from '@/lib/utils';
 import { BaseProps } from '@/types';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface Props extends BaseProps {
   src: string;
+  fallback?: string;
   alt: string;
 }
 
-export function CustomImage({ src, alt, className }: Props) {
+export function CustomImage({ src, alt, fallback, className }: Props) {
+  const [imgSrc, setImgSrc] = useState<string>(src);
+
   return (
     <div
       className={cn(
@@ -16,11 +21,9 @@ export function CustomImage({ src, alt, className }: Props) {
       )}
     >
       <Image
-        src={
-          src ||
-          'https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/UdiO7Pguf3akX65drUOKRz0N5dcyKWWr_1737604772____3a6bc78024143aefa7a42eaf3e57e674.png'
-        }
+        src={imgSrc}
         alt={alt || 'Image optimized'}
+        onError={() => setImgSrc(fallback || AppImage.fallback.companyFallback.src)}
         fill
         className={'object-contain p-1'}
       />

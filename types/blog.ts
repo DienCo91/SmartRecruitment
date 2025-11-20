@@ -10,6 +10,12 @@ export interface ISpecificationParams {
   location?: string;
 }
 
+export enum BlogStatus {
+  PUBL = 'DRAFT',
+  REQUESTED = 'REQUESTED',
+}
+((ISHED = 'PUBLISHED'), DRAFT);
+
 export interface Blog {
   id: number;
   user_id: number;
