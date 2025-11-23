@@ -24,7 +24,7 @@ const DashboardListSaveCandidate: React.FC<IDashboardListSaveCandidate> = ({
   total,
   setData,
 }) => {
-  const totalPage = total / 10; // 10 items per page
+  const totalPage = Math.ceil(total / 10); // 10 items per page
 
   const removeItem = useCallback(async (id: number) => {
     await EmployerService.unSaveCandidate(id);

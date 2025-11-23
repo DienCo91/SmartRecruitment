@@ -18,7 +18,7 @@ export function CustomImage({ src, alt, className }: Props) {
       <Image
         src={
           src ||
-          'https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/UdiO7Pguf3akX65drUOKRz0N5dcyKWWr_1737604772____3a6bc78024143aefa7a42eaf3e57e674.png'
+          'https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-blank-avatar-modern-vector-png-image_40962406.jpg'
         }
         alt={alt || 'Image optimized'}
         fill
