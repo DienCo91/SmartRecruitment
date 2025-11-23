@@ -44,7 +44,10 @@ export function NavBar() {
         );
       default:
         return SiteAll.filter(
-          site => site.name === 'Trang chủ' || site.name === 'Tìm Kiếm Công Việc'
+          site =>
+            site.name === 'Trang chủ' ||
+            site.name === 'Tìm Kiếm Công Việc' ||
+            site.name === 'Bài viết'
         );
     }
   }, [currentUser?.role]);
