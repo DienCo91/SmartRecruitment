@@ -8,9 +8,10 @@ interface Props extends BaseProps {
   src: string;
   fallback?: string;
   alt: string;
+  imageClassName?: string;
 }
 
-export function CustomImage({ src, alt, fallback, className }: Props) {
+export function CustomImage({ src, alt, fallback, className, imageClassName }: Props) {
   const [imgSrc, setImgSrc] = useState<string>(src);
 
   return (
@@ -25,7 +26,7 @@ export function CustomImage({ src, alt, fallback, className }: Props) {
         alt={alt || 'Image optimized'}
         onError={() => setImgSrc(fallback || AppImage.fallback.companyFallback.src)}
         fill
-        className={'object-contain p-1'}
+        className={cn('object-contain p-1', imageClassName)}
       />
     </div>
   );

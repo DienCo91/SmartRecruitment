@@ -1,14 +1,17 @@
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CustomInput } from '@/components/Inputs/CustomInput';
+import DragAndDropFileInput from '@/components/Inputs/DragAndDropFileInput';
 import QuillCustom from '@/components/quill';
 import { MultiSelect } from '@/components/Selectors/MultiSelect';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { BlogService } from '@/services/blog.service';
-import { TOptions } from '@/types';
+import { TagData, TOptions } from '@/types';
 import { Blog, BlogCategory } from '@/types/blog';
 import { useCallback, useEffect, useState } from 'react';
+import { CustomImage } from '../Images/CustomImage';
+import { PreviewImage } from '../Images/PreviewImage';
 
 interface Props {
   blog?: Blog;
@@ -17,7 +20,22 @@ interface Props {
 export function UpdateOrCreateBlogFrom({ blog }: Props) {
   const isUpdate = Boolean(blog);
   const [blogCategoryOptions, setBlogCategoryOptions] = useState<TOptions[]>([]);
+  const [tagOptions, setTagOptions] = useState<TOptions[]>([]);
   const [categoryIds, setCategoryIds] = useState<string[]>([]);
+  const [tagNames, setTagNames] = useState<string[]>([]);
+  const [thumbnail, setThumbnail] = useState<File>();
+
+  const fetchTags = useCallback(async () => {
+    try {
+      const tags = (await BlogService.getPopularTags()).data as TagData[];
+      const options = tags.map(
+        item => ({ value: item.name, label: item.name }) as unknown as TOptions
+      );
+      setTagOptions(options);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   const fetchBlogCategories = useCallback(async () => {
     try {
@@ -33,7 +51,8 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
 
   useEffect(() => {
     fetchBlogCategories();
-  }, [fetchBlogCategories]);
+    fetchTags();
+  }, [fetchBlogCategories, fetchTags]);
 
   return (
     <div className="grid grid-cols-12 gap-3">
@@ -82,7 +101,41 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
             options={blogCategoryOptions}
             values={categoryIds}
             onValueChange={setCategoryIds}
+            placeholder="Chọn danh mục bài viết"
           />
+        </div>
+
+        <div className="space-y-2 mb-5">
+          <p className="font-semibold text-lg">Tags</p>
+          <MultiSelect
+            options={tagOptions}
+            values={tagNames}
+            onValueChange={vals => setTagNames(vals)}
+            placeholder="Gắn tag cho bài viết"
+            inputPlaceholder="Nhập tag mới"
+            itemClassName="rounded-full px-2"
+            enableAddValueManual
+          />
+        </div>
+        <Separator className="my-5" />
+
+        <div className="space-y-2 mb-5">
+          <p className="font-semibold text-lg">Thumbnail</p>
+          <DragAndDropFileInput
+            placeholder={
+              thumbnail
+                ? thumbnail.name
+                : 'Kéo thả file vào đây hoặc click để chọn thumbnail cho blog'
+            }
+            onSelectFiles={files => setThumbnail(files[0])}
+            accept="image/*"
+          />
+          {thumbnail && (
+            <>
+              <p className="font-semibold text-lg text-center">Xem trước</p>
+              <PreviewImage fileImage={thumbnail} onRemoveFile={() => setThumbnail(undefined)} />
+            </>
+          )}
         </div>
       </GlassCard>
     </div>

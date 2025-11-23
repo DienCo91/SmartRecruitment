@@ -1,9 +1,10 @@
-/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { cn } from '@/lib/utils';
 import { TOptions } from '@/types';
-import { CheckIcon, ChevronDownIcon } from 'lucide-react';
+import _ from 'lodash';
+import { CheckIcon, ChevronDownIcon, XIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import { CustomInput } from '../Inputs/CustomInput';
 import { CustomPopover } from '../Popovers/CustomPopover';
 import {
   Command,
@@ -13,14 +14,16 @@ import {
   CommandItem,
   CommandList,
 } from '../ui/command';
-import _ from 'lodash';
 
 interface Props {
   options: TOptions[];
   values: string[];
   onValueChange: (values: string[]) => void;
   placeholder?: string;
+  inputPlaceholder?: string;
+  enableAddValueManual?: boolean;
   className?: string;
+  itemClassName?: string;
 }
 
 export function MultiSelect({
@@ -28,27 +31,90 @@ export function MultiSelect({
   onValueChange,
   values,
   placeholder = 'Select multiple...',
+  enableAddValueManual,
   className,
+  itemClassName,
+  inputPlaceholder,
 }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
+  const [inputValue, setInputValue] = useState('');
+  console.log(values);
+
   const displayValues = _.mapValues(_.keyBy(options, 'value'), 'label');
+
+  const closeButton = useCallback(
+    (val: string) => (
+      <XIcon
+        size={18}
+        className="border rounded-full cursor-pointer text-gray-400 border-gray-400 hover:text-gray-300 hover:border-gray-300"
+        onClick={e => {
+          e.stopPropagation();
+          onValueChange(values.filter(v => v !== val));
+        }}
+      />
+    ),
+    [onValueChange, values]
+  );
 
   const trigger = useMemo(
     () => (
-      <div className="bg-white/20 rounded-sm p-3">
+      <div className="bg-white/20 rounded-sm p-2 border">
         <div className={cn('flex justify-between items-center', className)}>
-          <div className="flex-row gap-2">
-            {values.map(val => (
-              <div className="bg-white/20 p-1 rounded-md">{displayValues[val]}</div>
-            )) || placeholder}
+          <div className="flex flex-wrap gap-2">
+            {Boolean(values.length) ? (
+              values.map(val => (
+                <div
+                  className={cn(
+                    'flex items-center gap-3 bg-white/20 p-1 rounded-md',
+                    itemClassName
+                  )}
+                  key={val}
+                >
+                  {displayValues[val] || val}
+                  {closeButton(val)}
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-400">{placeholder}</p>
+            )}
+            {open && enableAddValueManual && (
+              <CustomInput
+                placeholder={inputPlaceholder || 'Nhập giá trị mới'}
+                value={inputValue}
+                onChange={e => setInputValue(e.target.value)}
+                onMouseDown={e => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
+                onFocus={e => e.stopPropagation()}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && inputValue.trim() !== '') {
+                    onValueChange(_.uniq([...values, inputValue.trim()]));
+                    setInputValue('');
+                  }
+                }}
+              />
+            )}
           </div>
 
-          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-70" />
+          {!Boolean(values.length) && (
+            <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-70" />
+          )}
         </div>
       </div>
     ),
-    [className, displayValues, placeholder, values]
+    [
+      className,
+      closeButton,
+      displayValues,
+      enableAddValueManual,
+      inputPlaceholder,
+      inputValue,
+      itemClassName,
+      onValueChange,
+      open,
+      placeholder,
+      values,
+    ]
   );
 
   const handleSelect = useCallback(
