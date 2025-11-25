@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useAppDispatch } from '@/lib/hooks';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { AppImage } from '@/common';
+import { getLabelExperience } from '@/utils';
 
 export function CandidateCard({ candidate }: { candidate: Candidate }) {
   const dispatch = useAppDispatch();
@@ -69,7 +70,7 @@ export function CandidateCard({ candidate }: { candidate: Candidate }) {
               {experienceLevel && (
                 <span className="flex items-center gap-1">
                   <LightbulbIcon size={14} />
-                  {experienceLevel}
+                  {getLabelExperience(experienceLevel)}
                 </span>
               )}
             </div>

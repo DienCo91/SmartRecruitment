@@ -21,6 +21,7 @@ export interface FilterCompanyRef {
     teamSize?: string;
     year?: number;
   };
+  clearFilters: () => void;
 }
 
 const currentYear = new Date().getFullYear();
@@ -48,6 +49,12 @@ const FilterCompany: ForwardRefRenderFunction<FilterCompanyRef> = (_, ref) => {
       teamSize,
       year,
     }),
+    clearFilters: () => {
+      setOrganizationType(undefined);
+      setIndustryType(undefined);
+      setTeamSize(undefined);
+      setYear(undefined);
+    },
   }));
 
   return (

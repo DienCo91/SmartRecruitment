@@ -11,9 +11,10 @@ import { useState } from 'react';
 
 interface IFilterCompanyHeader {
   handleSubmit?: (value: TypeFilterCompanyHeader) => void;
+  handleClearFilter?: () => void;
 }
 
-export function FilterCompanyHeader({ handleSubmit }: IFilterCompanyHeader) {
+export function FilterCompanyHeader({ handleSubmit, handleClearFilter }: IFilterCompanyHeader) {
   const initFilter = {
     search: '',
     location: '',
@@ -24,6 +25,11 @@ export function FilterCompanyHeader({ handleSubmit }: IFilterCompanyHeader) {
 
   const handleFilter = (key: keyof Filter, value: Filter[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
+
+  const handleClear = () => {
+    setFilters(initFilter);
+    if (typeof handleClearFilter === 'function') handleClearFilter();
+  };
 
   return (
     <div className="mt-[40px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
@@ -50,6 +56,13 @@ export function FilterCompanyHeader({ handleSubmit }: IFilterCompanyHeader) {
         }}
       >
         Find Company
+      </Button>
+      <Button
+        variant="outline"
+        className="rounded-l-none text-gray-600 h-full cursor-pointer"
+        onClick={handleClear}
+      >
+        Clear filter
       </Button>
     </div>
   );

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Upload, FileText } from 'lucide-react';
 import Image from 'next/image';
 import React, { useRef } from 'react';
+import { CustomImage } from '../Images/CustomImage';
 
 interface IUploadInfo {
   title: string;
@@ -49,12 +50,17 @@ const UploadInfo: React.FC<IUploadInfo> = ({
       <div
         onClick={handleClick}
         className={cn(
-          'h-[240px] bg-[#F1F2F466] flex flex-col items-center justify-center px-[20px] mt-[12px] cursor-pointer relative',
+          'h-[240px] bg-[#F1F2F466] flex flex-col items-center justify-center  mt-[12px] cursor-pointer relative',
           classNameDropWrap
         )}
       >
         {initImage && !value ? (
-          <Image src={initImage} alt="preview" className="object-contain" fill />
+          <CustomImage
+            src={initImage}
+            alt="preview"
+            classNameImage="object-cover"
+            className="w-full h-full rounded-none"
+          />
         ) : value ? (
           isImage ? (
             <Image src={URL.createObjectURL(value)} alt="preview" className="object-contain" fill />

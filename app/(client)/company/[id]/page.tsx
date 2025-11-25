@@ -60,11 +60,17 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
   if (!company) return;
 
   return (
-    <div className="w-full scroll-smooth">
+    <div className="w-full scroll-smooth relative">
+      <CustomImage
+        src={company.bannerUrl}
+        alt="thumbnail"
+        className="h-[320px] w-full absolute top-[-320px] z-10 rounded-none"
+        classNameImage="object-cover"
+      />
       <GlassCard
-        className="mt-10"
+        className="mt-[320px] relative z-0 hover:translate-y-[0] rounded-t-none"
         title={
-          <div className="flex flex-1 items-center w-full">
+          <div className="flex flex-1 items-center w-full relative ">
             <CustomImage
               src={company.logoUrl}
               alt="thumbnail"

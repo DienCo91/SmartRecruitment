@@ -44,6 +44,8 @@ export function FilterJob({ handleSubmit }: IFilterJob) {
   const handleFilter = (key: keyof Filter, value: Filter[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
 
+  const handleClear = () => setFilters(initFilter);
+
   return (
     <div className="mt-[40px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
       <CustomInput
@@ -128,12 +130,19 @@ export function FilterJob({ handleSubmit }: IFilterJob) {
       </CustomPopover>
 
       <Button
-        className="bg-blue-900 hover:bg-blue-800 hover:text-neutral-100 text-neutral-300 rounded-l-none h-full rounded-r-sm"
+        className="bg-blue-900 hover:bg-blue-800 hover:text-neutral-100 text-neutral-300 rounded-none h-full cursor-pointer"
         onClick={() => {
           if (typeof handleSubmit === 'function') handleSubmit(filters);
         }}
       >
         Tìm Job
+      </Button>
+      <Button
+        variant="outline"
+        className="rounded-l-none text-gray-600 h-full cursor-pointer"
+        onClick={handleClear}
+      >
+        Clear filter
       </Button>
     </div>
   );

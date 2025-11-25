@@ -19,7 +19,7 @@ const CompanyOpenPosition = ({ item }: { item: CompanyItem }) => {
         classNameImage="object-cover p-0"
       />
       <div className="ml-[16px] flex flex-1 flex-col">
-        <h1 className="mb-[8px] text-[20px] font-bold">{item?.name}</h1>
+        <h1 className="mb-[8px] text-[16px] font-bold">{item?.name}</h1>
         <div className="flex">
           <div className="flex items-center">
             <MdLocationPin size={14} />
