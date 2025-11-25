@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { AvatarUser } from '../Avatar/AvatarUser';
 
 const allChats = Array.from({ length: 50 }, (_, i) => ({
   name: `Company ${i + 1}`,
@@ -40,6 +41,7 @@ const ChatList = () => {
         hasMore={hasMore}
         scrollableTarget="scrollableDiv"
         loader={<LoadingCircle />}
+        style={{ overflow: 'hidden' }}
       >
         <div className="flex flex-col">
           {items.map((item, index) => {
@@ -53,10 +55,11 @@ const ChatList = () => {
                   isActive ? 'bg-white/20 backdrop-blur-md' : 'hover:backdrop-blur-sm'
                 )}
               >
-                <Avatar className="w-[48px] h-[48px]">
-                  <AvatarImage src={item.avatar} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                <AvatarUser
+                  src={item.avatar}
+                  classNameImage="object-cover"
+                  className="border-none w-[48px] h-[48px]"
+                />
 
                 <div className="flex flex-1 flex-col gap-[2px]">
                   <h1 className="font-bold text-[14px]">{item.name}</h1>

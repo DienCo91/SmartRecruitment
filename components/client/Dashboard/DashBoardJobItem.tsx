@@ -17,6 +17,7 @@ import DashboardConfirmDeleteFooter from './DashboardConfirmDeleteFooter';
 import DashboardConfirmDeleteHeader from './DashboardConfirmDeleteHeader';
 import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
+import { CustomImage } from '../Images/CustomImage';
 
 interface IDashBoardJobItem {
   onDeleteById?: (id: string) => void;
@@ -38,15 +39,12 @@ const DashBoardJobItem: React.FC<IDashBoardJobItem> = ({ onDeleteById, item }) =
 
   return (
     <GlassCardBase className="flex flex-row flex-wrap relative">
-      <Image
+      <CustomImage
         src={item.companyLogoUrl}
         alt="Logo"
-        width={48}
-        height={48}
-        className="rounded-md object-cover flex-shrink-0 w-[48px] h-[48px]"
-        unoptimized
+        className="w-[60px] h-[60px]"
+        classNameImage="object-cover"
       />
-
       <div className="space-y-2 flex flex-col flex-1">
         <div className="flex space-x-2 flex-wrap">
           <h1 className="font-bold text-[14px]">{item.jobTitle}</h1>

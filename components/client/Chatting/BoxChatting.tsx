@@ -30,6 +30,7 @@ const generateMockMessages = (count: number, startIndex: number) => {
 };
 
 import React from 'react';
+import { AvatarUser } from '../Avatar/AvatarUser';
 
 const BoxChatting = () => {
   const [messages, setMessages] = useState<Message[]>(generateMockMessages(15, 1));
@@ -102,10 +103,11 @@ const BoxChatting = () => {
                 )}
               >
                 {msg.user === 'other' && (
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={msg.avatar} alt="avatar" />
-                    <AvatarFallback>U</AvatarFallback>
-                  </Avatar>
+                  <AvatarUser
+                    src={msg.avatar}
+                    classNameImage="object-cover"
+                    className="border-none w-[36px] h-[36px]"
+                  />
                 )}
 
                 <div
@@ -113,20 +115,21 @@ const BoxChatting = () => {
                     'max-w-[70%] rounded-2xl px-3 py-2 text-sm shadow-sm',
                     msg.user === 'me'
                       ? 'bg-blue-500 text-white rounded-br-none'
-                      : 'bg-white text-gray-900 rounded-bl-none'
+                      : 'bg-background text-foreground rounded-bl-none'
                   )}
                 >
                   {msg.text}
-                  <div className="text-[10px] mt-1 text-black opacity-50 text-right">
+                  <div className="text-[10px] mt-1 text-accent-foreground opacity-50 text-right">
                     {format(msg.createdAt, 'HH:mm')}
                   </div>
                 </div>
 
                 {msg.user === 'me' && (
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={msg.avatar} alt="avatar" />
-                    <AvatarFallback>Me</AvatarFallback>
-                  </Avatar>
+                  <AvatarUser
+                    src={msg.avatar}
+                    classNameImage="object-cover"
+                    className="border-none w-[36px] h-[36px]"
+                  />
                 )}
               </div>
             </div>

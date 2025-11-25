@@ -2,7 +2,7 @@
 
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CardContent } from '@/components/ui/card';
-import { Router } from '@/constants';
+import { IMAGE_EMPTY, Router } from '@/constants';
 import { JobItem } from '@/types';
 import { getLabelJobType } from '@/utils';
 import { formatNumber } from '@/utils/common';
@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { LuDot } from 'react-icons/lu';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlassCardBase from '../Cards/GlassCardBase';
-import Image from 'next/image';
+import { CustomImage } from '../Images/CustomImage';
 
 interface IListJob {
   items: JobItem[];
@@ -45,20 +45,16 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {items.map(job => (
               <Link key={job.id} href={Router.JOB.DETAIL(job.slug)}>
-                <GlassCardBase className="hover:shadow-md hover:shadow-blue-200 cursor-pointer border-[1px] hover:border-blue-primary transition-all duration-300 ease-in-out hover:-translate-y-1  h-[180px]">
+                <GlassCardBase className="py-[12px] px-[0px] hover:shadow-md hover:shadow-blue-300 cursor-pointer border-[1px] hover:border-blue-primary transition-all duration-300 ease-in-out hover:-translate-y-1 h-[200px]">
                   <CardContent>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div>
-                          <Image
-                            src={job.companyLogoUrl}
-                            alt="Logo"
-                            width={50}
-                            height={50}
-                            className="rounded-md object-cover flex-shrink-0 w-[50px] h-[50px]"
-                            unoptimized
-                          />
-                        </div>
+                        <CustomImage
+                          src={job.companyLogoUrl || IMAGE_EMPTY}
+                          alt="thumbnail"
+                          className=" h-[80px] w-[80px] border-0 shadow-none"
+                          classNameImage="object-cover rounded-md"
+                        />
                         <div>
                           <span className="font-semibold">{job.companyName}</span>
                           <div className="flex items-center text-sm text-gray-500 mb-2 opacity-80">
@@ -67,14 +63,6 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
                           </div>
                         </div>
                       </div>
-                      {/* {job.featured && (
-                      <Badge
-                        variant="secondary"
-                        className="ml-[6px] bg-red-100 text-red-600 rounded-full font-normal"
-                      >
-                        Featured
-                      </Badge>
-                    )} */}
                     </div>
 
                     <h3 className="font-bold text-lg mb-2 line-clamp-2">{job.jobTitle}</h3>

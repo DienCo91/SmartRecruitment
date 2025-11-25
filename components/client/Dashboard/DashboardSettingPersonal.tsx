@@ -19,6 +19,8 @@ import z from 'zod/v3';
 import GlassCardBase from '../Cards/GlassCardBase';
 import CvItem from './CvItem';
 import DialogAddCV from './DialogAddCV';
+import { fi, is } from 'date-fns/locale';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const formSchema = z.object({
   experience: z.string().nonempty('Experience is required'),
@@ -56,13 +58,17 @@ const DashboardSettingPersonal = ({ data }: { data: ICandidateDetail | null }) =
   const [isShowDialogAddCV, setIsShowDialogAddCV] = useState<boolean>(false);
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
   const [listCv, setListCv] = useState<ICvItem[]>([]);
+  const [loadingLocal, setLoadingLocal] = useState(true);
 
   const getMyCV = async () => {
+    setLoadingLocal(true);
     try {
       const res = await ApplicationServices.getMyCV();
       setListCv(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoadingLocal(false);
     }
   };
 
@@ -175,29 +181,38 @@ const DashboardSettingPersonal = ({ data }: { data: ICandidateDetail | null }) =
         </form>
       </Form>
       <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">CV của bạn</h1>
+
       <div className="grid grid-cols-2 2xl:grid-cols-3 gap-[16px]">
-        {listCv.map(item => (
-          <CvItem
-            key={item.id}
-            size={`${(item?.size).toFixed(2)} MB`}
-            title={item.title}
-            id={item.id}
-            onDelete={() => onDelete(item.id)}
-            setListCv={setListCv}
-          />
-        ))}
-        <GlassCardBase className="flex flex-row items-center justify-between">
-          <div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => setIsShowDialogAddCV(true)}
-          >
-            <CirclePlus className="text-blue-500" size={32} />
-            <div>
-              <h1 className="font-semibold text-[14px]">Thêm CV</h1>
-              <span className="text-[12px] text-gray-400">Chọn file tại đây (PDF)</span>
+        {loadingLocal &&
+          Array.from({ length: 2 }).map((_, index) => (
+            <Skeleton key={index} className="h-[78px] rounded-xl bg-white/60 backdrop-blur-lg" />
+          ))}
+        {!loadingLocal &&
+          listCv.length > 0 &&
+          listCv.map(item => (
+            <CvItem
+              key={item.id}
+              size={`${(item?.size).toFixed(2)} MB`}
+              title={item.title}
+              id={item.id}
+              onDelete={() => onDelete(item.id)}
+              setListCv={setListCv}
+            />
+          ))}
+        {!loadingLocal && (
+          <GlassCardBase className="flex flex-row items-center justify-between">
+            <div
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => setIsShowDialogAddCV(true)}
+            >
+              <CirclePlus className="text-blue-500" size={32} />
+              <div>
+                <h1 className="font-semibold text-[14px]">Thêm CV</h1>
+                <span className="text-[12px] text-gray-400">Chọn file tại đây (PDF)</span>
+              </div>
             </div>
-          </div>
-        </GlassCardBase>
+          </GlassCardBase>
+        )}
       </div>
       <DialogAddCV
         isShow={isShowDialogAddCV}

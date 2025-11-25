@@ -29,7 +29,7 @@ const ChatFilter: React.FC<IChatFilter> = ({ filter, setFilter }) => {
           key={index}
           className={cn(
             'flex flex-1 justify-center py-[4px] cursor-pointer rounded-full border-[1px] border-white',
-            item.value === filter ? 'bg-white text-black font-bold ' : 'hover:bg-white/10'
+            item.value === filter ? 'bg-background text-foreground font-bold ' : 'hover:bg-white/10'
           )}
         >
           <span>{item.label}</span>

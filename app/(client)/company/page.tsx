@@ -5,8 +5,6 @@ import FilterCompany, { FilterCompanyRef } from '@/components/client/Filters/Fil
 import { FilterCompanyHeader } from '@/components/client/Filters/FilterCompanyHeader';
 import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { useAppDispatch } from '@/lib/hooks';
 import { CompanyService } from '@/services/company.services';
 import { CompanyItem } from '@/types';
 import { getLabelLocationByValue } from '@/utils/common';
