@@ -39,7 +39,6 @@ export function MultiSelect({
   const [open, setOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
   const [inputValue, setInputValue] = useState('');
-  console.log(values);
 
   const displayValues = _.mapValues(_.keyBy(options, 'value'), 'label');
 
@@ -119,7 +118,7 @@ export function MultiSelect({
 
   const handleSelect = useCallback(
     (v: string) => {
-      !values.includes(v)
+      !values.includes(String(v))
         ? onValueChange(_.uniq([...values, v]))
         : onValueChange(values.filter(val => val != v));
     },
@@ -153,7 +152,7 @@ export function MultiSelect({
                 <CheckIcon
                   className={cn(
                     'mr-2 h-4 w-4',
-                    values.includes(o.value) ? 'opacity-100' : 'opacity-0'
+                    values.includes(String(o.value)) ? 'opacity-100' : 'opacity-0'
                   )}
                 />
               </CommandItem>

@@ -10,5 +10,6 @@ export interface CurrentUser {
   userName: string;
   email: string;
   role: ROLE_USER;
+  avatar: string;
   firebaseCustomToken: string | null;
 }

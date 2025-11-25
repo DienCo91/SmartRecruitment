@@ -77,6 +77,7 @@ const LoginPage = () => {
       }
 
       const res = await AuthService.login();
+      console.log(res.data);
       dispatch(setCurrentUser(res.data));
       const isRoleEmployer = isEmployer(res.data.role);
 

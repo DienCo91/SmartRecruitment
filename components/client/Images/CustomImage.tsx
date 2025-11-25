@@ -26,7 +26,7 @@ export function CustomImage({ src, alt, fallback, className, imageClassName }: P
         alt={alt || 'Image optimized'}
         onError={() => setImgSrc(fallback || AppImage.fallback.companyFallback.src)}
         fill
-        className={cn('object-contain p-1', imageClassName)}
+        className={cn('object-cover p-0', imageClassName)}
       />
     </div>
   );

@@ -11,10 +11,10 @@ export interface ISpecificationParams {
 }
 
 export enum BlogStatus {
-  PUBL = 'DRAFT',
+  DRAFT = 'DRAFT',
   REQUESTED = 'REQUESTED',
+  PUBLISHED = 'PUBLISHED',
 }
-((ISHED = 'PUBLISHED'), DRAFT);
 
 export interface Blog {
   id: number;
@@ -35,4 +35,12 @@ export interface Blog {
 export interface BlogCategory {
   id: number;
   name: string;
+}
+
+export interface CreateOrUpdateBlog extends Pick<Blog, 'title' | 'content'> {
+  description?: string;
+  status?: BlogStatus;
+  tags?: string[];
+  blogCategoryIds?: number[];
+  thumbnail?: File;
 }

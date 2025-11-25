@@ -1,29 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CustomInput } from '@/components/Inputs/CustomInput';
 import DragAndDropFileInput from '@/components/Inputs/DragAndDropFileInput';
-import QuillCustom from '@/components/quill';
+import QuillCustom, { QuillCustomRef } from '@/components/quill';
 import { MultiSelect } from '@/components/Selectors/MultiSelect';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { BlogService } from '@/services/blog.service';
 import { TagData, TOptions } from '@/types';
-import { Blog, BlogCategory } from '@/types/blog';
-import { useCallback, useEffect, useState } from 'react';
-import { CustomImage } from '../Images/CustomImage';
+import { Blog, BlogCategory, BlogStatus, CreateOrUpdateBlog } from '@/types/blog';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { PreviewImage } from '../Images/PreviewImage';
+import _ from 'lodash';
+import { slugify } from '@/common';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { Router } from '@/constants';
 
 interface Props {
   blog?: Blog;
 }
 
 export function UpdateOrCreateBlogFrom({ blog }: Props) {
-  const isUpdate = Boolean(blog);
   const [blogCategoryOptions, setBlogCategoryOptions] = useState<TOptions[]>([]);
   const [tagOptions, setTagOptions] = useState<TOptions[]>([]);
-  const [categoryIds, setCategoryIds] = useState<string[]>([]);
-  const [tagNames, setTagNames] = useState<string[]>([]);
-  const [thumbnail, setThumbnail] = useState<File>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const contentRef = useRef<QuillCustomRef>(null);
+  const isUpdate = Boolean(blog);
+  const [form, setForm] = useState<CreateOrUpdateBlog>({ title: '', content: '' });
+
+  const handleChange = (key: keyof CreateOrUpdateBlog, value: CreateOrUpdateBlog[typeof key]) =>
+    setForm(prev => ({ ...prev, [key]: value }));
 
   const fetchTags = useCallback(async () => {
     try {
@@ -49,6 +58,35 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
     }
   }, []);
 
+  const handleSubmit = (status: BlogStatus) => {
+    const data = _.assign(form, {
+      slug: slugify(form.title),
+      status: status,
+      content: contentRef.current?.getValue(),
+    });
+
+    const formData = new FormData();
+    formData.set('title', data.title);
+    formData.set('slug', data.slug);
+    data.description && formData.set('description', data.description);
+    formData.set('content', data.content);
+    formData.set('status', data.status);
+    data.blogCategoryIds && formData.set('blogCategoryIds', data.blogCategoryIds.join(','));
+    data.tags && formData.set('tags', data.tags.join(','));
+    data.thumbnail && formData.set('thumbnail', data.thumbnail);
+
+    try {
+      setLoading(true);
+      BlogService.createBlog(formData);
+      router.push(Router.HOME);
+    } catch (e) {
+      console.log(e);
+      toast.error('Đã xảy ra lỗi');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchBlogCategories();
     fetchTags();
@@ -63,12 +101,17 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
       >
         <div className="space-y-2 mb-5">
           <p className="font-semibold text-lg">Tiêu đề</p>
-          <CustomInput />
+          <CustomInput value={form.title} onChange={e => handleChange('title', e.target.value)} />
         </div>
 
         <div className="space-y-2 mb-5">
           <p className="font-semibold text-lg">Mô tả</p>
-          <Textarea className="bg-white/20 min-h-[10rem] resize-none" maxLength={500} />
+          <Textarea
+            className="bg-white/20 min-h-[10rem] resize-none"
+            maxLength={500}
+            value={form.description}
+            onChange={e => handleChange('description', e.target.value)}
+          />
         </div>
 
         <Separator />
@@ -76,7 +119,7 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
           <p className="font-semibold text-lg text-center uppercase bg-white/10 rounded-md">
             Nội dung
           </p>
-          <QuillCustom initValue={'haha'} />
+          <QuillCustom ref={contentRef} initValue={form.content} />
         </div>
       </GlassCard>
 
@@ -84,10 +127,21 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
       <GlassCard
         title={
           <div className="space-x-3">
-            <Button variant="outline" className="text-neutral-400" size="sm">
+            <Button
+              variant="outline"
+              className="text-neutral-400"
+              size="sm"
+              onClick={() => handleSubmit(BlogStatus.DRAFT)}
+              disabled={loading}
+            >
               Lưu nháp
             </Button>
-            <Button size="sm" type="submit">
+            <Button
+              size="sm"
+              type="submit"
+              onClick={() => handleSubmit(BlogStatus.REQUESTED)}
+              disabled={loading}
+            >
               Tạo yêu cầu phê duyệt
             </Button>
           </div>
@@ -99,8 +153,8 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
           <p className="font-semibold text-lg">Danh mục bài viết</p>
           <MultiSelect
             options={blogCategoryOptions}
-            values={categoryIds}
-            onValueChange={setCategoryIds}
+            values={form.blogCategoryIds?.map(String) ?? []}
+            onValueChange={vals => handleChange('blogCategoryIds', vals)}
             placeholder="Chọn danh mục bài viết"
           />
         </div>
@@ -109,8 +163,8 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
           <p className="font-semibold text-lg">Tags</p>
           <MultiSelect
             options={tagOptions}
-            values={tagNames}
-            onValueChange={vals => setTagNames(vals)}
+            values={form.tags ?? []}
+            onValueChange={vals => handleChange('tags', vals)}
             placeholder="Gắn tag cho bài viết"
             inputPlaceholder="Nhập tag mới"
             itemClassName="rounded-full px-2"
@@ -123,17 +177,20 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
           <p className="font-semibold text-lg">Thumbnail</p>
           <DragAndDropFileInput
             placeholder={
-              thumbnail
-                ? thumbnail.name
+              form.thumbnail
+                ? form.thumbnail.name
                 : 'Kéo thả file vào đây hoặc click để chọn thumbnail cho blog'
             }
-            onSelectFiles={files => setThumbnail(files[0])}
+            onSelectFiles={files => handleChange('thumbnail', files[0])}
             accept="image/*"
           />
-          {thumbnail && (
+          {form.thumbnail && (
             <>
               <p className="font-semibold text-lg text-center">Xem trước</p>
-              <PreviewImage fileImage={thumbnail} onRemoveFile={() => setThumbnail(undefined)} />
+              <PreviewImage
+                fileImage={form.thumbnail}
+                onRemoveFile={() => handleChange('thumbnail', undefined)}
+              />
             </>
           )}
         </div>

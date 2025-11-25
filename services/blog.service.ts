@@ -29,4 +29,13 @@ export const BlogService = {
     const res = await http.get(`${endpointPrefix}/popular-tags`);
     return res.data;
   },
+
+  createBlog: async (data: FormData) => {
+    const res = await http.post(`${endpointPrefix}`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  },
 };
