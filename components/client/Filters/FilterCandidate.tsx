@@ -10,7 +10,7 @@ import { MapPinIcon, SearchIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export function FilterCandidate() {
+export function FilterCandidate({ handleClearFilter }: { handleClearFilter?: () => void }) {
   const [filters, setFilters] = useState<ISpecificationParams>({});
   const params = new URLSearchParams(window.location.search);
   const router = useRouter();
@@ -18,13 +18,21 @@ export function FilterCandidate() {
   const handleFilter = (key: keyof ISpecificationParams, value: ISpecificationParams[typeof key]) =>
     setFilters(prev => ({ ...prev, [key]: value }));
 
+  const handleClear = () => {
+    setFilters({});
+    params.delete('keyword');
+    params.delete('location');
+    router.replace(`/candidate?${params.toString()}`);
+    if (typeof handleClearFilter === 'function') handleClearFilter();
+  };
+
   return (
     <div className="mt-[40px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
       <CustomInput
         startIcon={<SearchIcon size={18} />}
         placeholder="Nhập tên hoặc email ứng viên"
         className="focus-within:ring-0 border-0 rounded-none bg-transparent shadow-none"
-        value={filters.keyword}
+        value={filters.keyword || ''}
         onChange={e => handleFilter('keyword', e.target.value)}
       />
       <Separator orientation="vertical" />
@@ -47,6 +55,13 @@ export function FilterCandidate() {
         }}
       >
         Tìm ứng viên
+      </Button>
+      <Button
+        variant="outline"
+        className="rounded-l-none text-gray-600 h-full cursor-pointer"
+        onClick={handleClear}
+      >
+        Clear filter
       </Button>
     </div>
   );

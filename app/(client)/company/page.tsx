@@ -77,9 +77,13 @@ const Company = () => {
     setPage(nextPage);
   };
 
+  const handleClearFilter = () => {
+    refFilterCompany.current?.clearFilters();
+  };
+
   return (
     <div className="relative">
-      <FilterCompanyHeader handleSubmit={handleSubmit} />
+      <FilterCompanyHeader handleSubmit={handleSubmit} handleClearFilter={handleClearFilter} />
 
       <GlassCardBase className="grid grid-cols-12 mt-[60px]">
         <div className="col-span-3 mr-3">

@@ -24,6 +24,7 @@ export function CustomImage({ src, alt, className, classNameImage }: Props) {
   };
 
   const handleLoad = () => {
+    console.log('1', 1);
     setIsLoading(false);
   };
 
