@@ -14,9 +14,11 @@ import { ROLE_USER } from '@/constants';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
+import { cn } from '@/lib/utils';
 import { CandidateService } from '@/services/candidate.services';
 import { JobServices } from '@/services/job.services';
 import { JobDetail } from '@/types/job';
+import { isDateExpired } from '@/utils/common';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { debounce } from 'lodash';
@@ -118,7 +120,7 @@ const JobDetailPage = () => {
                   onClick={() => setShowApplyJobModal(true)}
                   className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
                 >
-                  Ứng tuyển nhay
+                  Ứng tuyển ngay
                   <ArrowRightIcon />
                 </CustomButton>
               )}
@@ -126,7 +128,12 @@ const JobDetailPage = () => {
           )}
           <p className="text-sm mt-3">
             Ngày hết hạn:{' '}
-            <span className="text-red-400 capitalize">
+            <span
+              className={cn(
+                isDateExpired(job.expirationDate) ? 'text-red-500' : 'text-green-500',
+                'font-semibold'
+              )}
+            >
               {format(job.expirationDate, 'dd MMM, yyy', { locale: vi })}
             </span>
           </p>
@@ -140,9 +147,7 @@ const JobDetailPage = () => {
           {job.responsibilities && (
             <DecorateContent title="Responsibilities" content={job.responsibilities} />
           )}
-          {/* {job.tags &&  */}
           <Jobtags />
-          {/* } */}
         </div>
         <div className="col-span-5 space-y-5">
           <JobOverView job={job} />

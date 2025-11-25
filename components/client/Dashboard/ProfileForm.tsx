@@ -100,7 +100,11 @@ const ProfileForm: React.FC = () => {
     <Form {...form}>
       <div className="flex items-center gap-4 justify-center flex-col">
         <div className="relative w-24 h-24">
-          <AvatarUser className="w-24 h-24 rounded-full object-cover border" src={preview ?? ''} />
+          <AvatarUser
+            className="w-24 h-24 rounded-full border"
+            src={preview ?? ''}
+            classNameImage="object-cover"
+          />
 
           {isEditing && (
             <label

@@ -13,6 +13,7 @@ import GlassCardBase from '../Cards/GlassCardBase';
 import ButtonDashboard from './ButtonDashboard';
 import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
+import { CustomImage } from '../Images/CustomImage';
 
 interface IApplyJobItem {
   item: AppliedJobResponse;
@@ -25,17 +26,17 @@ const ApplyJobItem: React.FC<IApplyJobItem> = ({ item }) => {
     <GlassCardBase className="border-t-0 mt-[20px] bg-white/2 rounded-sm px-[0]">
       <CardContent className="grid  grid-cols-[2.5fr_1fr_1fr_1fr] items-center ">
         <div className="flex items-center gap-4 min-w-0">
-          <Image
-            src={item.companyLogoUrl}
-            alt="Logo"
-            width={48}
-            height={48}
-            className="rounded-md object-cover flex-shrink-0 w-[48px] h-[48px]"
-            unoptimized
-          />
+          <div>
+            <CustomImage
+              src={item.companyLogoUrl}
+              alt="Logo"
+              className="w-[60px] h-[60px]"
+              classNameImage="object-cover"
+            />
+          </div>
           <div className="flex flex-col min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-bold text-[14px]">{item.jobTitle}</h3>
+              <h3 className="font-bold text-[14px] line-clamp-2">{item.jobTitle}</h3>
               <Badge variant="secondary" className="bg-blue-50 text-blue-600">
                 {getLabelJobType(item.type)}
               </Badge>

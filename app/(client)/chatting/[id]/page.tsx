@@ -1,13 +1,11 @@
 'use client';
 
+import { AvatarUser } from '@/components/client/Avatar/AvatarUser';
 import GlassCardBase from '@/components/client/Cards/GlassCardBase';
 import BoxChatting from '@/components/client/Chatting/BoxChatting';
 import InputChatting from '@/components/client/Chatting/InputChatting';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Dot, Video } from 'lucide-react';
-import React from 'react';
+import { Dot } from 'lucide-react';
 
 const fakeData = {
   name: `Company `,
@@ -25,10 +23,11 @@ const ChattingDetail = () => {
             'flex gap-4 px-4 py-2 items-center cursor-pointer border-white/20 border-b-[1px] '
           }
         >
-          <Avatar className="w-[38px] h-[38px]">
-            <AvatarImage src={fakeData.avatar} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <AvatarUser
+            src={fakeData.avatar}
+            classNameImage="object-cover"
+            className="border-none w-[48px] h-[48px]"
+          />
 
           <div className="flex flex-1 flex-col gap-[2px]">
             <h1 className="font-bold text-[16px]">{fakeData.name}</h1>
@@ -37,17 +36,6 @@ const ChattingDetail = () => {
               <p className="text-[14px] ">{fakeData.status}</p>
             </div>
           </div>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button>
-                <Video />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Video Call</p>
-            </TooltipContent>
-          </Tooltip>
         </div>
 
         <BoxChatting />
