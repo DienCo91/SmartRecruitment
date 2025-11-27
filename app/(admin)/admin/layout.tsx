@@ -2,6 +2,7 @@ import { AppSidebar } from '@/components/admin/AppSidebar/AppSidebar';
 import { LoadingDot } from '@/components/Loadings/LoadingDot';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Size } from '@/constants';
+import AdminProvider from '@/providers/AdminProvider';
 import { Suspense } from 'react';
 
 const AdminLayout = async ({
@@ -12,15 +13,17 @@ const AdminLayout = async ({
   return (
     <div className="relative">
       <Suspense fallback={<LoadingDot isFullscreen dotSize={Size.LG} />}>
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarInset>
-            <div>
-              <SidebarTrigger variant={'secondary'} />
-              {children}
-            </div>
-          </SidebarInset>
-        </SidebarProvider>
+        <AdminProvider>
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              <div>
+                <SidebarTrigger variant={'secondary'} />
+                {children}
+              </div>
+            </SidebarInset>
+          </SidebarProvider>
+        </AdminProvider>
       </Suspense>
     </div>
   );
