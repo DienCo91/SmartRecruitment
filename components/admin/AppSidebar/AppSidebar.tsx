@@ -1,3 +1,5 @@
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Sidebar,
   SidebarContent,
@@ -11,36 +13,49 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { CalendarIcon, HomeIcon, InboxIcon, SearchIcon, SettingsIcon } from 'lucide-react';
+import { Router } from '@/constants';
+import { useLogout } from '@/hooks/useLogout';
+import { BriefcaseBusiness, Building2, FileUser, HomeIcon, Library, Users } from 'lucide-react';
+import Link from 'next/link';
 
 export function AppSidebar() {
+  const logout = useLogout();
   const items = [
     {
       title: 'Home',
-      url: '#',
+      url: Router.ADMIN,
       icon: HomeIcon,
     },
     {
-      title: 'Inbox',
-      url: '#',
-      icon: InboxIcon,
+      title: 'Companies',
+      url: Router.COMPANIES_MANAGER,
+      icon: Building2,
     },
     {
-      title: 'Calendar',
-      url: '#',
-      icon: CalendarIcon,
+      title: 'Candidates',
+      url: Router.CANDIDATE_MANAGER,
+      icon: Users,
     },
     {
-      title: 'Search',
-      url: '#',
-      icon: SearchIcon,
+      title: 'Jobs',
+      url: Router.JOB_MANAGER,
+      icon: BriefcaseBusiness,
     },
     {
-      title: 'Settings',
-      url: '#',
-      icon: SettingsIcon,
+      title: 'Resumes',
+      url: Router.RESUME_MANAGER,
+      icon: FileUser,
+    },
+    {
+      title: 'Blogs',
+      url: Router.BLOG_MANAGER,
+      icon: Library,
     },
   ];
+
+  const onLogout = () => {
+    logout();
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -53,10 +68,10 @@ export function AppSidebar() {
               {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -64,7 +79,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <Button className="hover:bg-blue-500 mx-[16px]" onClick={onLogout}>
+        Logout
+      </Button>
       <SidebarFooter />
+
       <SidebarRail />
     </Sidebar>
   );

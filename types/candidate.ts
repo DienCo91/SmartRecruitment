@@ -70,3 +70,11 @@ export interface ICandidateDetail {
   location: Location;
   socialLinks: { platformName: string; url: string }[];
 }
+
+export type ICandidateDashboard = Pick<
+  ICandidateDetail,
+  'id' | 'fullName' | 'avatarUrl' | 'email'
+> & {
+  isActive: boolean;
+  createdAt: string;
+};
