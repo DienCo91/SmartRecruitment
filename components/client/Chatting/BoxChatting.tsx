@@ -1,141 +1,198 @@
 'use client';
 
-import { auth, authReady } from '@/lib/firebase';
-import { connectStomp, disconnectStomp } from '@/lib/stompClient';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { IMAGE_EMPTY } from '@/constants';
+import { setConservationCurrent, setMessages } from '@/lib/features/chat/chatSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { cn } from '@/lib/utils';
 import { ChatServices } from '@/services/chat.services';
 import { Conversation } from '@/types';
+import { isEmployer } from '@/utils';
+import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-interface Message {
-  id: string;
-  direction: 'FROM_CANDIDATE' | 'FROM_EMPLOYER';
-  isRead: boolean;
-  content: string;
-  timestampt: string;
-}
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { AvatarUser } from '../Avatar/AvatarUser';
+import InputChatting from './InputChatting';
 
 interface IBoxChatting {
-  convCurrent: Conversation | null;
+  convCurrent: Conversation;
+}
+
+const SIZE = 20;
+
+enum ROLE {
+  CANDIDATE = 'FROM_CANDIDATE',
+  EMPLOYER = 'FROM_EMPLOYER',
 }
 
 const BoxChatting: React.FC<IBoxChatting> = ({ convCurrent }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(state => state.auth.currentUser);
+  const messages = useAppSelector(state => state.chat.messages);
+
   const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
   const { id } = useParams();
 
-  const getMessages = async () => {
+  const getMessages = async (page: number) => {
     if (!id) return;
 
     try {
-      const res = await ChatServices.getMessageForConversation(id as string);
+      const res = await ChatServices.getMessageForConversation(id as string, page, SIZE);
 
-      console.log('res', res);
-      // setMessages(data);
+      if (page === 1) {
+        dispatch(setMessages(res.data.content));
+        await ChatServices.markAsRead(id as string);
+      } else {
+        dispatch(setMessages([...messages, ...res.data.content]));
+      }
+
+      if (res.data.content.length < SIZE) {
+        setHasMore(false);
+      } else {
+        setPage(prev => prev + 1);
+      }
     } catch (error) {
       console.log('error', error);
     }
   };
 
-  const initConnectStomp = async () => {
-    await authReady;
-    const token = await auth?.currentUser?.getIdToken();
+  useEffect(() => {
+    getMessages(1);
 
-    if (!token) return;
+    return () => {
+      dispatch(setMessages([]));
+    };
+  }, [id]);
 
-    connectStomp(
-      token,
-      msg => console.log('msg', msg),
-      notify => console.log('Notification:', notify)
+  const renderDateSeparator = (prevDate: string | null, currDate: string) => {
+    if (!prevDate) return true;
+
+    const prev = new Date(prevDate);
+    const curr = new Date(currDate);
+
+    return (
+      prev.getFullYear() !== curr.getFullYear() ||
+      prev.getMonth() !== curr.getMonth() ||
+      prev.getDate() !== curr.getDate()
     );
   };
 
-  useEffect(() => {
-    getMessages();
-    initConnectStomp();
-    return () => disconnectStomp();
-  }, [id]);
+  const fetchMore = () => {
+    if (!hasMore) return;
+    getMessages(page);
+  };
 
-  const renderDateSeparator = (prevDate: Date | null, currDate: Date) => {
-    if (!prevDate) return true;
-    const diffHours = Math.abs(currDate.getTime() - prevDate.getTime()) / 36e5;
-    return diffHours > 24;
+  const handleSendText = (txt: string) => {
+    const employer = isEmployer(currentUser?.role);
+    dispatch(
+      setMessages([
+        {
+          content: txt,
+          timestampt: new Date().toISOString(),
+          direction: employer ? ROLE.EMPLOYER : ROLE.CANDIDATE,
+          id: Math.random().toString(),
+          isRead: true,
+          conversationId: convCurrent.conversationId,
+        },
+        ...messages,
+      ])
+    );
   };
 
   return (
-    <div
-      id="scrollableChat"
-      style={{
-        height: 'calc(100vh - 240px)',
-        overflowY: 'auto',
-        margin: 'auto',
-        display: 'flex',
-        flexDirection: 'column-reverse',
-      }}
-      className="p-4 bg-surface"
-    >
-      {/* <InfiniteScroll
-        dataLength={messages.length}
-        next={fetchMore}
-        hasMore={hasMore}
-        inverse={true}
-        scrollableTarget="scrollableChat"
-        loader={<LoadingCircle className="mt-[40px]" />}
-        style={{ display: 'flex', flexDirection: 'column-reverse', overflow: 'visible' }}
+    <>
+      <div
+        id="scrollableChat"
+        style={{
+          height: 'calc(100vh - 240px)',
+          overflowY: 'auto',
+          margin: 'auto',
+          display: 'flex',
+          flexDirection: 'column-reverse',
+        }}
+        className="p-4 bg-surface"
       >
-        {messages.map((msg, idx, arr) => {
-          const nextMsg = arr[idx + 1] ?? null;
-          const showDate = renderDateSeparator(nextMsg?.timestampt ?? null, msg.timestampt);
+        <InfiniteScroll
+          dataLength={messages?.length || 0}
+          next={fetchMore}
+          hasMore={hasMore}
+          inverse={true}
+          scrollableTarget="scrollableChat"
+          loader={
+            !!messages?.length ? (
+              <LoadingCircle className="mt-[40px]" />
+            ) : (
+              <LoadingCircle className="mt-[40px] h-[calc(100vh-316px)]" />
+            )
+          }
+          style={{ display: 'flex', flexDirection: 'column-reverse', overflow: 'visible' }}
+        >
+          {!!messages &&
+            messages?.map((msg, idx, arr) => {
+              const nextMsg = arr[idx + 1] ?? null;
+              const showDate = renderDateSeparator(nextMsg?.timestampt ?? null, msg.timestampt);
+              const employer = isEmployer(currentUser?.role);
 
-          return (
-            <div key={msg.id}>
-              {showDate && (
-                <div className="text-center text-xs text-gray-400 my-2">
-                  {format(msg.createdAt, 'EEEE, dd/MM/yyyy')}
-                </div>
-              )}
+              const roleUserSendMessage = employer ? ROLE.EMPLOYER : ROLE.CANDIDATE;
+              const isSendByMe = msg.direction === roleUserSendMessage;
 
-              <div
-                className={cn(
-                  'flex items-end gap-2',
-                  msg.user === 'me' ? 'justify-end' : 'justify-start'
-                )}
-              >
-                {msg.user === 'other' && (
-                  <AvatarUser
-                    src={msg.avatar}
-                    classNameImage="object-cover"
-                    className="border-none w-[36px] h-[36px]"
-                  />
-                )}
-
-                <div
-                  className={cn(
-                    'max-w-[70%] rounded-2xl px-3 py-2 text-sm shadow-sm',
-                    msg.user === 'me'
-                      ? 'bg-blue-500 text-white rounded-br-none'
-                      : 'bg-background text-foreground rounded-bl-none'
+              return (
+                <div key={msg.id}>
+                  {showDate && (
+                    <div className="text-center text-xs text-gray-400 my-2">
+                      {format(msg.timestampt, 'EEEE, dd/MM/yyyy')}
+                    </div>
                   )}
-                >
-                  {msg.text}
-                  <div className="text-[10px] mt-1 text-accent-foreground opacity-50 text-right">
-                    {format(msg.createdAt, 'HH:mm')}
+
+                  <div
+                    className={cn(
+                      'flex items-end gap-2',
+                      isSendByMe ? 'justify-end' : 'justify-start'
+                    )}
+                  >
+                    {!isSendByMe && (
+                      <AvatarUser
+                        src={convCurrent?.partnerAvatarUrl}
+                        classNameImage="object-cover"
+                        className="border-none w-[36px] h-[36px]"
+                      />
+                    )}
+
+                    <div
+                      className={cn(
+                        'max-w-[70%] rounded-2xl px-3 py-2 text-sm shadow-sm my-[8px]',
+                        isSendByMe
+                          ? 'bg-blue-500 text-white rounded-br-none'
+                          : 'bg-background text-foreground rounded-bl-none'
+                      )}
+                    >
+                      {msg.content}
+                      <div className="text-[10px] mt-1 text-accent-foreground opacity-50 text-right">
+                        {format(msg.timestampt, 'HH:mm')}
+                      </div>
+                    </div>
+
+                    {isSendByMe && (
+                      <AvatarUser
+                        src={IMAGE_EMPTY}
+                        classNameImage="object-cover"
+                        className="border-none w-[36px] h-[36px]"
+                      />
+                    )}
                   </div>
                 </div>
-
-                {msg.user === 'me' && (
-                  <AvatarUser
-                    src={msg.avatar}
-                    classNameImage="object-cover"
-                    className="border-none w-[36px] h-[36px]"
-                  />
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </InfiniteScroll> */}
-    </div>
+              );
+            })}
+        </InfiniteScroll>
+      </div>
+      <InputChatting
+        recipientId={convCurrent.partnerId}
+        handleSendText={handleSendText}
+        convId={convCurrent.conversationId}
+      />
+    </>
   );
 };
 

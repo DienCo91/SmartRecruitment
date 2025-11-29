@@ -10,19 +10,23 @@ import ContentCompanyDetail from '@/components/client/FindCompany/ContentCompany
 import { CustomImage } from '@/components/client/Images/CustomImage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Router } from '@/constants';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
 import { CandidateService } from '@/services/candidate.services';
+import { ChatServices } from '@/services/chat.services';
 import { CompanyService } from '@/services/company.services';
 import type { CompanyDetail } from '@/types';
 import { CircleX, MessageCircleMore, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { toast } from 'sonner';
 
 const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = use(props.params);
   const [company, setCompany] = useState<CompanyDetail | null>(null);
@@ -62,8 +66,20 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
     }
   };
 
-  const handleSendMessage = () => {
-    console.log('value', value);
+  const handleSendMessage = async () => {
+    dispatch(setLoading(true));
+    try {
+      const res = await ChatServices.sendMessage(id, value);
+
+      toast.success('Send message successfully!');
+      setOpen(false);
+      setValue('');
+      router.push(`${Router.CHATTING}/${res.data.conversationId}`);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

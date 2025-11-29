@@ -3,14 +3,17 @@ import EmojiCustom from '@/components/Emoji/EmojiCustom';
 import { CustomInput } from '@/components/Inputs/CustomInput';
 import { Button } from '@/components/ui/button';
 import { sendChatMessage } from '@/lib/stompClient';
+import { ChatServices } from '@/services/chat.services';
 import { Send, Smile } from 'lucide-react';
 import React, { useRef } from 'react';
 
 interface IInputChatting {
   recipientId: number;
+  handleSendText: (txt: string) => void;
+  convId: number;
 }
 
-const InputChatting: React.FC<IInputChatting> = ({ recipientId }) => {
+const InputChatting: React.FC<IInputChatting> = ({ recipientId, handleSendText, convId }) => {
   const [txt, setTxt] = React.useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -30,17 +33,14 @@ const InputChatting: React.FC<IInputChatting> = ({ recipientId }) => {
     });
   };
 
-  const onSubmit = () => {
-    console.log('first', {
-      content: txt,
-      recipientId: recipientId + '',
-    });
-
+  const onSubmit = async () => {
     sendChatMessage({
       content: txt,
       recipientId: recipientId,
     });
+    handleSendText(txt);
     setTxt('');
+    await ChatServices.markAsRead(convId + '');
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
