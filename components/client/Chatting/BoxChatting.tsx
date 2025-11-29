@@ -1,66 +1,65 @@
 'use client';
 
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn } from '@/lib/utils';
-import { format, subHours } from 'date-fns';
-import { useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { auth, authReady } from '@/lib/firebase';
+import { connectStomp, disconnectStomp } from '@/lib/stompClient';
+import { ChatServices } from '@/services/chat.services';
+import { Conversation } from '@/types';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 interface Message {
   id: string;
-  user: 'me' | 'other';
-  avatar?: string;
-  text: string;
-  createdAt: Date;
+  direction: 'FROM_CANDIDATE' | 'FROM_EMPLOYER';
+  isRead: boolean;
+  content: string;
+  timestampt: string;
 }
 
-const generateMockMessages = (count: number, startIndex: number) => {
-  const now = new Date();
-  return Array.from({ length: count }).map((_, i) => ({
-    id: `${startIndex + i}`,
-    user: i % 2 === 0 ? 'me' : 'other',
-    text: `Message ${startIndex + i}`,
-    createdAt: subHours(now, (startIndex + i) * 2),
-    avatar:
-      (startIndex + i) % 2 === 0
-        ? 'https://i.pravatar.cc/150?img=1'
-        : 'https://i.pravatar.cc/150?img=2',
-  })) as Message[];
-};
+interface IBoxChatting {
+  convCurrent: Conversation | null;
+}
 
-import React from 'react';
-import { AvatarUser } from '../Avatar/AvatarUser';
-
-const BoxChatting = () => {
-  const [messages, setMessages] = useState<Message[]>(generateMockMessages(15, 1));
+const BoxChatting: React.FC<IBoxChatting> = ({ convCurrent }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const MAX = 60;
+  const { id } = useParams();
+
+  const getMessages = async () => {
+    if (!id) return;
+
+    try {
+      const res = await ChatServices.getMessageForConversation(id as string);
+
+      console.log('res', res);
+      // setMessages(data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const initConnectStomp = async () => {
+    await authReady;
+    const token = await auth?.currentUser?.getIdToken();
+
+    if (!token) return;
+
+    connectStomp(
+      token,
+      msg => console.log('msg', msg),
+      notify => console.log('Notification:', notify)
+    );
+  };
+
+  useEffect(() => {
+    getMessages();
+    initConnectStomp();
+    return () => disconnectStomp();
+  }, [id]);
 
   const renderDateSeparator = (prevDate: Date | null, currDate: Date) => {
     if (!prevDate) return true;
     const diffHours = Math.abs(currDate.getTime() - prevDate.getTime()) / 36e5;
     return diffHours > 24;
-  };
-
-  const fetchMore = (limit = 16) => {
-    const newMsgs = Array.from({ length: limit }).map((_, i) => {
-      return {
-        id: `m-${messages.length + i}`,
-        user: i % 2 === 0 ? 'me' : 'other',
-        text: `Older message ${i}`,
-        createdAt: subHours(new Date(), i * 3),
-        avatar: i % 2 === 0 ? 'https://i.pravatar.cc/150?img=1' : 'https://i.pravatar.cc/150?img=2',
-      } as Message;
-    });
-
-    setTimeout(() => {
-      setMessages(prev => {
-        const next = [...prev, ...newMsgs];
-        if (next.length >= MAX) setHasMore(false);
-        return next;
-      });
-    }, 700);
   };
 
   return (
@@ -75,7 +74,7 @@ const BoxChatting = () => {
       }}
       className="p-4 bg-surface"
     >
-      <InfiniteScroll
+      {/* <InfiniteScroll
         dataLength={messages.length}
         next={fetchMore}
         hasMore={hasMore}
@@ -86,7 +85,7 @@ const BoxChatting = () => {
       >
         {messages.map((msg, idx, arr) => {
           const nextMsg = arr[idx + 1] ?? null;
-          const showDate = renderDateSeparator(nextMsg?.createdAt ?? null, msg.createdAt);
+          const showDate = renderDateSeparator(nextMsg?.timestampt ?? null, msg.timestampt);
 
           return (
             <div key={msg.id}>
@@ -135,7 +134,7 @@ const BoxChatting = () => {
             </div>
           );
         })}
-      </InfiniteScroll>
+      </InfiniteScroll> */}
     </div>
   );
 };

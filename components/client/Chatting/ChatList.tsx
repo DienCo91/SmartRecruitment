@@ -9,6 +9,10 @@ import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { AvatarUser } from '../Avatar/AvatarUser';
+import { Conversation } from '@/types';
+import { format, formatDate } from 'date-fns';
+import { useAppDispatch } from '@/lib/hooks';
+import { setConservationCurrent } from '@/lib/features/chat/chatSlice';
 
 const allChats = Array.from({ length: 50 }, (_, i) => ({
   name: `Company ${i + 1}`,
@@ -18,25 +22,20 @@ const allChats = Array.from({ length: 50 }, (_, i) => ({
   avatar: 'https://images.pexels.com/photos/5406476/pexels-photo-5406476.jpeg',
 }));
 
-const ChatList = () => {
-  const [items, setItems] = useState(allChats.slice(0, 10));
-  const [hasMore, setHasMore] = useState(true);
-  const { id } = useParams();
+interface IChatList {
+  hasMore: boolean;
+  fetchMoreData: () => void;
+  data: Conversation[];
+}
 
-  const fetchMoreData = () => {
-    if (items.length >= allChats.length) {
-      setHasMore(false);
-      return;
-    }
-    setTimeout(() => {
-      setItems(allChats.slice(0, items.length + 10));
-    }, 800);
-  };
+const ChatList: React.FC<IChatList> = ({ hasMore, fetchMoreData, data }) => {
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
 
   return (
     <div id="scrollableDiv" className="overflow-auto h-full">
       <InfiniteScroll
-        dataLength={items.length}
+        dataLength={data.length}
         next={fetchMoreData}
         hasMore={hasMore}
         scrollableTarget="scrollableDiv"
@@ -44,29 +43,30 @@ const ChatList = () => {
         style={{ overflow: 'hidden' }}
       >
         <div className="flex flex-col">
-          {items.map((item, index) => {
-            const isActive = index.toString() === id;
+          {data.map(item => {
+            const isActive = item.conversationId.toString() === id;
             return (
               <Link
-                href={`/chatting/${index}`}
-                key={index}
+                onClick={() => dispatch(setConservationCurrent(item))}
+                href={`/chatting/${item.conversationId}`}
+                key={item.conversationId}
                 className={cn(
                   'flex gap-4 px-4 py-3 cursor-pointer ',
                   isActive ? 'bg-white/20 backdrop-blur-md' : 'hover:backdrop-blur-sm'
                 )}
               >
                 <AvatarUser
-                  src={item.avatar}
+                  src={item.partnerAvatarUrl}
                   classNameImage="object-cover"
                   className="border-none w-[48px] h-[48px]"
                 />
 
                 <div className="flex flex-1 flex-col gap-[2px]">
-                  <h1 className="font-bold text-[14px]">{item.name}</h1>
+                  <h1 className="font-bold text-[14px]">{item.partnerName}</h1>
                   <div className="flex items-center text-[14px] opacity-80">
-                    <p className="line-clamp-1 flex-1">{item.message}</p>
+                    <p className="line-clamp-1 flex-1">{item.lastMessage}</p>
                     <Dot className="w-[20px] h-[20px]" />
-                    <p>{item.time}</p>
+                    <p>{format(item.lastMessageAt, 'HH:mm dd/MM/yyyy')}</p>
                   </div>
                 </div>
               </Link>

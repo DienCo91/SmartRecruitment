@@ -4,6 +4,7 @@ export * from './job';
 export * from './auth';
 export * from './candidate';
 export * from './employer';
+export * from './chat';
 
 export interface BaseProps {
   className?: string;
