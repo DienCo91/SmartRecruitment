@@ -5,8 +5,6 @@ import FilterCompany, { FilterCompanyRef } from '@/components/client/Filters/Fil
 import { FilterCompanyHeader } from '@/components/client/Filters/FilterCompanyHeader';
 import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { useAppDispatch } from '@/lib/hooks';
 import { CompanyService } from '@/services/company.services';
 import { CompanyItem } from '@/types';
 import { getLabelLocationByValue } from '@/utils/common';
@@ -79,9 +77,13 @@ const Company = () => {
     setPage(nextPage);
   };
 
+  const handleClearFilter = () => {
+    refFilterCompany.current?.clearFilters();
+  };
+
   return (
     <div className="relative">
-      <FilterCompanyHeader handleSubmit={handleSubmit} />
+      <FilterCompanyHeader handleSubmit={handleSubmit} handleClearFilter={handleClearFilter} />
 
       <GlassCardBase className="grid grid-cols-12 mt-[60px]">
         <div className="col-span-3 mr-3">

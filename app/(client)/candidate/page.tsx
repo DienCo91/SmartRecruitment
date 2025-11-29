@@ -73,9 +73,13 @@ const CandidatePage = () => {
     fetchCandidates(1);
   }, [fetchCandidates]);
 
+  const handleClearFilter = () => {
+    setFilters(initFilter);
+  };
+
   return (
     <div>
-      <FilterCandidate />
+      <FilterCandidate handleClearFilter={handleClearFilter} />
       <GlassCard title="" className="mt-[60px]">
         <div className="grid grid-cols-12 gap-5">
           <div className="col-span-4 mt-3">

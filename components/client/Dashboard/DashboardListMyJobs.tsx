@@ -27,7 +27,7 @@ const DashboardListMyJobs: React.FC<IDashboardListMyJobs> = ({
   setData,
 }) => {
   const dispatch = useAppDispatch();
-  const totalPage = total / 10; // 10 items per page
+  const totalPage = Math.ceil(total / 10); // 10 items per page
 
   const onMakeItExpire = async (id: string) => {
     dispatch(setLoading(true));

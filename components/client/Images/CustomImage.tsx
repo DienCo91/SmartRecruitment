@@ -1,4 +1,5 @@
-import { AppImage } from '@/common';
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { IMAGE_EMPTY } from '@/constants';
 import { cn } from '@/lib/utils';
 import { BaseProps } from '@/types';
 import Image from 'next/image';
@@ -8,11 +9,25 @@ interface Props extends BaseProps {
   src: string;
   fallback?: string;
   alt: string;
-  imageClassName?: string;
+  classNameImage?: string;
 }
 
-export function CustomImage({ src, alt, fallback, className, imageClassName }: Props) {
-  const [imgSrc, setImgSrc] = useState<string>(src);
+export function CustomImage({ src, alt, className, classNameImage }: Props) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentSrc, setCurrentSrc] = useState(src || IMAGE_EMPTY);
+
+  const handleError = () => {
+    if (currentSrc !== IMAGE_EMPTY) {
+      setCurrentSrc(IMAGE_EMPTY);
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLoad = () => {
+    console.log('1', 1);
+    setIsLoading(false);
+  };
 
   return (
     <div
@@ -21,12 +36,25 @@ export function CustomImage({ src, alt, fallback, className, imageClassName }: P
         className
       )}
     >
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <LoadingCircle />
+        </div>
+      )}
       <Image
-        src={imgSrc}
+        src={currentSrc}
         alt={alt || 'Image optimized'}
-        onError={() => setImgSrc(fallback || AppImage.fallback.companyFallback.src)}
         fill
-        className={cn('object-cover p-0', imageClassName)}
+        className={cn(
+          'object-contain transition-opacity duration-300',
+          {
+            'opacity-0': isLoading,
+            'opacity-100': !isLoading,
+          },
+          classNameImage
+        )}
+        onLoadingComplete={handleLoad}
+        onError={handleError}
       />
     </div>
   );

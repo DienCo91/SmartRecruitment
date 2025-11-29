@@ -39,7 +39,7 @@ const CandidateDetailModal: React.FC<ICandidateDetailModal> = ({
       size="xl"
       open
       onClose={() => setShowDetailUserModel(false)}
-      title={<CandidateDetailHeader candidateDetail={candidateDetail} />}
+      title={<>{!loading && <CandidateDetailHeader candidateDetail={candidateDetail} />}</>}
     >
       <div className="w-full min-h-[400px]">
         {loading ? (

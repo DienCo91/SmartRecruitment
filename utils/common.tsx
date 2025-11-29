@@ -93,3 +93,9 @@ export const downloadFile = async (url: string) => {
   link.click();
   link.remove();
 };
+
+export const isDateExpired = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  return date.getTime() < now.getTime();
+};

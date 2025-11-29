@@ -31,7 +31,7 @@ const ListApplyJob: React.FC<IListApplyJob> = ({
     handleSearch(searchRef.current?.getValue() || '');
   };
 
-  const totalPage = total / 10; // 10 items per page
+  const totalPage = Math.ceil(total / 10); // 10 items per page
 
   return (
     <div className="mt-[32px] min-h-[600px] flex flex-col justify-between ">

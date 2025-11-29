@@ -10,7 +10,11 @@ export function CandidateDetailHeader({
 }) {
   return (
     <div className="flex gap-3 items-center mr-5">
-      <AvatarUser className="size-16" />
+      <AvatarUser
+        src={candidateDetail?.avatarUrl || ''}
+        classNameImage="object-cover"
+        className="border-none w-[48px] h-[48px]"
+      />
       <div className="flex w-full justify-between">
         <div className="flex flex-col space-y-2">
           <h3 className="font-semibold text-neutral-300 capitalize">{candidateDetail?.fullName}</h3>

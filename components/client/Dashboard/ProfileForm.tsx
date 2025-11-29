@@ -14,6 +14,9 @@ import { Form } from '@/components/ui/form';
 import { CandidateService } from '@/services/candidate.services';
 import { toast } from 'sonner';
 import { EmployerService } from '@/services/employer.services';
+import { CustomImage } from '../Images/CustomImage';
+import { cn } from '@/lib/utils';
+import { isEmployer } from '@/utils';
 
 const profileSchema = z.object({
   email: z.string().nonempty('Email is required').email('Invalid email address'),
@@ -33,7 +36,12 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 const ProfileForm: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [previewBanner, setPreviewBanner] = useState<string | null>(null);
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
+
+  const roleEmployer = isEmployer(currentUser?.role);
+  console.log('roleEmployer', roleEmployer);
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -49,6 +57,7 @@ const ProfileForm: React.FC = () => {
       const res = await EmployerService.getMyCompany();
       if (res.data) {
         setPreview(res.data.logoUrl);
+        setPreviewBanner(res.data.bannerUrl);
       }
     } catch (error) {
       console.log('error', error);
@@ -96,29 +105,53 @@ const ProfileForm: React.FC = () => {
     }
   };
 
+  console.log('previewBanner', previewBanner);
+
   return (
     <Form {...form}>
       <div className="flex items-center gap-4 justify-center flex-col">
-        <div className="relative w-24 h-24">
-          <AvatarUser className="w-24 h-24 rounded-full object-cover border" src={preview ?? ''} />
-
-          {isEditing && (
-            <label
-              className="absolute bottom-0 right-0 bg-white rounded-full p-2 cursor-pointer shadow flex items-center justify-center"
-              title="Upload avatar"
-            >
-              <Camera size={16} />
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                disabled={form.formState.isSubmitting}
-                {...form.register('avatar' as const)}
-                onChange={onChangeAvar}
-              />
-            </label>
+        <div className={cn('relative', roleEmployer ? ' w-full h-[200px]' : '')}>
+          {roleEmployer && (
+            <CustomImage
+              key={previewBanner}
+              src={previewBanner ?? ''}
+              alt="avatar"
+              className="w-full h-[200px]"
+              classNameImage="object-cover"
+            />
           )}
+          <div
+            className={cn(
+              'w-30 h-30',
+              roleEmployer ? 'absolute right-1/2 translate-x-1/2 bottom-[-50px]' : 'relative'
+            )}
+          >
+            <AvatarUser
+              className="w-30 h-30 rounded-full border"
+              src={preview ?? ''}
+              classNameImage="object-cover"
+            />
+
+            {isEditing && (
+              <label
+                className="absolute bottom-0 right-0 bg-white rounded-full p-2 cursor-pointer shadow flex items-center justify-center"
+                title="Upload avatar"
+              >
+                <Camera size={16} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={form.formState.isSubmitting}
+                  {...form.register('avatar' as const)}
+                  onChange={onChangeAvar}
+                />
+              </label>
+            )}
+          </div>
         </div>
+
+        {roleEmployer && <div className="mt-[50px]"></div>}
 
         {currentUser?.role !== 'EMPLOYER' && (
           <div className="flex items-center gap-2">

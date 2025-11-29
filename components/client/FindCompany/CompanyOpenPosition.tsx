@@ -1,28 +1,25 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { IMAGE_BLUR, IMAGE_EMPTY, Router } from '@/constants';
+import { Router } from '@/constants';
 import { CompanyItem } from '@/types';
-import { BriefcaseBusinessIcon, Plus } from 'lucide-react';
-import Image from 'next/image';
+import { BriefcaseBusinessIcon } from 'lucide-react';
 import Link from 'next/link';
 import { FaArrowRight } from 'react-icons/fa';
 import { MdLocationPin } from 'react-icons/md';
+import { CustomImage } from '../Images/CustomImage';
 
 const CompanyOpenPosition = ({ item }: { item: CompanyItem }) => {
   return (
     <div className="flex backdrop-blur-md rounded-xl items-center overflow-hidden p-[16px] bg-white/10 shadow-md hover:bg-white/15 hover:shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-2px]">
-      <Image
-        src={item?.logoUrl || IMAGE_EMPTY}
-        alt="logo"
-        width={54}
-        height={54}
-        className="rounded-md object-fill bg-gray-100 h-[54px] w-[54px]"
-        placeholder="blur"
-        blurDataURL={IMAGE_BLUR}
+      <CustomImage
+        src={item?.logoUrl}
+        alt="thumbnail"
+        className=" h-[80px] w-[80px] border-0 shadow-none"
+        classNameImage="object-cover p-0"
       />
       <div className="ml-[16px] flex flex-1 flex-col">
-        <h1 className="mb-[8px] text-[20px] font-bold">{item?.name}</h1>
+        <h1 className="mb-[8px] text-[16px] font-bold">{item?.name}</h1>
         <div className="flex">
           <div className="flex items-center">
             <MdLocationPin size={14} />
