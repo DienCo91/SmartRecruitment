@@ -30,6 +30,21 @@ export const BlogService = {
     return res.data;
   },
 
+  getMyBlogs: async (id: number, data?: ISpecificationParams) => {
+    const res = await http.get(`${endpointPrefix}/user/${id}`, {
+      params: data,
+      paramsSerializer: params => {
+        return qs.stringify(params, { arrayFormat: 'repeat' });
+      },
+    });
+    return res.data;
+  },
+
+  deleteBlog: async (id: number) => {
+    const res = await http.delete(`${endpointPrefix}/${id}`);
+    return res.data;
+  },
+
   createBlog: async (data: FormData) => {
     const res = await http.post(`${endpointPrefix}`, data, {
       headers: {

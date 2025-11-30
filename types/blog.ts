@@ -16,6 +16,12 @@ export enum BlogStatus {
   PUBLISHED = 'PUBLISHED',
 }
 
+export const blogStatus = {
+  [BlogStatus.DRAFT]: 'Nháp',
+  [BlogStatus.REQUESTED]: 'Đang chờ',
+  [BlogStatus.PUBLISHED]: 'Đã được duyệt',
+};
+
 export interface Blog {
   id: number;
   user_id: number;

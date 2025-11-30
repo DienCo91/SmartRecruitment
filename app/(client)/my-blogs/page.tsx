@@ -1,6 +1,7 @@
 'use client';
 
 import { GlassCard } from '@/components/client/Cards/GlassCard';
+import { MyBlogsTable } from '@/components/client/Tables/MyBlogsTable';
 import { Button } from '@/components/ui/button';
 import { Router } from '@/constants';
 import { CirclePlusIcon } from 'lucide-react';
@@ -20,7 +21,7 @@ const MyBlogPage = () => {
       }
       className="col-span-8 mt-[60px]"
     >
-      Bảng theo dõi
+      <MyBlogsTable />
     </GlassCard>
   );
 };

@@ -78,7 +78,7 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
     try {
       setLoading(true);
       BlogService.createBlog(formData);
-      router.push(Router.HOME);
+      router.push(Router.MY_BLOG);
     } catch (e) {
       console.log(e);
       toast.error('Đã xảy ra lỗi');
