@@ -4,13 +4,18 @@ import authReducer from './features/auth/authSlice';
 import commonReducer from './features/common/commonSlice';
 import favoriteJobsReducer from './features/favorites/favotiteSlice';
 import filterReducer from './features/filters/filterSlice';
+import chatReducer from './features/chat/chatSlice';
+import notificationReducer from './features/notification/notificationSlice';
+
 import storage from './storage';
 
 const rootReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
   favoriteJobs: favoriteJobsReducer,
+  chat: chatReducer,
   filter: filterReducer,
+  notification: notificationReducer,
 });
 
 //default is whitelist

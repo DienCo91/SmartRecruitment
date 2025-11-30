@@ -1,6 +1,7 @@
 'use client';
 
 import { GlassCard } from '@/components/client/Cards/GlassCard';
+import { GlassDialog } from '@/components/client/Dialogs/GlassDialog';
 import CompanyDetailContact from '@/components/client/FindCompany/CompanyDetailContact';
 import CompanyDetailFollow from '@/components/client/FindCompany/CompanyDetailFollow';
 import CompanyDetailOverview from '@/components/client/FindCompany/CompanyDetailOverview';
@@ -8,22 +9,30 @@ import CompanyDetailPosition from '@/components/client/FindCompany/CompanyDetail
 import ContentCompanyDetail from '@/components/client/FindCompany/ContentCompanyDetail';
 import { CustomImage } from '@/components/client/Images/CustomImage';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Router } from '@/constants';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
 import { CandidateService } from '@/services/candidate.services';
+import { ChatServices } from '@/services/chat.services';
 import { CompanyService } from '@/services/company.services';
 import type { CompanyDetail } from '@/types';
-import { CircleX, Plus } from 'lucide-react';
+import { CircleX, MessageCircleMore, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { toast } from 'sonner';
 
 const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = use(props.params);
   const [company, setCompany] = useState<CompanyDetail | null>(null);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
+
   const getCompanyDetail = async () => {
     try {
       dispatch(setLoading(true));
@@ -55,6 +64,33 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
     } finally {
       dispatch(setLoading(false));
     }
+  };
+
+  const handleSendMessage = async () => {
+    dispatch(setLoading(true));
+    try {
+      const res = await ChatServices.sendMessage(id, value);
+
+      toast.success('Send message successfully!');
+      setOpen(false);
+      setValue('');
+      router.push(`${Router.CHATTING}/${res.data.conversationId}`);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const onClose = () => {
+    setOpen(false);
+    setValue('');
   };
 
   if (!company) return;
@@ -98,6 +134,15 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
               </>
             </Button>
             <Button
+              onClick={() => setOpen(true)}
+              className={cn(
+                'flex bg-blue-primary hover:bg-white text-white hover:text-blue-primary cursor-pointer '
+              )}
+            >
+              Inbox
+              <MessageCircleMore />
+            </Button>
+            <Button
               asChild
               className="flex bg-[#c5defb] text-blue-primary hover:bg-blue-primary hover:text-white"
             >
@@ -122,6 +167,26 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
       </GlassCard>
 
       <CompanyDetailPosition companyId={company.id} />
+
+      <GlassDialog
+        size="sm"
+        onClose={onClose}
+        title={<p className="my-[16px]">Send message</p>}
+        open={open}
+        contentClassName="pb-[16px]"
+      >
+        <div className=" text-white">
+          <Input
+            placeholder="Your message..."
+            value={value}
+            onChange={e => setValue(e.target.value)}
+            onKeyDown={onKeyDown}
+          />
+          <Button onClick={handleSendMessage} className="w-full mt-4">
+            Send
+          </Button>
+        </div>
+      </GlassDialog>
     </div>
   );
 };
