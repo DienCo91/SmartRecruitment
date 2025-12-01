@@ -1,16 +1,16 @@
+import { AppImage } from '@/common';
 import { CustomButton } from '@/components/Buttons/CustomButton';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { EmployerService } from '@/services/employer.services';
 import { Candidate } from '@/types';
+import { getLabelExperience } from '@/utils';
 import { ArrowRightIcon, Bookmark, LightbulbIcon, MapPinIcon } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { AvatarUser } from '../Avatar/AvatarUser';
 import { GlassCard } from '../Cards/GlassCard';
 import CandidateDetailModal from './CandidateDetailModal';
-import { EmployerService } from '@/services/employer.services';
-import { toast } from 'sonner';
-import { useAppDispatch } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { AppImage } from '@/common';
-import { getLabelExperience } from '@/utils';
 
 export function CandidateCard({ candidate }: { candidate: Candidate }) {
   const dispatch = useAppDispatch();

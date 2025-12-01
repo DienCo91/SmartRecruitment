@@ -69,7 +69,7 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
 
   return (
     <form onSubmit={handleSubmit(handleSubmitForm)}>
-      <h1 className="text-[14px] mb-[8px]"> Map Location</h1>
+      <h1 className="text-[14px] mb-[8px]">Vị trí</h1>
       <Controller
         control={control}
         name="location"
@@ -87,7 +87,7 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
           />
         )}
       />
-      <h1 className="text-[14px] mt-[18px] mb-[8px]">Phone</h1>
+      <h1 className="text-[14px] mt-[18px] mb-[8px]">Số điện thoại</h1>
       <Controller
         control={control}
         name="phoneNumber"

@@ -142,12 +142,12 @@ const DashboardFormPostJob = () => {
           classNameLabel="!text-white"
           control={form.control}
           name="jobTitle"
-          label="Job Title"
-          placeholder="Add job title, role, vacancies etc"
+          label="Tiêu dề"
+          placeholder="Nhập tiêu đề tin tuyển dụng"
           isActiveBorderRedError
         />
         <div>
-          <label className="text-sm font-medium text-white">Categories</label>
+          <label className="text-sm font-medium text-white">Danh mục nghề nghiệp</label>
           <Controller
             control={form.control}
             name="category"
@@ -165,36 +165,36 @@ const DashboardFormPostJob = () => {
           )}
         </div>
 
-        <h1 className="font-bold text-[18px]">Salary</h1>
+        <h1 className="font-bold text-[18px]">Thu nhập</h1>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <TextField
             classNameLabel="!text-white"
             control={form.control}
             name="minimumSalary"
-            label="Minimum Salary"
+            label="Thu nhập tối thiểu"
             placeholder="Minimum salary..."
             className="pr-[60px]"
             isActiveBorderRedError
             type="text"
             inputMode="numeric"
-            endIcon={<span className="absolute right-2 text-gray-400 text-sm">USD</span>}
+            endIcon={<span className="absolute right-2 text-gray-400 text-sm">VND</span>}
           />
           <TextField
             classNameLabel="!text-white"
             control={form.control}
             name="maximumSalary"
-            label="Maximum Salary"
+            label="Thu nhập tối đa"
             placeholder="Maximum salary..."
             className="pr-[60px]"
             isActiveBorderRedError
             type="text"
             inputMode="numeric"
-            endIcon={<span className="absolute right-2 text-gray-400 text-sm">USD</span>}
+            endIcon={<span className="absolute right-2 text-gray-400 text-sm">VND</span>}
           />
           <SelectField
             name="salaryType"
-            label="Salary Type"
+            label="Thể loại"
             options={[
               { value: 'HOURLY', label: 'Hourly' },
               { value: 'MONTHLY', label: 'Monthly' },
@@ -209,12 +209,12 @@ const DashboardFormPostJob = () => {
           />
         </div>
 
-        <h1 className="font-bold text-[18px]">Advance Information</h1>
+        <h1 className="font-bold text-[18px]">Thông tin thêm</h1>
 
         <div className="flex flex-wrap gap-4">
           <SelectField
             name="education"
-            label="Education"
+            label="Trình độ học vấn"
             options={educations}
             register={form.register}
             setValue={form.setValue}
@@ -222,10 +222,11 @@ const DashboardFormPostJob = () => {
             classNameInput="bg-white/20 rounded-lg"
             className="flex flex-col flex-1"
             value={form.watch('education')}
+            placeholder="Chọn trình độ học vấn yêu cầu"
           />
           <SelectField
             name="experience"
-            label="Experience"
+            label="Kinh nghiệm"
             options={experiences}
             register={form.register}
             setValue={form.setValue}
@@ -233,10 +234,11 @@ const DashboardFormPostJob = () => {
             classNameInput="bg-white/20 rounded-lg"
             className="flex flex-col flex-1"
             value={form.watch('experience')}
+            placeholder="Chọn trình kinh nghiệm yêu cầu"
           />
           <SelectField
             name="jobType"
-            label="Job Type"
+            label="Hình thức làm việc"
             options={JOB_TYPE}
             value={form.watch('jobType')}
             register={form.register}
@@ -244,6 +246,7 @@ const DashboardFormPostJob = () => {
             error={form.formState.errors.jobType}
             classNameInput="bg-white/20 rounded-lg"
             className="flex flex-col flex-1"
+            placeholder="Chọn hình thức làm việc"
           />
         </div>
         {/* <SearchableSelectField<FormValues>
@@ -263,8 +266,8 @@ const DashboardFormPostJob = () => {
               classNameLabel="!text-white"
               control={form.control}
               name="vacancies"
-              label="Vacancies"
-              placeholder="Vacancies..."
+              label="Số lượng ứng viên cần tuyển"
+              placeholder="Nhập số lượng"
               isActiveBorderRedError
               type="text"
               inputMode="numeric"
@@ -272,7 +275,7 @@ const DashboardFormPostJob = () => {
           </div>
           <DatePickerField
             name="expirationDate"
-            label="Expiration Date"
+            label="Ngày hết hạn"
             setValue={form.setValue}
             value={form.getValues('expirationDate')}
             error={form.formState.errors.expirationDate}
@@ -292,17 +295,17 @@ const DashboardFormPostJob = () => {
           /> */}
         </div>
 
-        <h1 className="font-bold text-[18px]">Description & Responsibility</h1>
+        <h1 className="font-bold text-[18px]">Mô tả công việc và Trách nhiệm</h1>
         <div className="mt-[20px] ">
-          <h1 className="mb-[8px] text-[16px] font-bold">Description</h1>
+          <h1 className="mb-[8px] text-[16px] font-bold">Mô tả</h1>
           <QuillCustom ref={descriptionRef} />
         </div>
         <div className="mt-[20px]">
-          <h1 className="mb-[8px] text-[16px] font-bold">Responsibilities</h1>
+          <h1 className="mb-[8px] text-[16px] font-bold">Trách nhiệm</h1>
           <QuillCustom ref={responsibilitiesRef} />
         </div>
         <Button size={'lg'} type="submit">
-          Post job
+          Đăng tin
         </Button>
       </form>
     </Form>

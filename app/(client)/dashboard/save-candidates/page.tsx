@@ -35,7 +35,7 @@ const SaveCandidate = () => {
 
   return (
     <div>
-      <DashboardHeader title="Saved Candidates" />
+      <DashboardHeader title="Ứng viên đã lưu" />
       <br />
       <DashboardListSaveCandidate
         data={data}

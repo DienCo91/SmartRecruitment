@@ -1,3 +1,4 @@
+import { ExperienceLevel } from '@/constants/job';
 import { LocationInfo } from './job';
 
 export interface UpdateBasicInformation {
@@ -37,7 +38,7 @@ export type Candidate = {
   fullName: string | null;
   avatarUrl: string | null;
   headline: string | null;
-  experienceLevel: string | null;
+  experienceLevel: ExperienceLevel | null;
   educationLevel: string | null;
   location?: {
     country?: string | null;

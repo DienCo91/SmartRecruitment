@@ -5,7 +5,7 @@ import DashboardHeader from '@/components/client/Dashboard/DashboardHeader';
 const PostAJob = () => {
   return (
     <div>
-      <DashboardHeader title="Post a Job" />
+      <DashboardHeader title="Đăng tin tuyển dụng" />
       <DashboardFormPostJob />
     </div>
   );

@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
 import { isEmployer, isLoginWithOAuth2 } from '@/utils';
-import { Bell, BellRing, Bookmark } from 'lucide-react';
+import { Bell, BellRing, Bookmark, UserIcon } from 'lucide-react';
 
 const INFO_CARD_CANDIDATE = [
   {
@@ -31,15 +31,15 @@ const INFO_CARD_CANDIDATE = [
 
 const INFO_CARD_EMPLOYER = [
   {
-    title: 'Open Jobs',
-    value: 598,
+    title: 'Job đang mở',
+    value: 10,
     icon: <Bell className="text-blue-600" />,
     color: '#E7F0FA',
   },
   {
-    title: 'Saved Candidates',
+    title: 'Ứng viên apply',
     value: 238,
-    icon: <Bookmark className="text-orange-500" />,
+    icon: <UserIcon className="text-orange-500" />,
     color: '#FFF6E6',
   },
 ];
@@ -56,7 +56,7 @@ const DashBoardOverView = () => {
     <>
       <h1 className="font-bold text-[18px] text-white">Xin Chào {currentUser?.userName} !</h1>
       <span className="text-white opacity-60 text-[14px]">
-        Đây là các hoạt động hàng ngày và cảnh báo công việc của bạn
+        Đây là các hoạt động hàng ngày và thông báo công việc của bạn
       </span>
 
       <div className="grid grid-cols-3 gap-4 my-[24px]">
