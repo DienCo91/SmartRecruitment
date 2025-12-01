@@ -3,7 +3,7 @@ import { IMAGE_EMPTY } from '@/constants';
 import { cn } from '@/lib/utils';
 import { BaseProps } from '@/types';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props extends BaseProps {
   src: string;
@@ -27,6 +27,10 @@ export function CustomImage({ src, alt, className, classNameImage, fallback }: P
   const handleLoad = () => {
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    setCurrentSrc(src);
+  }, [src]);
 
   return (
     <div

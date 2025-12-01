@@ -3,12 +3,12 @@ import { CustomImage } from './CustomImage';
 import { XIcon } from 'lucide-react';
 
 interface Props {
-  fileImage: File;
+  fileImage: File | string;
   onRemoveFile: () => void;
 }
 
 export function PreviewImage({ fileImage, onRemoveFile }: Props) {
-  const url = URL.createObjectURL(fileImage);
+  const url = typeof fileImage === 'string' ? fileImage : URL.createObjectURL(fileImage);
 
   return (
     <div className="relative">
@@ -22,7 +22,7 @@ export function PreviewImage({ fileImage, onRemoveFile }: Props) {
         alt="Preview Image"
         fallback={AppImage.fallback.companyFallback.src}
         className="aspect-video size-full"
-        imageClassName="object-cover"
+        classNameImage="object-cover"
       />
     </div>
   );

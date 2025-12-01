@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
+import { slugify } from '@/common';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CustomInput } from '@/components/Inputs/CustomInput';
 import DragAndDropFileInput from '@/components/Inputs/DragAndDropFileInput';
@@ -7,19 +8,18 @@ import { MultiSelect } from '@/components/Selectors/MultiSelect';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import { Router } from '@/constants';
 import { BlogService } from '@/services/blog.service';
 import { TagData, TOptions } from '@/types';
-import { Blog, BlogCategory, BlogStatus, CreateOrUpdateBlog } from '@/types/blog';
+import { BlogCategory, BlogStatus, CreateOrUpdateBlog } from '@/types/blog';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { PreviewImage } from '../Images/PreviewImage';
 import _ from 'lodash';
-import { slugify } from '@/common';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { Router } from '@/constants';
 
 interface Props {
-  blog?: Blog;
+  blog?: CreateOrUpdateBlog;
 }
 
 export function UpdateOrCreateBlogFrom({ blog }: Props) {
@@ -29,7 +29,11 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
   const router = useRouter();
   const contentRef = useRef<QuillCustomRef>(null);
   const isUpdate = Boolean(blog);
-  const [form, setForm] = useState<CreateOrUpdateBlog>({ title: '', content: '' });
+  const [form, setForm] = useState<CreateOrUpdateBlog>({
+    title: '',
+    content: '',
+    ...blog,
+  });
 
   const handleChange = (key: keyof CreateOrUpdateBlog, value: CreateOrUpdateBlog[typeof key]) =>
     setForm(prev => ({ ...prev, [key]: value }));
@@ -58,30 +62,53 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
     }
   }, []);
 
-  const handleSubmit = (status: BlogStatus) => {
+  const handleSubmit = async (status?: BlogStatus) => {
     const data = _.assign(form, {
       slug: slugify(form.title),
-      status: status,
       content: contentRef.current?.getValue(),
     });
+
+    status && _.assign(data, { status });
 
     const formData = new FormData();
     formData.set('title', data.title);
     formData.set('slug', data.slug);
     data.description && formData.set('description', data.description);
     formData.set('content', data.content);
-    formData.set('status', data.status);
+    data.status && formData.set('status', data.status);
     data.blogCategoryIds && formData.set('blogCategoryIds', data.blogCategoryIds.join(','));
     data.tags && formData.set('tags', data.tags.join(','));
-    data.thumbnail && formData.set('thumbnail', data.thumbnail);
+    data.thumbnail &&
+      typeof data.thumbnail !== 'string' &&
+      formData.set('thumbnail', data.thumbnail);
 
     try {
       setLoading(true);
-      BlogService.createBlog(formData);
+      if (!blog) {
+        await BlogService.createBlog(formData);
+      } else {
+        await BlogService.updateBlog(blog.id!, formData);
+      }
       router.push(Router.MY_BLOG);
     } catch (e) {
-      console.log(e);
-      toast.error('Đã xảy ra lỗi');
+      console.error(e);
+      const errors = [];
+
+      !data.title && errors.push('Trường tiêu đề không được để trống');
+      !data.description && errors.push('Trường mô tả không được để trống');
+      !data.content && errors.push('Trường nội dung không được để trống');
+
+      toast.error('Đã xảy ra lỗi', {
+        description: (
+          <ul className="ml-5">
+            {errors.map((err, i) => (
+              <li className="list-disc" key={i}>
+                {err}
+              </li>
+            ))}
+          </ul>
+        ),
+      });
     } finally {
       setLoading(false);
     }
@@ -126,25 +153,56 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
       {/* right card */}
       <GlassCard
         title={
-          <div className="space-x-3">
-            <Button
-              variant="outline"
-              className="text-neutral-400"
-              size="sm"
-              onClick={() => handleSubmit(BlogStatus.DRAFT)}
-              disabled={loading}
-            >
-              Lưu nháp
-            </Button>
-            <Button
-              size="sm"
-              type="submit"
-              onClick={() => handleSubmit(BlogStatus.REQUESTED)}
-              disabled={loading}
-            >
-              Tạo yêu cầu phê duyệt
-            </Button>
-          </div>
+          isUpdate ? (
+            <div className="space-x-3">
+              <Button
+                size="sm"
+                type="submit"
+                onClick={async () => {
+                  await handleSubmit();
+                }}
+                disabled={loading}
+              >
+                Lưu thay đổi
+              </Button>
+              {blog?.status != BlogStatus.REQUESTED && (
+                <Button
+                  size="sm"
+                  type="submit"
+                  onClick={async () => {
+                    await handleSubmit(BlogStatus.REQUESTED);
+                  }}
+                  disabled={loading}
+                >
+                  Tạo yêu cầu phê duyệt
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="space-x-3">
+              <Button
+                variant="outline"
+                className="text-neutral-400"
+                size="sm"
+                onClick={async () => {
+                  await handleSubmit(BlogStatus.DRAFT);
+                }}
+                disabled={loading}
+              >
+                Lưu nháp
+              </Button>
+              <Button
+                size="sm"
+                type="submit"
+                onClick={async () => {
+                  await handleSubmit(BlogStatus.REQUESTED);
+                }}
+                disabled={loading}
+              >
+                Tạo yêu cầu phê duyệt
+              </Button>
+            </div>
+          )
         }
         className="col-span-4"
         action
@@ -177,7 +235,7 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
           <p className="font-semibold text-lg">Thumbnail</p>
           <DragAndDropFileInput
             placeholder={
-              form.thumbnail
+              form.thumbnail && typeof form.thumbnail !== 'string'
                 ? form.thumbnail.name
                 : 'Kéo thả file vào đây hoặc click để chọn thumbnail cho blog'
             }

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { ReactNode } from 'react';
+import { ReactNode, useState, useCallback } from 'react';
 import { GlassDialog } from './GlassDialog';
+import { toast } from 'sonner';
 
 interface Props {
   title: ReactNode;
@@ -10,6 +11,21 @@ interface Props {
 }
 
 export function ConfirmDeleteDialog({ title, description, onClose, onDelete }: Props) {
+  const [processing, setProcessing] = useState(false);
+
+  const handleDelete = useCallback(async () => {
+    setProcessing(true);
+    try {
+      await onDelete();
+      onClose();
+    } catch (error) {
+      console.error(error);
+      toast.error('Xóa thất bại');
+    } finally {
+      setProcessing(false);
+    }
+  }, [onDelete, onClose]);
+
   return (
     <GlassDialog
       open
@@ -18,15 +34,11 @@ export function ConfirmDeleteDialog({ title, description, onClose, onDelete }: P
       size="sm"
       footer={
         <div className="flex gap-3">
-          <Button variant="outline" onClick={() => onClose()}>
+          <Button variant="outline" onClick={onClose}>
             Đóng
           </Button>
-          <Button
-            onClick={() => {
-              onClose();
-              onDelete();
-            }}
-          >
+
+          <Button disabled={processing} onClick={handleDelete}>
             Xóa
           </Button>
         </div>

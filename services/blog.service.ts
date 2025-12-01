@@ -40,6 +40,11 @@ export const BlogService = {
     return res.data;
   },
 
+  getMyBlogBySlug: async (slug: string) => {
+    const res = await http.get(`${endpointPrefix}/my/${slug}`);
+    return res.data;
+  },
+
   deleteBlog: async (id: number) => {
     const res = await http.delete(`${endpointPrefix}/${id}`);
     return res.data;
@@ -47,6 +52,15 @@ export const BlogService = {
 
   createBlog: async (data: FormData) => {
     const res = await http.post(`${endpointPrefix}`, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  },
+
+  updateBlog: async (id: number, data: FormData) => {
+    const res = await http.patch(`${endpointPrefix}/${id}`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

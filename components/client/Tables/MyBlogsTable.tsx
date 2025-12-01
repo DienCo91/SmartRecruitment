@@ -18,7 +18,8 @@ import { DataTable } from './DataTable';
 import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
 
-interface BlogColumns extends Pick<Blog, 'id' | 'thumbnail' | 'title' | 'createdAt' | 'status'> {}
+interface BlogColumns
+  extends Pick<Blog, 'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'slug'> {}
 
 export function MyBlogsTable() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -32,17 +33,14 @@ export function MyBlogsTable() {
   const router = useRouter();
   const currentUser = useAppSelector(state => state.auth.currentUser);
 
-  const handleDeleteBlog = useCallback(
-    async (id: number) => {
-      try {
-        await BlogService.deleteBlog(id);
-        router.push(Router.MY_BLOG);
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    [router]
-  );
+  const handleDeleteBlog = useCallback(async (id: number) => {
+    try {
+      await BlogService.deleteBlog(id);
+      setBlogs(prev => prev.filter(blog => blog.id != id));
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   const columns: ColumnDef<BlogColumns>[] = [
     {
@@ -119,7 +117,10 @@ export function MyBlogsTable() {
         const blog = row.original;
         return (
           <div className="flex items-center">
-            <Button variant="ghost">
+            <Button
+              variant="ghost"
+              onClick={() => router.push(`${Router.MY_BLOG}/edit/${blog.slug}`)}
+            >
               <SquarePenIcon size={18} />
             </Button>
             <Button

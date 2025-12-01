@@ -4,7 +4,6 @@ import { AvatarUser } from '@/components/client/Avatar/AvatarUser';
 import GlassCardBase from '@/components/client/Cards/GlassCardBase';
 import BoxChatting from '@/components/client/Chatting/BoxChatting';
 import InputChatting from '@/components/client/Chatting/InputChatting';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dot } from 'lucide-react';
 
 const fakeData = {
