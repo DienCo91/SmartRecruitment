@@ -73,14 +73,13 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
     const formData = new FormData();
     formData.set('title', data.title);
     formData.set('slug', data.slug);
-    data.description && formData.set('description', data.description);
-    formData.set('content', data.content);
+    formData.set('description', data.description ?? '');
+    formData.set('content', data.content ?? '');
     data.status && formData.set('status', data.status);
     data.blogCategoryIds && formData.set('blogCategoryIds', data.blogCategoryIds.join(','));
     data.tags && formData.set('tags', data.tags.join(','));
-    data.thumbnail &&
-      typeof data.thumbnail !== 'string' &&
-      formData.set('thumbnail', data.thumbnail);
+
+    typeof data.thumbnail !== 'string' && formData.set('thumbnail', data.thumbnail ?? '');
 
     try {
       setLoading(true);
@@ -95,7 +94,6 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
       const errors = [];
 
       !data.title && errors.push('Trường tiêu đề không được để trống');
-      !data.description && errors.push('Trường mô tả không được để trống');
       !data.content && errors.push('Trường nội dung không được để trống');
 
       toast.error('Đã xảy ra lỗi', {
@@ -248,6 +246,7 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
               <PreviewImage
                 fileImage={form.thumbnail}
                 onRemoveFile={() => handleChange('thumbnail', undefined)}
+                enableRemove={!Boolean(blog)}
               />
             </>
           )}
