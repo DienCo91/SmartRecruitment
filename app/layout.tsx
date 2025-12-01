@@ -6,6 +6,8 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import StoreProvider from './StoreProvider';
 import NoticeStompProvider from './NoticeStompProvider';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
