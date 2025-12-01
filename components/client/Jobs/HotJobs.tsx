@@ -17,7 +17,7 @@ export function HotJobs() {
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
-    limit: 10,
+    limit: 5,
   });
 
   const fetchHotJobs = useCallback(async () => {

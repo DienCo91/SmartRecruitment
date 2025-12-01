@@ -53,7 +53,7 @@ export default function CategorySelector({ onChange, value }: CategorySelectorPr
               {value?.length ? (
                 <span className="truncate text-sm">{value?.[0].name}</span>
               ) : (
-                <span className="text-gray-400 text-[14px]">Select a category...</span>
+                <span className="text-gray-400 text-[14px]">Chọn danh mục</span>
               )}
             </div>
             <ChevronDown size={16} className="text-white/70" />

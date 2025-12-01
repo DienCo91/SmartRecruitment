@@ -13,8 +13,8 @@ export function CustomInput({ ref, startIcon, endIcon, error, className, ...prop
     <div className="w-full">
       <div
         className={cn(
-          'flex text-neutral-300 items-center rounded-sm border bg-white/30 px-3 py-2 shadow-sm transition focus-within:ring-1 focus-within:ring-blue-500',
-          error ? 'border-red-500' : 'border-gray-300',
+          'flex text-neutral-300 items-center rounded-sm border bg-white/20 px-3 py-2 shadow-sm transition focus-within:ring-1 focus-within:ring-blue-500',
+          error ? 'border-red-500' : '',
           className
         )}
       >

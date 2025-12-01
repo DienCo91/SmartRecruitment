@@ -8,17 +8,17 @@ import 'react-quill-new/dist/quill.snow.css';
 // tham khảo https://quilljs.com/docs/modules/toolbar
 const toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],
-  // ['blockquote', 'code-block'],
-  // ['link', 'image', 'video', 'formula'],
+  ['blockquote', 'code-block'],
+  ['link', 'image', 'video', 'formula'],
   ['link'],
 
   // [{ header: 1 }, { header: 2 }],
-  // [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
-  // [{ script: 'sub' }, { script: 'super' }],
+  [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+  [{ script: 'sub' }, { script: 'super' }],
   [{ indent: '-1' }, { indent: '+1' }],
-  // [{ direction: 'rtl' }], // text direction
+  [{ direction: 'rtl' }], // text direction
 
-  // [{ size: ['small', false, 'large', 'huge'] }],
+  [{ size: ['small', false, 'large', 'huge'] }],
   // [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
   [{ color: [] }, { background: [] }],

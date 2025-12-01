@@ -1,5 +1,3 @@
-import { GoStack } from 'react-icons/go';
-import { Router } from './router';
 import {
   Bell,
   Bookmark,
@@ -7,8 +5,10 @@ import {
   CirclePlus,
   Heart,
   Layers,
+  LayersIcon,
   Settings,
 } from 'lucide-react';
+import { Router } from './router';
 
 export const CANDIDATE_DASHBOARD = {
   title: 'Candidate Dashboard',
@@ -42,30 +42,30 @@ export const CANDIDATE_DASHBOARD = {
 };
 
 export const EMPLOYER_DASHBOARD = {
-  title: 'Employer Dashboard',
+  title: 'Nhà tuyển dụng',
   items: [
     {
-      title: 'Overview',
+      title: 'Tổng quan',
       link: Router.DASHBOARD.OVERVIEW,
-      icon: <GoStack />,
+      icon: <LayersIcon size={22} />,
     },
     {
-      title: 'Post A Job',
+      title: 'Đăng tin tuyển dụng',
       link: Router.DASHBOARD.POST_A_JOB,
       icon: <CirclePlus />,
     },
     {
-      title: 'My Jobs',
+      title: 'Job đã đăng tải',
       link: Router.DASHBOARD.MY_JOBS,
       icon: <Bell />,
     },
     {
-      title: 'Save Candidates',
+      title: 'Ứng viên đã lưu',
       link: Router.DASHBOARD.SAVE_CANDIDATES,
       icon: <Bookmark />,
     },
     {
-      title: 'Setting',
+      title: 'Cài đặt',
       link: Router.DASHBOARD.SETTING,
       icon: <Settings />,
     },

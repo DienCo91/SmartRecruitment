@@ -1,6 +1,6 @@
-import React from 'react';
+'use client';
 
-const ChattingPage = async () => {
+const ChattingPage = () => {
   return <div>Loading page chatting</div>;
 };
 

@@ -39,10 +39,10 @@ export interface DataSubmitFormProps {
 }
 
 const tabs = [
-  { value: 'company', label: 'Company Info', icon: User },
-  { value: 'founding', label: 'Founding Info', icon: Users },
-  { value: 'social', label: 'Social Media Profile', icon: Globe },
-  { value: 'contact', label: 'Contact', icon: AtSign },
+  { value: 'company', label: 'Thông tin công ty', icon: User },
+  { value: 'founding', label: 'Thông tin sáng lập', icon: Users },
+  { value: 'social', label: 'Truyền thông & xã hội', icon: Globe },
+  { value: 'contact', label: 'Liên hệ', icon: AtSign },
 ] as const;
 
 interface IAccountSetupTabView {
@@ -175,10 +175,10 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
     setHasInitData(false);
   };
   return (
-    <div className="mt-[60px]">
+    <div className="mt-[10px]">
       {hasInitData && (
         <Button className="mb-[20px]" onClick={handleActiveUpdate}>
-          Edit
+          Chỉnh sửa
         </Button>
       )}
       <Tabs

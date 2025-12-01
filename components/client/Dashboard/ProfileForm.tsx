@@ -190,13 +190,13 @@ const ProfileForm: React.FC = () => {
       <TextField label="Email" disabled placeholder="Email" control={form.control} name="email" />
 
       <TextField
-        label="Username"
+        label="Tên đăng nhập"
         disabled
         placeholder="Tên đăng nhập"
         control={form.control}
         name="userName"
       />
-      <TextField label="Role" disabled placeholder="Role" control={form.control} name="role" />
+      <TextField label="Vai trò" disabled placeholder="Role" control={form.control} name="role" />
     </Form>
   );
 };

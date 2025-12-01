@@ -67,7 +67,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
   return (
     <div className="mt-[32px]">
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <span className="text-[18px] font-[500]">Logo & Banner Image</span>
+        <span className="text-[18px] font-[500]">Logo & Banner </span>
         <div className="flex mt-[16px]">
           <Controller
             name="logo"
@@ -76,7 +76,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
               <div className="w-[30%]">
                 <UploadInfo
                   initImage={initValue.logo as string}
-                  title="Upload Logo"
+                  title="Logo công ty"
                   desc="A photo larger than 400 pixels work best. Max 5 MB."
                   classNameDropWrap="border-[2px] border-dashed"
                   onChange={file => field.onChange(file)}
@@ -97,7 +97,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
               <div className="w-[70%] ml-[16px]">
                 <UploadInfo
                   initImage={initValue.banner as string}
-                  title="Banner Image"
+                  title="Banner công ty"
                   desc="Banner images 1520x400. Supported JPEG, PNG. Max 5 MB."
                   onChange={file => field.onChange(file)}
                   value={field.value}
@@ -114,7 +114,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
         <Separator className="h-[1px] my-[20px] bg-[#E4E5E8]" />
 
         <div>
-          <h1>Company name</h1>
+          <h1>Tên công ty</h1>
           <Input
             type="text"
             value={form.watch('nameCompany') || initValue.nameCompany}
@@ -128,7 +128,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
         </div>
 
         <div className="mt-[20px]">
-          <h1 className="mb-[8px]">About us</h1>
+          <h1 className="mb-[8px]">Về chúng tôi</h1>
           <QuillCustom ref={editorRef} initValue={initValue.description} />
         </div>
 

@@ -1,3 +1,4 @@
+import { TagData } from '.';
 import { AuthorOfBlog } from './auth';
 
 export interface ISpecificationParams {
@@ -10,6 +11,18 @@ export interface ISpecificationParams {
   location?: string;
 }
 
+export enum BlogStatus {
+  DRAFT = 'DRAFT',
+  REQUESTED = 'REQUESTED',
+  PUBLISHED = 'PUBLISHED',
+}
+
+export const blogStatus = {
+  [BlogStatus.DRAFT]: 'Nháp',
+  [BlogStatus.REQUESTED]: 'Đang chờ',
+  [BlogStatus.PUBLISHED]: 'Đã duyệt',
+};
+
 export interface Blog {
   id: number;
   user_id: number;
@@ -19,14 +32,27 @@ export interface Blog {
   content: string;
   description: string;
   cover_image_url: string;
-  status?: 'PUBLISHED' | 'DRAFT' | 'REQUESTED';
+  status?: BlogStatus;
   publishedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
   author: AuthorOfBlog;
 }
 
+export interface DetailBlog extends Blog {
+  tags: TagData[];
+  categories: BlogCategory[];
+}
+
 export interface BlogCategory {
   id: number;
   name: string;
+}
+
+export interface CreateOrUpdateBlog extends Pick<Blog, 'title' | 'content' | 'status'> {
+  id?: number;
+  description?: string;
+  tags?: string[];
+  blogCategoryIds?: number[];
+  thumbnail?: File | string;
 }

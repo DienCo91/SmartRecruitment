@@ -1,7 +1,6 @@
 'use client';
-import { AppImage } from '@/common';
 import { cn } from '@/lib/utils';
-import { Upload, FileText } from 'lucide-react';
+import { FileText, Upload } from 'lucide-react';
 import Image from 'next/image';
 import React, { useRef } from 'react';
 import { CustomImage } from '../Images/CustomImage';

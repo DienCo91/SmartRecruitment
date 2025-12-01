@@ -24,7 +24,10 @@ export function CustomPopover({
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className={cn('bg-[#384878] shadow-xs shadow-blue-400 border-none', className)}
+        className={cn(
+          'bg-[#384878] shadow-xs shadow-blue-400 border-none  w-[var(--radix-popover-trigger-width)]',
+          className
+        )}
       >
         {children}
       </PopoverContent>

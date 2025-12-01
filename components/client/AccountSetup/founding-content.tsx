@@ -75,7 +75,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <SelectField
           name="organizationType"
-          label="Organization Type"
+          label="Loại hình tổ chức"
           options={ORGANIZATION_TYPE}
           register={register}
           setValue={setValue}
@@ -85,7 +85,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
 
         <SelectField
           name="industryTypes"
-          label="Industry Types"
+          label="Loại ngành nghề"
           options={INDUSTRY_TYPE}
           register={register}
           setValue={setValue}
@@ -95,7 +95,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
 
         <SelectField
           name="teamSize"
-          label="Team Size"
+          label="Quy mô đội ngũ"
           options={COMPANY_SIZE}
           register={register}
           value={watch('teamSize') || initValue.teamSize}
@@ -107,7 +107,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label htmlFor="yearOfEstablishment" className="block text-sm font-medium mb-1">
-            Year of Establishment
+            Năm thành lập
           </label>
           <div className="relative">
             <Input
@@ -127,7 +127,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
 
         <div>
           <label htmlFor="companyWebsite" className="block text-sm font-medium mb-1">
-            Company Website
+            Website công ty
           </label>
           <div className="relative">
             <Input
@@ -147,7 +147,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
       </div>
 
       <div className="mt-[20px]">
-        <h1 className="mb-[8px] text-sm font-medium">Company Vision</h1>
+        <h1 className="mb-[8px] text-sm font-medium">Tầm nhìn công ty</h1>
         <QuillCustom ref={editorRef} initValue={initValue.companyVision} />
       </div>
 

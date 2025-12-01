@@ -90,7 +90,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {fields.map((field, index) => (
         <div key={field.id}>
-          <h2 className="text-[14px] mb-[8px]">Social link {index + 1}</h2>
+          <h2 className="text-[14px] mb-[8px]">Liên kết {index + 1}</h2>
           <div className="flex">
             <div className="flex flex-1 items-center border-[1px] border-grey-primary rounded-[6px]">
               <Controller

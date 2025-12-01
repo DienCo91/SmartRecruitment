@@ -5,10 +5,12 @@ export interface AuthState {
 }
 
 export interface CurrentUser {
+  id: number;
   firebaseUid: string;
   fullName: string;
   userName: string;
   email: string;
   role: ROLE_USER;
+  avatar: string;
   firebaseCustomToken: string | null;
 }

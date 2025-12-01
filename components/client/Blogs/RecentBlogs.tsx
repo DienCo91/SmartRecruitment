@@ -15,6 +15,7 @@ export function RecentBlogs() {
       const blogs = (
         await BlogService.getListBlogs({
           sort: '-createdAt',
+          limit: 3,
         })
       ).data as Blog[];
       setRecentBlogs(blogs);
@@ -27,7 +28,7 @@ export function RecentBlogs() {
 
   useEffect(() => {
     fetchRecentBlog();
-  }, []);
+  }, [fetchRecentBlog]);
 
   return (
     <GlassCard
