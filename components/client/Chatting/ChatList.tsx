@@ -1,42 +1,52 @@
 'use client';
 
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { setConservationCurrent } from '@/lib/features/chat/chatSlice';
+import { useAppDispatch } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
+import { Conversation } from '@/types';
+import { format } from 'date-fns';
 import { Dot } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { AvatarUser } from '../Avatar/AvatarUser';
 
-const allChats = Array.from({ length: 50 }, (_, i) => ({
-  name: `Company ${i + 1}`,
-  message:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel orci vitae lorem fermentum placerat.',
-  time: '12:00',
-  avatar: 'https://images.pexels.com/photos/5406476/pexels-photo-5406476.jpeg',
-}));
+interface IChatList {
+  hasMore: boolean;
+  fetchMoreData: () => void;
+  data: Conversation[];
+  setData: Dispatch<SetStateAction<Conversation[]>>;
+}
 
-const ChatList = () => {
-  const [items, setItems] = useState(allChats.slice(0, 10));
-  const [hasMore, setHasMore] = useState(true);
+const ChatList: React.FC<IChatList> = ({ hasMore, fetchMoreData, data, setData }) => {
+  const dispatch = useAppDispatch();
   const { id } = useParams();
 
-  const fetchMoreData = () => {
-    if (items.length >= allChats.length) {
-      setHasMore(false);
-      return;
-    }
-    setTimeout(() => {
-      setItems(allChats.slice(0, items.length + 10));
-    }, 800);
+  const onClick = async (item: Conversation) => {
+    dispatch(setConservationCurrent(item));
+    setData(prev =>
+      prev.map(item => {
+        if (item.conversationId === item.conversationId) {
+          return {
+            ...item,
+            unreadCount: 0,
+          };
+        }
+        return item;
+      })
+    );
   };
+
+  if (!data || (data.length === 0 && !hasMore)) {
+    return <div className="flex justify-center mt-4 text-[14px]">Không có đoạn chat nào</div>;
+  }
 
   return (
     <div id="scrollableDiv" className="overflow-auto h-full">
       <InfiniteScroll
-        dataLength={items.length}
+        dataLength={data.length}
         next={fetchMoreData}
         hasMore={hasMore}
         scrollableTarget="scrollableDiv"
@@ -44,29 +54,47 @@ const ChatList = () => {
         style={{ overflow: 'hidden' }}
       >
         <div className="flex flex-col">
-          {items.map((item, index) => {
-            const isActive = index.toString() === id;
+          {data.map(item => {
+            const isActive = item.conversationId.toString() === id;
             return (
               <Link
-                href={`/chatting/${index}`}
-                key={index}
+                onClick={() => onClick(item)}
+                href={`/chatting/${item.conversationId}`}
+                key={item.conversationId}
                 className={cn(
                   'flex gap-4 px-4 py-3 cursor-pointer ',
                   isActive ? 'bg-white/20 backdrop-blur-md' : 'hover:backdrop-blur-sm'
                 )}
               >
-                <AvatarUser
-                  src={item.avatar}
-                  classNameImage="object-cover"
-                  className="border-none w-[48px] h-[48px]"
-                />
+                <div className="relative">
+                  <AvatarUser
+                    src={item.partnerAvatarUrl}
+                    classNameImage="object-cover"
+                    className="border-none w-[48px] h-[48px]"
+                  />
+                  {!!item.unreadCount && (
+                    <div className="w-[12px] h-[12px] absolute top-[-2px] left-[4px]">
+                      <span className="absolute top-[-4px] left-[-4px] inline-flex w-[20px] h-[20px] animate-ping-small  rounded-full bg-red-500 "></span>
+                      <div className=" bg-red-500 rounded-full w-[12px] h-[12px]" />
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex flex-1 flex-col gap-[2px]">
-                  <h1 className="font-bold text-[14px]">{item.name}</h1>
+                  <div className="flex ">
+                    <h1 className="font-bold text-[14px] flex-1">{item.partnerName}</h1>
+                  </div>
                   <div className="flex items-center text-[14px] opacity-80">
-                    <p className="line-clamp-1 flex-1">{item.message}</p>
+                    <p
+                      className={cn(
+                        'line-clamp-1 flex-1',
+                        item.unreadCount > 0 && 'font-bold text-white'
+                      )}
+                    >
+                      {item.lastMessage}
+                    </p>
                     <Dot className="w-[20px] h-[20px]" />
-                    <p>{item.time}</p>
+                    <p>{format(item.lastMessageAt, 'HH:mm dd/MM/yyyy')}</p>
                   </div>
                 </div>
               </Link>

@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 const HomePage = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
+
   const handleSubmit = (values: IFilter) => {
     const [minSalary, maxSalary] = values.salary.split('-');
     const newFilter: FilterState = {
