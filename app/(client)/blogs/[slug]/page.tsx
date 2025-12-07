@@ -11,7 +11,6 @@ import { BlogService } from '@/services/blog.service';
 import { Blog } from '@/types/blog';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
@@ -22,8 +21,8 @@ const BlogDetailPage = () => {
       setLoading(true);
       const blog = (await BlogService.getBlogBySlug(String(slug))).data as Blog;
       setBlog(blog);
-    } catch {
-      toast.error('Đã có lỗi xảy ra');
+    } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -31,9 +30,9 @@ const BlogDetailPage = () => {
 
   useEffect(() => {
     fetchBlog();
-  }, []);
+  }, [fetchBlog]);
   return (
-    <GlassCard className="mt-10" title="" action footer={<Comments />}>
+    <GlassCard className="mt-10" title="" action footer={blog && <Comments entityId={blog.id} />}>
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-8">
           {loading ? (
