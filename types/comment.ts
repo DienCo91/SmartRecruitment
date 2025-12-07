@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+import { CurrentUser } from '@/lib/features/auth/type';
+
 export interface Comment {
   id: number;
-  post_id: number;
-  user_id: number;
-  parent_comment_id?: number | null;
+  parentId?: number;
   content: string;
-  created_date: Date;
-  last_modified_date?: Date;
+  createdAt: Date;
+  createdBy: CurrentUser;
   childs: Comment[];
 }
+
+export interface CreateComment extends Pick<Comment, 'parentId' | 'content'> {}

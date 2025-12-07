@@ -1,10 +1,13 @@
 import { PropsWithChildren } from 'react';
 import { FavoriteProvider } from './FavoriteProvider';
+import { TanstackQueryProvider } from './TanstackQueryProvider';
 
 export function AppProvider({ children }: PropsWithChildren) {
   return (
     <>
-      <FavoriteProvider>{children}</FavoriteProvider>
+      <TanstackQueryProvider>
+        <FavoriteProvider>{children}</FavoriteProvider>
+      </TanstackQueryProvider>
     </>
   );
 }

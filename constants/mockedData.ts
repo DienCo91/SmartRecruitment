@@ -1,6 +1,5 @@
-import { Post } from '@/types/post';
 import { TOptions } from '@/types';
-import { Comment } from '@/types/comment';
+import { Post } from '@/types/post';
 import { educationLevel, EducationLevel, experienceLevel, ExperienceLevel } from './job';
 
 // Data cứng
@@ -152,70 +151,3 @@ export const mockedPost: Post = {
   status: 'PUBLISHED',
   // user:
 };
-
-export const comment: Comment = {
-  id: 1,
-  content: 'Quá đỉnh :>>',
-  created_date: new Date(),
-  post_id: 1,
-  user_id: 1,
-  parent_comment_id: 0,
-  childs: [],
-};
-
-export const comments: Comment[] = [
-  {
-    id: 1,
-    content: 'Quá đỉnh :>>',
-    created_date: new Date(),
-    post_id: 1,
-    user_id: 1,
-    parent_comment_id: null,
-    childs: [],
-  },
-  {
-    id: 2,
-    content: 'Quá đỉnh luôn :>>',
-    created_date: new Date(),
-    post_id: 1,
-    user_id: 1,
-    parent_comment_id: null,
-    childs: [],
-  },
-  {
-    id: 3,
-    content: 'Sub comment 1 :>>',
-    created_date: new Date(),
-    post_id: 1,
-    user_id: 1,
-    parent_comment_id: 1,
-    childs: [],
-  },
-  {
-    id: 4,
-    content: 'Quá là đ :>>',
-    created_date: new Date(),
-    post_id: 1,
-    user_id: 1,
-    parent_comment_id: null,
-    childs: [],
-  },
-  {
-    id: 5,
-    content: 'Cmt5 :>>',
-    created_date: new Date(),
-    post_id: 1,
-    user_id: 1,
-    parent_comment_id: 2,
-    childs: [],
-  },
-  {
-    id: 6,
-    content: 'Sub comment 2 :>>',
-    created_date: new Date(),
-    post_id: 1,
-    user_id: 1,
-    parent_comment_id: 3,
-    childs: [],
-  },
-];
