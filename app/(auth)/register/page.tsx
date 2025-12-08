@@ -211,8 +211,8 @@ const RegisterPage = () => {
         <Separator className="flex-1" />
       </div>
 
-      <div className="flex gap-2">
-        <Button variant="outline" className="flex-1" onClick={handleGoogleLogin}>
+      <div className="flex gap-2 text-black">
+        <Button variant="outline" className="flex-1 text-black" onClick={handleGoogleLogin}>
           <FcGoogle />
           Sign in with Google
         </Button>

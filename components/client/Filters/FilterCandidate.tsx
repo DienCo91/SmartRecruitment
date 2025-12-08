@@ -58,7 +58,7 @@ export function FilterCandidate({ handleClearFilter }: { handleClearFilter?: () 
       </Button>
       <Button
         variant="outline"
-        className="rounded-l-none text-gray-600 h-full cursor-pointer"
+        className="rounded-l-none text-white h-full cursor-pointer"
         onClick={handleClear}
       >
         Clear filter
