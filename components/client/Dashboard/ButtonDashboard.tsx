@@ -12,7 +12,7 @@ const ButtonDashboard: React.FC<IButtonDashboard> = ({ title, className, ...prop
     <Button
       variant="outline"
       className={cn(
-        'text-blue-600 border-blue-200 hover:text-white hover:bg-blue-600 border-none cursor-pointer',
+        'text-blue-600 border-blue-200 hover:text-white hover:bg-blue-600 border-none cursor-pointer bg-white',
         className
       )}
       {...props}
