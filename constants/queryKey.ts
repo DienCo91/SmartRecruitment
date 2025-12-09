@@ -1,5 +1,7 @@
 export const QueryKey = {
-  all: ['blog', 'comments'] as const,
-  details: () => [...QueryKey.all[1], 'detail'] as const,
-  detail: (id: number) => [...QueryKey.details(), id] as const,
+  comment: {
+    all: ['comment'] as const,
+    blogs: () => [...QueryKey.comment.all, 'blog'] as const,
+    blog: (id: number) => [...QueryKey.comment.blogs(), id] as const,
+  },
 };
