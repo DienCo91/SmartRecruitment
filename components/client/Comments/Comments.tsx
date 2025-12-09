@@ -7,7 +7,6 @@ import { Comment } from '@/types/comment';
 import { useState } from 'react';
 import { LetterICanvas } from '../Canvas/LetterICanvas';
 import { CommentCard } from './CommentCard';
-import { toast } from 'sonner';
 
 interface Props {
   entityId: number;
@@ -34,15 +33,15 @@ const CommentTree = (comments: Comment[], entityId: number) => {
 export function Comments({ entityId }: Props) {
   const [content, setContent] = useState<string>('');
 
-  const { getComments, createComment } = useCommentActions(entityId);
+  const { useCommentQuery, useCreateCommentMutation } = useCommentActions(entityId);
   const {
     data: comments,
     isLoading: isLoadingGetComment,
     isSuccess: isSuccessGetComments,
-  } = getComments;
+  } = useCommentQuery;
 
   const handleCreateComment = async () => {
-    createComment.mutate({ content });
+    useCreateCommentMutation.mutate({ content });
     setContent('');
   };
 
@@ -60,7 +59,7 @@ export function Comments({ entityId }: Props) {
       />
       <CustomButton
         className="my-4 bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
-        disabled={createComment.isPending}
+        disabled={useCreateCommentMutation.isPending}
         onClick={handleCreateComment}
       >
         Tạo bình luận

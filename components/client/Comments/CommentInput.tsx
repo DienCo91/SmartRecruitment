@@ -1,30 +1,29 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
 import { Textarea } from '@/components/ui/textarea';
+import { useCommentActions } from '@/hooks/useCommentActions';
+import { Comment } from '@/types/comment';
 import { SendHorizontalIcon } from 'lucide-react';
 import { forwardRef, TextareaHTMLAttributes, useState } from 'react';
 import { LetterICanvas } from '../Canvas/LetterICanvas';
-import { toast } from 'sonner';
-import { BlogService } from '@/services/blog.service';
 
 const CommentInput = forwardRef<
   HTMLTextAreaElement,
-  TextareaHTMLAttributes<HTMLTextAreaElement> & { parentId: number; entityId: number }
->(({ className, parentId, entityId, ...props }, ref) => {
+  TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    parent: Comment;
+    entityId: number;
+    onClose: () => void;
+  }
+>(({ className, parent, entityId, onClose, ...props }, ref) => {
   const [content, setContent] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const { useCreateCommentMutation } = useCommentActions(entityId);
 
   const handleCreateComment = async () => {
-    try {
-      setLoading(true);
-      await BlogService.createComment(entityId, { parentId, content });
-      toast.success('Phản hồi bình luận thành công');
-    } catch (e) {
-      console.error(e);
-      toast.error('Phản hồi bình luận thất bại');
-    } finally {
-      setLoading(false);
-    }
+    useCreateCommentMutation.mutateAsync({ parentId: parent.id, content });
+    setContent('');
+    onClose();
   };
+
   return (
     <div className="flex">
       <LetterICanvas />
@@ -36,15 +35,15 @@ const CommentInput = forwardRef<
           onKeyDown={e => {
             if (e.ctrlKey && e.key === 'Enter') handleCreateComment();
           }}
-          placeholder="Trả lời bình luận của Hoàng Minh Khương"
-          className="flex-1 overflow-y-auto resize-none focus-visible:ring-0 w-full max-h-20 bg-white/10"
+          placeholder={`Trả lời bình luận của ${parent.createdBy.fullName || parent.createdBy.email}`}
+          className="flex-1 overflow-y-auto resize-none focus-visible:ring-0 w-full max-h-20 bg-white/10 placeholder:text-gray-400"
           {...props}
         />
         <div>
           <CustomButton
             className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
             onClick={handleCreateComment}
-            disabled={loading}
+            disabled={useCreateCommentMutation.isPending}
           >
             <SendHorizontalIcon size={16} />
             Gửi
