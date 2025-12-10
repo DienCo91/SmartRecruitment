@@ -1,6 +1,7 @@
 import { ISpecificationParams } from '@/types/blog';
 import http from '.';
 import qs from 'qs';
+import { CreateComment } from '@/types/comment';
 
 const endpointPrefix = '/api/blogs';
 
@@ -65,6 +66,16 @@ export const BlogService = {
         'Content-Type': 'multipart/form-data',
       },
     });
+    return res.data;
+  },
+
+  createComment: async (blogId: number, data: CreateComment) => {
+    const res = await http.post(`${endpointPrefix}/${blogId}/comments`, data);
+    return res.data;
+  },
+
+  getComments: async (blogId: number) => {
+    const res = await http.get(`${endpointPrefix}/${blogId}/comments`);
     return res.data;
   },
 };

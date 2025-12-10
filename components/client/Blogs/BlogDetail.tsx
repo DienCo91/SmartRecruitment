@@ -6,7 +6,6 @@ import { vi } from 'date-fns/locale';
 import { CalendarIcon, MessageCircleMoreIcon } from 'lucide-react';
 import { AvatarUser } from '../Avatar/AvatarUser';
 import { DecorateContent } from '../Jobs/DecorateContent';
-import QuillViewer from '@/components/quill/QuillViewer';
 
 interface Props {
   blog: Blog;
