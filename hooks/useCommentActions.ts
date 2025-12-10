@@ -50,5 +50,29 @@ export function useCommentActions(blogId: number) {
     },
   });
 
-  return { useCommentQuery, useCreateCommentMutation, useDeleteCommentMutation };
+  const useUpdateCommentMutation = useMutation({
+    mutationFn: async ({ id, content }: { id: number; content: string }) => {
+      return (await CommentService.updateComment(id, content)).data;
+    },
+    onSuccess: (comment: Comment) => {
+      queryClient.setQueryData<Comment[]>(key, prev => {
+        if (!prev) return prev;
+
+        return prev.map(item =>
+          item.id === comment.id ? { ...item, content: comment.content } : item
+        );
+      });
+      toast.success('Đã cập nhật bình luận');
+    },
+    onError: () => {
+      toast.error('Cập nhật bình luận thất bại');
+    },
+  });
+
+  return {
+    useCommentQuery,
+    useCreateCommentMutation,
+    useDeleteCommentMutation,
+    useUpdateCommentMutation,
+  };
 }

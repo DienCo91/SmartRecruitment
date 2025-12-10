@@ -1,13 +1,13 @@
 import { CustomButton } from '@/components/Buttons/CustomButton';
+import { useCommentActions } from '@/hooks/useCommentActions';
+import { Comment } from '@/types/comment';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { MessageSquareReplyIcon, PencilIcon, TrashIcon } from 'lucide-react';
-import { AvatarUser } from '../Avatar/AvatarUser';
 import { useEffect, useRef, useState } from 'react';
-import CommentInput from './CommentInput';
-import { Comment } from '@/types/comment';
+import { AvatarUser } from '../Avatar/AvatarUser';
 import { LetterICanvas } from '../Canvas/LetterICanvas';
-import { useCommentActions } from '@/hooks/useCommentActions';
+import CommentInput from './CommentInput';
 
 interface Props<T> {
   comment: Comment;
@@ -16,15 +16,14 @@ interface Props<T> {
 }
 
 export function CommentCard<T extends { id: number }>({ comment, level = 1, of }: Props<T>) {
-  const [showReplyInput, setShowReplyInput] = useState<boolean>(false);
-  const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  const [mode, setMode] = useState<'none' | 'reply' | 'edit'>('none');
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const { useDeleteCommentMutation } = useCommentActions(of.id);
 
   useEffect(() => {
-    if (showReplyInput) {
-      commentInputRef.current?.focus();
-    }
-  }, [showReplyInput]);
+    if (mode !== 'none') inputRef.current?.focus();
+  }, [mode]);
 
   const handleDeleteComment = () => {
     useDeleteCommentMutation.mutateAsync(comment.id);
@@ -45,6 +44,7 @@ export function CommentCard<T extends { id: number }>({ comment, level = 1, of }
               </p>
             </div>
           </div>
+
           <p className="text-sm">{comment.content}</p>
         </div>
 
@@ -54,7 +54,7 @@ export function CommentCard<T extends { id: number }>({ comment, level = 1, of }
               <div className="invisible group-hover/comment-card:visible">
                 <CustomButton
                   className="flex gap-2 items-center text-sm text-gray-300 hover:bg-transparent hover:text-gray-200"
-                  onClick={() => setShowReplyInput(!showReplyInput)}
+                  onClick={() => setMode(mode === 'reply' ? 'none' : 'reply')}
                 >
                   <MessageSquareReplyIcon size={16} />
                   Trả lời
@@ -63,7 +63,10 @@ export function CommentCard<T extends { id: number }>({ comment, level = 1, of }
             )}
 
             <div className="invisible group-hover/comment-card:visible">
-              <CustomButton className="flex gap-2 items-center text-sm text-gray-300 hover:bg-transparent hover:text-gray-200">
+              <CustomButton
+                className="flex gap-2 items-center text-sm text-gray-300 hover:bg-transparent hover:text-gray-200"
+                onClick={() => setMode(mode === 'edit' ? 'none' : 'edit')}
+              >
                 <PencilIcon size={16} />
                 Sửa
               </CustomButton>
@@ -82,19 +85,30 @@ export function CommentCard<T extends { id: number }>({ comment, level = 1, of }
           </div>
         </div>
       </div>
-      {showReplyInput && (
+
+      {mode === 'edit' && (
         <CommentInput
-          ref={commentInputRef}
-          parent={comment}
+          ref={inputRef}
           entityId={of.id}
-          onClose={() => setShowReplyInput(false)}
+          comment={comment}
+          onClose={() => setMode('none')}
         />
       )}
+
+      {mode === 'reply' && (
+        <CommentInput
+          ref={inputRef}
+          parent={comment}
+          entityId={of.id}
+          onClose={() => setMode('none')}
+        />
+      )}
+
       {comment.childs.length > 0 &&
-        comment.childs.map(comment => (
-          <div className="flex" key={comment.id}>
+        comment.childs.map(child => (
+          <div className="flex" key={child.id}>
             <LetterICanvas />
-            <CommentCard comment={comment} level={level + 1} of={of} />
+            <CommentCard comment={child} level={level + 1} of={of} />
           </div>
         ))}
     </div>
