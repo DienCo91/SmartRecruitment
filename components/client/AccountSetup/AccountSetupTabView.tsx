@@ -110,7 +110,7 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
       }
     } catch (error) {
       console.log('error', error);
-      toast.error('You have not created a company yet');
+      // toast.error('You have not created a company yet');
     } finally {
       dispatch(setLoading(false));
     }

@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import {
   Sidebar,
   SidebarContent,
@@ -15,7 +15,16 @@ import {
 } from '@/components/ui/sidebar';
 import { Router } from '@/constants';
 import { useLogout } from '@/hooks/useLogout';
-import { BriefcaseBusiness, Building2, FileUser, HomeIcon, Library, Users } from 'lucide-react';
+import {
+  BriefcaseBusiness,
+  Building2,
+  FileUser,
+  HomeIcon,
+  Library,
+  LogOutIcon,
+  User2,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export function AppSidebar() {
@@ -80,10 +89,18 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <Button className="hover:bg-blue-500 mx-[16px]" onClick={onLogout}>
-        Logout
-      </Button>
-      <SidebarFooter />
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <SidebarMenuButton onClick={onLogout} className="text-red-500">
+                <LogOutIcon />
+                <div>Logout</div>
+              </SidebarMenuButton>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
 
       <SidebarRail />
     </Sidebar>

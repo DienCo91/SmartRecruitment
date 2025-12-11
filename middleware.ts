@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ROUTER_CANDIDATE, ROUTER_EMPLOYER, ROUTER_GUESS } from './constants';
+import {
+  ROLE_USER,
+  ROUTER_ADMIN,
+  ROUTER_CANDIDATE,
+  ROUTER_EMPLOYER,
+  ROUTER_GUESS,
+} from './constants';
 
 const ROLE_KEY = 'userRole';
 
@@ -8,7 +14,8 @@ function isAuthorized(path: string, role: string | undefined): boolean {
 
   switch (role) {
     case 'ADMIN':
-      return true;
+      allowedRoutes = ROUTER_ADMIN;
+      break;
     case 'CANDIDATE':
       allowedRoutes = ROUTER_CANDIDATE;
       break;
@@ -39,6 +46,9 @@ export function middleware(req: NextRequest) {
   if (!isAllowed) {
     if (!role) {
       return NextResponse.redirect(new URL('/login?error=unauthorized', req.url));
+    }
+    if (role === ROLE_USER.ADMIN) {
+      return NextResponse.redirect(new URL('/admin', req.url));
     }
 
     return NextResponse.redirect(new URL('/', req.url));

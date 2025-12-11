@@ -95,6 +95,9 @@ const LoginPage = () => {
       dispatch(setLoading(true));
       const res = await AuthService.oauth2(role);
       dispatch(setCurrentUser(res.data));
+      if (!res.data.companySetup && isEmployer(res.data.role)) {
+        return router.replace(Router.ACCOUNT_SETUP);
+      }
       router.replace(Router.HOME);
     } catch (error) {
       console.error(error);
@@ -113,6 +116,10 @@ const LoginPage = () => {
       const res = await AuthService.oauth2();
 
       dispatch(setCurrentUser(res.data));
+
+      if (!res.data.companySetup && isEmployer(res.data.role)) {
+        return router.replace(Router.ACCOUNT_SETUP);
+      }
       router.replace(Router.HOME);
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } } | undefined;

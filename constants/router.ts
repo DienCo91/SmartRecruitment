@@ -60,12 +60,17 @@ export const ROUTER_GUESS = [
   Router.FIND_JOB,
   Router.BLOG,
   Router.ADMIN,
+];
+
+export const ROUTER_ADMIN = [
   Router.BLOG_MANAGER,
   Router.CANDIDATE_MANAGER,
   Router.COMPANIES_MANAGER,
   Router.JOB_MANAGER,
   Router.RESUME_MANAGER,
+  Router.ADMIN,
 ];
+
 export const ROUTER_CANDIDATE = [
   Router.HOME,
   Router.JOB.DETAIL,
