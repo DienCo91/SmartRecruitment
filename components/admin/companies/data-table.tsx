@@ -15,6 +15,7 @@ import {
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';
 
+import { AvatarUser } from '@/components/client/Avatar/AvatarUser';
 import { ConfirmDeleteDialog } from '@/components/client/Dialogs/ConfirmDeleteDialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,157 +34,53 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { IEmployerDashboard } from '@/types';
 import { format } from 'date-fns';
-
-const data: Payment[] = [
-  {
-    id: 'm5gr84i9',
-    createAt: 316,
-    status: 'success',
-    email: 'ken99@example.com',
-    companyName: 'Công ty ABC',
-  },
-  {
-    id: '3u1reuv4',
-    createAt: 242,
-    status: 'success',
-    email: 'Abe45@example.com',
-    companyName: 'Công ty XYZ',
-  },
-  {
-    id: 'derv1ws0',
-    createAt: 837,
-    status: 'processing',
-    email: 'Monserrat44@example.com',
-    companyName: 'Công ty Minh Phát',
-  },
-  {
-    id: '5kma53ae',
-    createAt: 874,
-    status: 'success',
-    email: 'Silas22@example.com',
-    companyName: 'Công ty Hoàng Long',
-  },
-  {
-    id: 'bhqecj4p',
-    createAt: 721,
-    status: 'failed',
-    email: 'carmella@example.com',
-    companyName: 'Công ty Đại Lộc',
-  },
-  {
-    id: 'm5gr84i9',
-    createAt: 316,
-    status: 'success',
-    email: 'ken99@example.com',
-    companyName: 'Công ty ABC',
-  },
-  {
-    id: '3u1reuv4',
-    createAt: 242,
-    status: 'success',
-    email: 'Abe45@example.com',
-    companyName: 'Công ty XYZ',
-  },
-  {
-    id: 'derv1ws0',
-    createAt: 837,
-    status: 'processing',
-    email: 'Monserrat44@example.com',
-    companyName: 'Công ty Minh Phát',
-  },
-  {
-    id: 'm5gr84i9',
-    createAt: 316,
-    status: 'success',
-    email: 'ken99@example.com',
-    companyName: 'Công ty ABC',
-  },
-  {
-    id: '3u1reuv4',
-    createAt: 242,
-    status: 'success',
-    email: 'Abe45@example.com',
-    companyName: 'Công ty XYZ',
-  },
-  {
-    id: 'derv1ws0',
-    createAt: 837,
-    status: 'processing',
-    email: 'Monserrat44@example.com',
-    companyName: 'Công ty Minh Phát',
-  },
-  {
-    id: 'm5gr84i9',
-    createAt: 316,
-    status: 'success',
-    email: 'ken99@example.com',
-    companyName: 'Công ty ABC',
-  },
-  {
-    id: '3u1reuv4',
-    createAt: 242,
-    status: 'success',
-    email: 'Abe45@example.com',
-    companyName: 'Công ty XYZ',
-  },
-  {
-    id: 'derv1ws0',
-    createAt: 837,
-    status: 'processing',
-    email: 'Monserrat44@example.com',
-    companyName: 'Công ty Minh Phát',
-  },
-  {
-    id: 'm5gr84i9',
-    createAt: 316,
-    status: 'success',
-    email: 'ken99@example.com',
-    companyName: 'Công ty ABC',
-  },
-  {
-    id: '3u1reuv4',
-    createAt: 242,
-    status: 'success',
-    email: 'Abe45@example.com',
-    companyName: 'Công ty XYZ',
-  },
-  {
-    id: 'derv1ws0',
-    createAt: 837,
-    status: 'processing',
-    email: 'Monserrat44@example.com',
-    companyName: 'Công ty Minh Phát',
-  },
-];
-
-export type Payment = {
-  id: string;
-  createAt: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
-  companyName: string;
-};
+import { AdminService } from '@/services/admin.services';
+import { toast } from 'sonner';
+import { ModalDetailEmployer } from './modal-detail-employer';
 
 const getColumns = (
   setShowConfirmDialog: (v: boolean) => void,
-  setIdCompanyDelete: (v: string) => void
-): ColumnDef<Payment>[] => [
+  setIdCandidateAction: (v: string) => void,
+  setShowDetailUserModel: (v: string) => void
+): ColumnDef<IEmployerDashboard>[] => [
   {
     accessorKey: 'id',
     header: 'ID',
     cell: ({ row }) => <div className="capitalize">{row.getValue('id')}</div>,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => <div className="capitalize">{row.getValue('status')}</div>,
+    accessorKey: 'logoUrl',
+    header: 'Avatar',
+    cell: ({ row }) => (
+      <AvatarUser
+        src={row.getValue('logoUrl')}
+        classNameImage="object-cover"
+        className="border-none w-[48px] h-[48px]"
+      />
+    ),
   },
   {
-    accessorKey: 'companyName',
+    accessorKey: 'isActive',
+    header: 'Status',
+    cell: ({ row }) => (
+      <div
+        className={cn(
+          !row.getValue('isActive')
+            ? 'text-[red] hover:text-[red]!'
+            : 'text-[green] hover:text-[green]!'
+        )}
+      >
+        {row.getValue('isActive') ? 'Active' : 'Inactive'}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'name',
     header: 'Company Name',
-    cell: ({ row }) => <div className="capitalize">{row.getValue('companyName')}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue('name')}</div>,
   },
   {
     accessorKey: 'email',
@@ -195,10 +92,10 @@ const getColumns = (
     cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
   },
   {
-    accessorKey: 'createAt',
+    accessorKey: 'createdAt',
     header: () => <div className="text-right">Create At</div>,
     cell: ({ row }) => {
-      const date = new Date(row.getValue('createAt'));
+      const date = new Date(row.getValue('createdAt') ?? Date.now());
       const formatted = format(date, 'dd/MM/yyyy');
 
       return <div className="text-right font-medium">{formatted}</div>;
@@ -218,18 +115,27 @@ const getColumns = (
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem>
-              <Link href={`/admin/companies/${row.getValue('id')}`}>View Detail</Link>
+            <DropdownMenuItem
+              onClick={() => {
+                console.log('1', row.getValue('id'));
+                setShowDetailUserModel(row.getValue('id'));
+              }}
+            >
+              View Detail
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              className="text-[red] hover:text-[red]!"
+              className={cn(
+                row.getValue('isActive')
+                  ? 'text-[red] hover:text-[red]!'
+                  : 'text-[green] hover:text-[green]!'
+              )}
               onClick={() => {
-                setIdCompanyDelete(row.getValue('id'));
+                setIdCandidateAction(row.getValue('id'));
                 setShowConfirmDialog(true);
               }}
             >
-              Delete Account
+              {row.getValue('isActive') ? 'Inactive' : 'Active'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -238,15 +144,25 @@ const getColumns = (
   },
 ];
 
-export function DataTableDemo() {
+export function DataTableDemo({
+  data,
+  setData,
+}: {
+  data: IEmployerDashboard[];
+  setData: React.Dispatch<React.SetStateAction<IEmployerDashboard[]>>;
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [showConfirmDialog, setShowConfirmDialog] = React.useState(false);
-  const [idCompanyDelete, setIdCompanyDelete] = React.useState('');
+  const [idCompanyAction, setIdCompanyAction] = React.useState('');
+  const [showDetailUserModel, setShowDetailUserModel] = React.useState<string>();
 
-  const columns = React.useMemo(() => getColumns(setShowConfirmDialog, setIdCompanyDelete), []);
+  const columns = React.useMemo(
+    () => getColumns(setShowConfirmDialog, setIdCompanyAction, setShowDetailUserModel),
+    []
+  );
 
   const table = useReactTable({
     data,
@@ -267,10 +183,44 @@ export function DataTableDemo() {
     },
   });
 
-  function handleDelete() {
-    console.log('Delete: ', idCompanyDelete);
-    setShowConfirmDialog(false);
-  }
+  const handleDelete = async () => {
+    const itemPickCurrent = data.find(item => item.id === idCompanyAction);
+
+    try {
+      if (itemPickCurrent?.isActive) {
+        await AdminService.deactivateCompany(+idCompanyAction);
+        setData(prev =>
+          prev.map(item => {
+            if (item.id === idCompanyAction) {
+              return {
+                ...item,
+                isActive: false,
+              };
+            }
+            return item;
+          })
+        );
+      } else {
+        await AdminService.activateCompany(+idCompanyAction);
+        setData(prev =>
+          prev.map(item => {
+            if (item.id === idCompanyAction) {
+              return {
+                ...item,
+                isActive: true,
+              };
+            }
+            return item;
+          })
+        );
+      }
+    } catch (e) {
+      console.log('e', e);
+    } finally {
+      toast.success('Successfully');
+      setShowConfirmDialog(false);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -345,12 +295,15 @@ export function DataTableDemo() {
 
       {showConfirmDialog && (
         <ConfirmDeleteDialog
-          title="Bạn có chắc muốn xóa"
-          description="Hành động này sẽ xóa company và không thể khôi phục"
+          title="Bạn có chắc không ?"
+          description="Hành động này sẽ ảnh hưởng đến company cũng như người dùng trong ứng dụng của bạn"
           onClose={() => setShowConfirmDialog(false)}
           onDelete={() => handleDelete()}
+          textConfirm="Đồng ý"
         />
       )}
+
+      <ModalDetailEmployer id={showDetailUserModel} setIsOpen={setShowDetailUserModel} />
     </div>
   );
 }

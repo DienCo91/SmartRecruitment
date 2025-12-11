@@ -28,7 +28,7 @@ const CandidateManager = () => {
   return (
     <div className="p-[16px]">
       <p className="font-bold">Candidate Manager</p>
-      <DataTableDemo data={data} />
+      <DataTableDemo data={data} setData={setData} />
     </div>
   );
 };

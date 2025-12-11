@@ -2,6 +2,7 @@ import http from '.';
 
 const dashboardPrefix = '/api/admin/dashboard';
 const candidatePrefix = '/api/admin/candidates';
+const companyPrefix = '/api/admin/companies';
 
 // === Types ===
 export interface PaginationParams {
@@ -16,6 +17,7 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+// ===== CANDIDATE TYPES =====
 export interface AdminCandidate {
   id: number;
   email: string;
@@ -32,6 +34,24 @@ export interface CandidateDetail {
   status: string;
 }
 
+// ===== COMPANY TYPES =====
+export interface AdminCompany {
+  id: number;
+  email: string | null;
+  name: string | null;
+  isActive: boolean;
+}
+
+export interface CompanyDetail {
+  id: number;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  website?: string | null;
+  description?: string | null;
+  isActive: boolean;
+}
+
 export const AdminService = {
   // === DASHBOARD ===
   async getDashboard() {
@@ -39,27 +59,49 @@ export const AdminService = {
     return res.data;
   },
 
-  // === GET CANDIDATES LIST ===
+  // ========================
+  //       CANDIDATES
+  // ========================
   async getCandidates(params: PaginationParams) {
     const res = await http.get(candidatePrefix, { params });
     return res.data;
   },
 
-  // === GET CANDIDATE DETAIL ===
   async getCandidateDetail(candidateId: number) {
     const res = await http.get(`${candidatePrefix}/${candidateId}`);
     return res.data;
   },
 
-  // === DEACTIVATE CANDIDATE ===
   async deactivateCandidate(candidateId: number) {
     const res = await http.delete(`${candidatePrefix}/${candidateId}/deactivate`);
     return res.data;
   },
 
-  // === ACTIVATE CANDIDATE ===
   async activateCandidate(candidateId: number) {
     const res = await http.post(`${candidatePrefix}/${candidateId}/activate`);
+    return res.data;
+  },
+
+  // ========================
+  //         COMPANIES
+  // ========================
+  async getCompanies(params: PaginationParams) {
+    const res = await http.get(companyPrefix, { params });
+    return res.data;
+  },
+
+  async getCompanyDetail(companyId: number) {
+    const res = await http.get(`${companyPrefix}/${companyId}`);
+    return res.data;
+  },
+
+  async deactivateCompany(companyId: number) {
+    const res = await http.delete(`${companyPrefix}/${companyId}/deactivate`);
+    return res.data;
+  },
+
+  async activateCompany(companyId: number) {
+    const res = await http.post(`${companyPrefix}/${companyId}/activate`);
     return res.data;
   },
 };

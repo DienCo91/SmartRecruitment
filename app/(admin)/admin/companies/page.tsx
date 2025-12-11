@@ -1,11 +1,26 @@
 'use client';
 import { DataTableDemo } from '@/components/admin/companies/data-table';
-import React, { useEffect } from 'react';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { AdminService } from '@/services/admin.services';
+import { IEmployerDashboard } from '@/types';
+import { useEffect, useState } from 'react';
 
 const CompanyManager = () => {
-  // const [data,setData] = useState([])
+  const [data, setData] = useState<IEmployerDashboard[]>([]);
+  const dispatch = useAppDispatch();
 
-  const getData = async () => {};
+  const getData = async () => {
+    try {
+      dispatch(setLoading(true));
+      const res = await AdminService.getCompanies({ page: 1, size: 1000 });
+      setData(res.data.content);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   useEffect(() => {
     getData();
@@ -14,7 +29,7 @@ const CompanyManager = () => {
   return (
     <div className="p-[16px]">
       <p className="font-bold">Company Manager</p>
-      <DataTableDemo />
+      <DataTableDemo data={data} setData={setData} />
     </div>
   );
 };

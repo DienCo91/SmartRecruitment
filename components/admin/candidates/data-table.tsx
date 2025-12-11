@@ -15,6 +15,7 @@ import {
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';
 
+import { AvatarUser } from '@/components/client/Avatar/AvatarUser';
 import { ConfirmDeleteDialog } from '@/components/client/Dialogs/ConfirmDeleteDialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,33 +34,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import Link from 'next/link';
-import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { AdminService } from '@/services/admin.services';
 import { ICandidateDashboard } from '@/types';
-import { CustomImage } from '@/components/client/Images/CustomImage';
-import { AvatarUser } from '@/components/client/Avatar/AvatarUser';
-
-// const data: Payment[] = [
-//   {
-//     id: 'm5gr84i9',
-//     createAt: 316,
-//     status: 'success',
-//     email: 'ken99@example.com',
-//     candidateName: 'Công ty ABC',
-//   },
-// ];
-
-// export type Payment = {
-//   id: string;
-//   createAt: number;
-//   status: 'pending' | 'processing' | 'success' | 'failed';
-//   email: string;
-//   candidateName: string;
-// };
+import { format } from 'date-fns';
+import { toast } from 'sonner';
+import { ModalDetailCandidate } from './modal-detail-candidate';
 
 const getColumns = (
   setShowConfirmDialog: (v: boolean) => void,
-  setIdCompanyDelete: (v: string) => void
+  setIdCandidateAction: (v: string) => void,
+  setShowDetailUserModel: (v: string) => void
 ): ColumnDef<ICandidateDashboard>[] => [
   {
     accessorKey: 'id',
@@ -81,7 +66,15 @@ const getColumns = (
     accessorKey: 'isActive',
     header: 'Status',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('isActive') ? 'Active' : 'Inactive'}</div>
+      <div
+        className={cn(
+          !row.getValue('isActive')
+            ? 'text-[red] hover:text-[red]!'
+            : 'text-[green] hover:text-[green]!'
+        )}
+      >
+        {row.getValue('isActive') ? 'Active' : 'Inactive'}
+      </div>
     ),
   },
   {
@@ -122,18 +115,27 @@ const getColumns = (
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem>
-              <Link href={`/admin/companies/${row.getValue('id')}`}>View Detail</Link>
+            <DropdownMenuItem
+              onClick={() => {
+                console.log('1', row.getValue('id'));
+                setShowDetailUserModel(row.getValue('id'));
+              }}
+            >
+              View Detail
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              className="text-[red] hover:text-[red]!"
+              className={cn(
+                row.getValue('isActive')
+                  ? 'text-[red] hover:text-[red]!'
+                  : 'text-[green] hover:text-[green]!'
+              )}
               onClick={() => {
-                setIdCompanyDelete(row.getValue('id'));
+                setIdCandidateAction(row.getValue('id'));
                 setShowConfirmDialog(true);
               }}
             >
-              Delete Account
+              {row.getValue('isActive') ? 'Inactive' : 'Active'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -142,17 +144,25 @@ const getColumns = (
   },
 ];
 
-export function DataTableDemo({ data }: { data: ICandidateDashboard[] }) {
+export function DataTableDemo({
+  data,
+  setData,
+}: {
+  data: ICandidateDashboard[];
+  setData: React.Dispatch<React.SetStateAction<ICandidateDashboard[]>>;
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [showConfirmDialog, setShowConfirmDialog] = React.useState(false);
-  const [idCompanyDelete, setIdCompanyDelete] = React.useState('');
+  const [idCandidateAction, setIdCandidateAction] = React.useState('');
+  const [showDetailUserModel, setShowDetailUserModel] = React.useState<string>();
 
-  const columns = React.useMemo(() => getColumns(setShowConfirmDialog, setIdCompanyDelete), []);
-
-  console.log('data', data);
+  const columns = React.useMemo(
+    () => getColumns(setShowConfirmDialog, setIdCandidateAction, setShowDetailUserModel),
+    []
+  );
 
   const table = useReactTable({
     data,
@@ -173,10 +183,44 @@ export function DataTableDemo({ data }: { data: ICandidateDashboard[] }) {
     },
   });
 
-  function handleDelete() {
-    console.log('Delete: ', idCompanyDelete);
-    setShowConfirmDialog(false);
-  }
+  const handleDelete = async () => {
+    const itemPickCurrent = data.find(item => item.id === +idCandidateAction);
+
+    try {
+      if (itemPickCurrent?.isActive) {
+        await AdminService.deactivateCandidate(+idCandidateAction);
+        setData(prev =>
+          prev.map(item => {
+            if (item.id === +idCandidateAction) {
+              return {
+                ...item,
+                isActive: false,
+              };
+            }
+            return item;
+          })
+        );
+      } else {
+        await AdminService.activateCandidate(+idCandidateAction);
+        setData(prev =>
+          prev.map(item => {
+            if (item.id === +idCandidateAction) {
+              return {
+                ...item,
+                isActive: true,
+              };
+            }
+            return item;
+          })
+        );
+      }
+    } catch (e) {
+      console.log('e', e);
+    } finally {
+      toast.success('Successfully');
+      setShowConfirmDialog(false);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -251,12 +295,15 @@ export function DataTableDemo({ data }: { data: ICandidateDashboard[] }) {
 
       {showConfirmDialog && (
         <ConfirmDeleteDialog
-          title="Bạn có chắc muốn xóa"
-          description="Hành động này sẽ xóa candidate và không thể khôi phục"
+          title="Bạn có chắc không ?"
+          description="Hành động này sẽ ảnh hưởng đến người dùng trong ứng dụng của bạn"
           onClose={() => setShowConfirmDialog(false)}
           onDelete={() => handleDelete()}
+          textConfirm="Đồng Ý"
         />
       )}
+
+      <ModalDetailCandidate id={showDetailUserModel} setIsOpen={setShowDetailUserModel} />
     </div>
   );
 }
