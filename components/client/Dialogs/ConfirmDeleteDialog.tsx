@@ -27,7 +27,6 @@ export function ConfirmDeleteDialog({
       onClose();
     } catch (error) {
       console.error(error);
-      toast.error('Xóa thất bại');
     } finally {
       setProcessing(false);
     }

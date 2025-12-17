@@ -1,8 +1,10 @@
+import { ISpecificationBlogManageParams } from '@/types/blog';
 import http from '.';
 
 const dashboardPrefix = '/api/admin/dashboard';
 const candidatePrefix = '/api/admin/candidates';
 const companyPrefix = '/api/admin/companies';
+const blogPrefix = '/api/admin/blogs';
 
 // === Types ===
 export interface PaginationParams {
@@ -102,6 +104,22 @@ export const AdminService = {
 
   async activateCompany(companyId: number) {
     const res = await http.post(`${companyPrefix}/${companyId}/activate`);
+    return res.data;
+  },
+
+  /* Admin Blog Manage */
+  async getBlogs(params: ISpecificationBlogManageParams) {
+    const res = await http.get(blogPrefix, { params });
+    return res.data;
+  },
+
+  async deleteBlog(id: number) {
+    const res = await http.delete(`${blogPrefix}/${id}`);
+    return res.data;
+  },
+
+  async publishBlog(id: number) {
+    const res = await http.patch(`${blogPrefix}/${id}/publish`);
     return res.data;
   },
 };

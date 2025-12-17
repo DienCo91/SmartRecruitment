@@ -1,3 +1,4 @@
+import { AppImage } from '@/common';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { IMAGE_EMPTY } from '@/constants';
 import { cn } from '@/lib/utils';
@@ -45,7 +46,7 @@ export function CustomImage({ src, alt, className, classNameImage, fallback }: P
         </div>
       )}
       <Image
-        src={currentSrc}
+        src={currentSrc || AppImage.avatarFallback.src}
         alt={alt || 'Image optimized'}
         fill
         className={cn(

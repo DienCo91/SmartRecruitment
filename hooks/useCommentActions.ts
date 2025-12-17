@@ -1,5 +1,6 @@
 import { QueryKey } from '@/constants/queryKey';
 import { useAppSelector } from '@/lib/hooks';
+import { QueryOptions } from '@/providers/TanstackQueryProvider';
 import { BlogService } from '@/services/blog.service';
 import { CommentService } from '@/services/comment.service';
 import { Comment, CreateComment } from '@/types/comment';
@@ -14,6 +15,7 @@ export function useCommentActions(blogId: number) {
   const useCommentQuery = useQuery({
     queryKey: key,
     queryFn: async () => (await BlogService.getComments(blogId)).data,
+    ...QueryOptions,
   });
 
   const useCreateCommentMutation = useMutation({

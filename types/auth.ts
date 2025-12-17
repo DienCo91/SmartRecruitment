@@ -22,6 +22,6 @@ export interface AuthorOfBlog {
   fullName: string;
   userName: string;
   email: string;
-  // role: CANDIDATE,
   companySetup: boolean;
+  avatar?: string;
 }

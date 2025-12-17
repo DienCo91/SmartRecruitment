@@ -1,10 +1,12 @@
-export * from './osm';
-export * from './company';
-export * from './job';
+import { ApiResponse } from '@/services/admin.services';
+
 export * from './auth';
 export * from './candidate';
-export * from './employer';
 export * from './chat';
+export * from './company';
+export * from './employer';
+export * from './job';
+export * from './osm';
 
 export interface BaseProps {
   className?: string;
@@ -27,4 +29,8 @@ export interface Pagination {
 export interface TagData {
   id: number;
   name: string;
+}
+
+export interface ApiPaginationResponse<T> extends ApiResponse<T> {
+  meta: Pagination;
 }
