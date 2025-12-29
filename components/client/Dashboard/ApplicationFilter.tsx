@@ -14,11 +14,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import { DataFilter } from '@/types';
 import { SlidersHorizontal } from 'lucide-react';
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
 
 export interface ApplicationFilterInputSearchRef {
-  getValue: () => void;
+  getValue: () => DataFilter;
   setValue: () => void;
   clearValue: () => void;
 }
@@ -27,34 +28,26 @@ interface IApplicationFilter {
   data?: string;
 }
 
-interface DataFilter {
-  appropriate: number;
-  gender: string;
-  sort: string;
-  age: string;
-  language: string;
-}
-
 const ApplicationFilter = forwardRef<ApplicationFilterInputSearchRef, IApplicationFilter>(
   (props, ref) => {
     const [dataFilter, setDataFilter] = useState<DataFilter>({
       appropriate: 0,
-      gender: 'all',
-      sort: 'all',
-      age: '0-99',
-      language: 'all',
+      gender: '',
+      ageRange: '0-100',
+      language: '',
     });
 
     useImperativeHandle(ref, () => ({
-      getValue: () => {},
+      getValue: () => {
+        return dataFilter;
+      },
       setValue: () => {},
       clearValue: () => {
         setDataFilter({
           appropriate: 0,
-          gender: 'all',
-          sort: 'all',
-          age: '0-99',
-          language: 'all',
+          gender: '',
+          ageRange: '0-100',
+          language: '',
         });
       },
     }));
@@ -74,8 +67,6 @@ const ApplicationFilter = forwardRef<ApplicationFilterInputSearchRef, IApplicati
       if (num > 100) num = 100;
       updateFilter('appropriate', num);
     };
-
-    console.log('dataFilter.appropriate', dataFilter.appropriate);
 
     return (
       <Popover>
@@ -118,46 +109,31 @@ const ApplicationFilter = forwardRef<ApplicationFilterInputSearchRef, IApplicati
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Giới tính</SelectLabel>
-                      <SelectItem value="all">Tất cả</SelectItem>
-                      <SelectItem value="male">Nam</SelectItem>
-                      <SelectItem value="female">Nữ</SelectItem>
+                      <SelectItem value="MALE">Nam</SelectItem>
+                      <SelectItem value="FEMALE">Nữ</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex justify-between items-center">
-                <Label htmlFor="maxWidth">Sắp xếp theo</Label>
-                <Select value={dataFilter.sort} onValueChange={val => updateFilter('sort', val)}>
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="all">Tất cả</SelectItem>
-                      <SelectItem value="latest">Mới nhất</SelectItem>
-                      <SelectItem value="oldest">Cũ Nhất</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
+
               <Label htmlFor="age">Độ tuổi</Label>
               <div className="flex space-x-[8px] items-center">
                 <Slider
-                  value={dataFilter.age.split('-').map(Number)}
+                  value={dataFilter.ageRange.split('-').map(Number)}
                   onValueChange={(val: number[]) => {
                     const [min, max] = val;
-                    updateFilter('age', `${min}-${max}`);
+                    updateFilter('ageRange', `${min}-${max}`);
                   }}
                   max={99}
                   step={1}
                   className="flex-1"
                 />
                 <div className="w-[90px] text-center border-1 rounded-md py-[6px]">
-                  {dataFilter.age}
+                  {dataFilter.ageRange}
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
                 <Label htmlFor="maxWidth">Ngôn Ngữ</Label>
                 <Select
                   value={dataFilter.language}
@@ -174,7 +150,7 @@ const ApplicationFilter = forwardRef<ApplicationFilterInputSearchRef, IApplicati
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
             </div>
           </div>
         </PopoverContent>

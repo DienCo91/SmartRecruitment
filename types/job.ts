@@ -192,3 +192,10 @@ export interface ApplicationBriefResponse {
   };
   email: string;
 }
+
+export interface DataFilter {
+  appropriate: number;
+  gender: string;
+  ageRange: string;
+  language: string;
+}
