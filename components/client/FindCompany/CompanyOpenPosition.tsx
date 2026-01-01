@@ -8,12 +8,14 @@ import Link from 'next/link';
 import { FaArrowRight } from 'react-icons/fa';
 import { MdLocationPin } from 'react-icons/md';
 import { CustomImage } from '../Images/CustomImage';
+import { AppImage } from '@/common';
 
 const CompanyOpenPosition = ({ item }: { item: CompanyItem }) => {
   return (
     <div className="flex backdrop-blur-md rounded-xl items-center overflow-hidden p-[16px] bg-white/10 shadow-md hover:bg-white/15 hover:shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-2px]">
       <CustomImage
         src={item?.logoUrl}
+        fallback={AppImage.fallback.companyFallback.src}
         alt="thumbnail"
         className=" h-[80px] w-[80px] border-0 shadow-none"
         classNameImage="object-cover p-0"
@@ -27,7 +29,7 @@ const CompanyOpenPosition = ({ item }: { item: CompanyItem }) => {
           </div>
           <div className="flex items-center ml-[20px]">
             <BriefcaseBusinessIcon size={14} />
-            <span className="ml-[4px]">{item?.numberOfJobs}</span>
+            <span className="ml-[4px]">{item?.numberOfJobs} công việc</span>
           </div>
         </div>
       </div>

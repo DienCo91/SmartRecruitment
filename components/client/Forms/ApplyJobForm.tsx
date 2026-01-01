@@ -73,10 +73,10 @@ export function ApplyJobForm({ onClose, job, setJob }: Props) {
       });
       setJob(prev => (prev ? { ...prev, isApplied: true } : prev));
       onClose();
-      toast.success('Apply job successfully!');
+      toast.success('Ứng tuyển thành công');
     } catch (error) {
-      console.log('🚀 ~ handleSubmit ~ error:', error);
-      toast.error('Apply job failed');
+      console.log(error);
+      toast.error('Đã xảy ra lỗi, ứng tuyển thất bại');
     } finally {
       dispatch(setLoading(false));
     }

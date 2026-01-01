@@ -5,6 +5,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { RecentBlogCard } from './RecentBlogCard';
+import { range } from 'lodash';
+import { RecentBlogCardSkeleton } from '../Skeletons/RecentBlogCardSkeleton';
 
 export function RecentBlogs() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,7 +39,11 @@ export function RecentBlogs() {
       classContentName="px-0"
     >
       {loading ? (
-        <LoadingCircle />
+        <>
+          {range(0, 3).map((_, key) => (
+            <RecentBlogCardSkeleton key={key} />
+          ))}
+        </>
       ) : (
         recentBlogs.map(blog => <RecentBlogCard key={blog.id} blog={blog} />)
       )}

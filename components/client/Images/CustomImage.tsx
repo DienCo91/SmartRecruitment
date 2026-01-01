@@ -1,6 +1,4 @@
 import { AppImage } from '@/common';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { IMAGE_EMPTY } from '@/constants';
 import { cn } from '@/lib/utils';
 import { BaseProps } from '@/types';
 import Image from 'next/image';
@@ -13,53 +11,37 @@ interface Props extends BaseProps {
   classNameImage?: string;
 }
 
-export function CustomImage({ src, alt, className, classNameImage, fallback }: Props) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentSrc, setCurrentSrc] = useState(src || fallback || IMAGE_EMPTY);
-
-  const handleError = () => {
-    if (currentSrc !== IMAGE_EMPTY) {
-      setCurrentSrc(fallback || IMAGE_EMPTY);
-    } else {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLoad = () => {
-    setIsLoading(false);
-  };
+export function CustomImage({
+  src,
+  alt,
+  fallback = AppImage.avatarFallback.src,
+  className,
+  classNameImage,
+}: Props) {
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    setCurrentSrc(src);
+    setError(false);
   }, [src]);
 
   return (
     <div
       className={cn(
-        'w-20 h-20 relative rounded-md overflow-hidden bg-white/80 shadow-sm shadow-blue-900',
+        'relative h-20 w-20 overflow-hidden rounded-md bg-white/80 shadow-sm shadow-blue-900',
         className
       )}
     >
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <LoadingCircle />
-        </div>
+      <Image src={fallback} alt="fallback" fill className="object-cover" priority />
+
+      {!error && src && (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className={cn('object-cover transition-opacity duration-300', classNameImage)}
+          onError={() => setError(true)}
+        />
       )}
-      <Image
-        src={currentSrc || AppImage.avatarFallback.src}
-        alt={alt || 'Image optimized'}
-        fill
-        className={cn(
-          'object-cover p-0 transition-opacity duration-300',
-          {
-            'opacity-0': isLoading,
-            'opacity-100': !isLoading,
-          },
-          classNameImage
-        )}
-        onLoadingComplete={handleLoad}
-        onError={handleError}
-      />
     </div>
   );
 }
