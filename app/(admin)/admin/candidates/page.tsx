@@ -1,5 +1,6 @@
 'use client';
 import { DataTableDemo } from '@/components/admin/candidates/data-table';
+import { Typography } from '@/components/ui/typography';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { AdminService } from '@/services/admin.services';
@@ -27,7 +28,7 @@ const CandidateManager = () => {
   }, []);
   return (
     <div className="p-[16px]">
-      <p className="font-bold">Candidate Manager</p>
+      <Typography variant="h5">Quản lý ứng viên</Typography>
       <DataTableDemo data={data} setData={setData} />
     </div>
   );

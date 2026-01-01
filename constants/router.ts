@@ -2,6 +2,7 @@ export const Router = {
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',
+    ADMIN_LOGIN: '/admin/login',
   },
   USER: {
     PROFILE: (username: string) => `/profile/${username}`,
@@ -45,8 +46,6 @@ export const Router = {
   BLOG_MANAGER: '/admin/blogs',
   CANDIDATE_MANAGER: '/admin/candidates',
   COMPANIES_MANAGER: '/admin/companies',
-  JOB_MANAGER: '/admin/jobs',
-  RESUME_MANAGER: '/admin/resumes',
 };
 
 export const ROUTER_GUESS = [
@@ -66,8 +65,6 @@ export const ROUTER_ADMIN = [
   Router.BLOG_MANAGER,
   Router.CANDIDATE_MANAGER,
   Router.COMPANIES_MANAGER,
-  Router.JOB_MANAGER,
-  Router.RESUME_MANAGER,
   Router.ADMIN,
 ];
 

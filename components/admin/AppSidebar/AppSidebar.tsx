@@ -22,7 +22,6 @@ import {
   HomeIcon,
   Library,
   LogOutIcon,
-  User2,
   Users,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -44,16 +43,6 @@ export function AppSidebar() {
       title: 'Candidates',
       url: Router.CANDIDATE_MANAGER,
       icon: Users,
-    },
-    {
-      title: 'Jobs',
-      url: Router.JOB_MANAGER,
-      icon: BriefcaseBusiness,
-    },
-    {
-      title: 'Resumes',
-      url: Router.RESUME_MANAGER,
-      icon: FileUser,
     },
     {
       title: 'Blogs',

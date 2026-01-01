@@ -28,7 +28,7 @@ const CompanyManager = () => {
 
   return (
     <div className="p-[16px]">
-      <p className="font-bold">Company Manager</p>
+      <p className="font-bold">Quản lý nhà tuyển dụng</p>
       <DataTableDemo data={data} setData={setData} />
     </div>
   );

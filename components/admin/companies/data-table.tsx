@@ -64,7 +64,7 @@ const getColumns = (
   },
   {
     accessorKey: 'isActive',
-    header: 'Status',
+    header: 'Trạng thái',
     cell: ({ row }) => (
       <div
         className={cn(
@@ -79,7 +79,7 @@ const getColumns = (
   },
   {
     accessorKey: 'name',
-    header: 'Company Name',
+    header: 'Tên công ty',
     cell: ({ row }) => <div className="capitalize">{row.getValue('name')}</div>,
   },
   {
@@ -93,7 +93,7 @@ const getColumns = (
   },
   {
     accessorKey: 'createdAt',
-    header: () => <div className="text-right">Create At</div>,
+    header: () => <div className="text-right">Ngày tạo</div>,
     cell: ({ row }) => {
       const date = new Date(row.getValue('createdAt') ?? Date.now());
       const formatted = format(date, 'dd/MM/yyyy');
@@ -113,7 +113,7 @@ const getColumns = (
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
 
             <DropdownMenuItem
               onClick={() => {
@@ -121,7 +121,7 @@ const getColumns = (
                 setShowDetailUserModel(row.getValue('id'));
               }}
             >
-              View Detail
+              Xem chi tiết
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -279,7 +279,7 @@ export function DataTableDemo({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Trang trước
           </Button>
           <Button
             variant="outline"
@@ -288,7 +288,7 @@ export function DataTableDemo({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Trang tiếp
           </Button>
         </div>
       </div>
@@ -296,7 +296,7 @@ export function DataTableDemo({
       {showConfirmDialog && (
         <ConfirmDeleteDialog
           title="Bạn có chắc không ?"
-          description="Hành động này sẽ ảnh hưởng đến company cũng như người dùng trong ứng dụng của bạn"
+          description="Hành động này sẽ ảnh hưởng đến công ty cũng như người dùng trong ứng dụng của bạn"
           onClose={() => setShowConfirmDialog(false)}
           onDelete={() => handleDelete()}
           textConfirm="Đồng ý"

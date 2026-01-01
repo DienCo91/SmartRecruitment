@@ -26,6 +26,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const AdminLoginPage = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -43,6 +44,7 @@ const AdminLoginPage = () => {
       const res = await AuthService.login();
       console.log(res.data);
       dispatch(setCurrentUser(res.data));
+      router.replace('/admin');
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } };
       toast.error(err.response?.data?.message || 'Wrong email or password');

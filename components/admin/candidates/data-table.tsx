@@ -64,7 +64,7 @@ const getColumns = (
   },
   {
     accessorKey: 'isActive',
-    header: 'Status',
+    header: 'Trạng thái',
     cell: ({ row }) => (
       <div
         className={cn(
@@ -79,7 +79,7 @@ const getColumns = (
   },
   {
     accessorKey: 'fullName',
-    header: 'Candidate Name',
+    header: 'Tên ứng viên',
     cell: ({ row }) => <div className="capitalize">{row.getValue('fullName')}</div>,
   },
   {
@@ -93,7 +93,7 @@ const getColumns = (
   },
   {
     accessorKey: 'createdAt',
-    header: () => <div className="text-right">Create At</div>,
+    header: () => <div className="text-right">Ngày tạo</div>,
     cell: ({ row }) => {
       const date = new Date(row.getValue('createdAt') ?? Date.now());
       const formatted = format(date, 'dd/MM/yyyy');
@@ -113,15 +113,10 @@ const getColumns = (
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
 
-            <DropdownMenuItem
-              onClick={() => {
-                console.log('1', row.getValue('id'));
-                setShowDetailUserModel(row.getValue('id'));
-              }}
-            >
-              View Detail
+            <DropdownMenuItem onClick={() => setShowDetailUserModel(row.getValue('id'))}>
+              Xem chi tiết
             </DropdownMenuItem>
 
             <DropdownMenuItem
@@ -226,7 +221,7 @@ export function DataTableDemo({
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Tìm kiếm theo email"
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={event => table.getColumn('email')?.setFilterValue(event.target.value)}
           className="max-w-sm"
@@ -279,7 +274,7 @@ export function DataTableDemo({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Trang trước
           </Button>
           <Button
             variant="outline"
@@ -288,7 +283,7 @@ export function DataTableDemo({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Trang tiếp
           </Button>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { CustomDropDown } from '@/components/Dropdown/CustomDropDown';
 import { Button } from '@/components/ui/button';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Typography } from '@/components/ui/typography';
 import { useBlogManager } from '@/contexts';
 import { BlogStatus } from '@/types/blog';
-import { DropdownMenuItem } from '@radix-ui/react-dropdown-menu';
 import { CheckIcon, ListFilterIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
