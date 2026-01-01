@@ -2,13 +2,14 @@
 
 import LoadingCustom from '@/components/ui/loading-custom';
 import useFilterCVAction from '@/hooks/useFilterCVAction';
-import { ApplicationBriefResponse, DataFilter } from '@/types';
+import { ApplicationBriefResponse, DataFilter, UpdateData } from '@/types';
 import { useParams } from 'next/navigation';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlassCardBase from '../Cards/GlassCardBase';
 import ApplicationItem from './ApplicationItem';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { QueryKey } from '@/constants/queryKey';
+import { toast } from 'sonner';
 
 interface IApplicationList {
   title: string;
@@ -19,12 +20,17 @@ export const ApplicationList: React.FC<IApplicationList> = ({ title, params }) =
   const { id } = useParams();
   const jobId = id as string;
 
-  const { useFilterQuery } = useFilterCVAction({
+  const { useFilterQuery, useUpdateStatusMutation } = useFilterCVAction({
     jobId,
     key: title === 'Đơn đã nộp' ? QueryKey.application.allCV : QueryKey.application.filterCV,
     params,
   });
   const { isPending, data, fetchNextPage, hasNextPage } = useFilterQuery;
+  const { mutate, isPending: isUpdatePending } = useUpdateStatusMutation;
+
+  const handleUpdateStatus = (payload: UpdateData) => {
+    mutate(payload);
+  };
 
   return (
     <GlassCardBase className="mt-[32px] w-full">
@@ -35,7 +41,7 @@ export const ApplicationList: React.FC<IApplicationList> = ({ title, params }) =
           <p className="text-center">Chưa có đơn nào </p>
         )}
 
-        {isPending && <LoadingCustom className="bg-transparent" />}
+        {(isPending || isUpdatePending) && <LoadingCustom className="bg-[#00000059] rounded-xl" />}
 
         <InfiniteScroll
           dataLength={data?.pages?.flat().length || 0}
@@ -47,7 +53,11 @@ export const ApplicationList: React.FC<IApplicationList> = ({ title, params }) =
           <div className="grid grid-cols-1 gap-4 w-full py-[10px]">
             {data?.pages.flatMap(items =>
               items.map((item: ApplicationBriefResponse) => (
-                <ApplicationItem key={item.candidateId} item={item} />
+                <ApplicationItem
+                  key={item.candidateId}
+                  item={item}
+                  handleUpdateStatus={handleUpdateStatus}
+                />
               ))
             )}
           </div>

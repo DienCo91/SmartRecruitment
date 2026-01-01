@@ -53,7 +53,6 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
             <MoveRight className="w-4 h-4" />
           </Button>
           <br />
-          <p className="text-[12px] text-center">CV sẽ được tự động lọc hằng ngày</p>
         </div>
         <ApplicationList title="Đơn đã lọc" params={dataFilter} />
       </div>

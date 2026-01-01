@@ -10,7 +10,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
 import { ICandidateDetail } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod/v3';
@@ -23,7 +23,13 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const DashboardProfile = ({ data }: { data: ICandidateDetail | null }) => {
+const DashboardProfile = ({
+  data,
+  setData,
+}: {
+  data: ICandidateDetail | null;
+  setData: Dispatch<SetStateAction<ICandidateDetail | null>>;
+}) => {
   const dispatch = useAppDispatch();
   const editorRef = useRef<QuillCustomRef>(null);
   const form = useForm<FormValues>({
@@ -44,14 +50,14 @@ const DashboardProfile = ({ data }: { data: ICandidateDetail | null }) => {
   const onSubmit = async (data: FormValues) => {
     try {
       dispatch(setLoading(true));
-      const res = await CandidateService.updateDetailInfo({
+      await CandidateService.updateDetailInfo({
         biography: editorRef.current?.getValue() || '',
         dateOfBirth: data.dateOfBirth,
         gender: data.gender,
         nationality: data.nationality.toUpperCase(),
       });
+      setData(prev => ({ ...prev, ...data }) as unknown as ICandidateDetail);
       toast.success('Update detail info successfully');
-      console.log('res', res);
     } catch (error) {
       toast.error('Update detail info failed');
       console.log(error);

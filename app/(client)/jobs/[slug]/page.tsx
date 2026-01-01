@@ -22,7 +22,7 @@ import { isDateExpired } from '@/utils/common';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { debounce } from 'lodash';
-import { ArrowRightIcon, CheckCheckIcon, HeartIcon } from 'lucide-react';
+import { ArrowRightIcon, CheckCheckIcon, HeartIcon, Reply } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -112,9 +112,18 @@ const JobDetailPage = () => {
                 <HeartIcon className="size-6" fill={job.isFavorite ? 'red' : 'none'} />
               </CustomButton>
               {job.isApplied ? (
-                <CustomButton className="bg-green-500 text-white hover:bg-green-500">
-                  Applied <CheckCheckIcon />
-                </CustomButton>
+                <div>
+                  <CustomButton className="bg-green-500 text-white hover:bg-green-500">
+                    Đã Ứng Tuyển <CheckCheckIcon />
+                  </CustomButton>
+                  <CustomButton
+                    onClick={() => setShowApplyJobModal(true)}
+                    variant={'outline'}
+                    className=" text-white hover:bg-white/20 hover:text-gray-200 mt-[16px]"
+                  >
+                    Ứng Tuyển Lại <Reply />
+                  </CustomButton>
+                </div>
               ) : (
                 <CustomButton
                   onClick={() => setShowApplyJobModal(true)}

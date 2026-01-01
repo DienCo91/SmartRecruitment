@@ -6,6 +6,7 @@ import { CustomToast } from '@/components/toast/custom-toast';
 import { store } from './store';
 import { setLastMessageStomp, updateLastMessage } from './features/chat/chatSlice';
 import { setNotifications, setTotalUnread } from './features/notification/notificationSlice';
+import { Info } from 'lucide-react';
 
 let stompClient: Client | null = null;
 
@@ -76,6 +77,10 @@ export const connectStomp = (
           toast.custom(t => <CustomToast t={t} title={title} message={body?.content} icon="💬" />);
         } else if (body.type !== NotificationType.NEW_MESSAGE) {
           toast.custom(t => <CustomToast t={t} title={title} message={body?.content} />);
+        } else {
+          toast.custom(t => (
+            <CustomToast t={t} title={title} message={body?.content} icon={<Info />} />
+          ));
         }
         store.dispatch(setNotifications([body, ...state.notification.notifications]));
         store.dispatch(setTotalUnread(state.notification.totalUnread + 1));

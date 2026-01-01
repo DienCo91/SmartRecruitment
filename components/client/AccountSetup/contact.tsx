@@ -9,7 +9,7 @@ import { IoMdMail } from 'react-icons/io';
 import { z } from 'zod/v3';
 import { DataSubmitFormProps } from './AccountSetupTabView';
 import ButtonAccountSetup from './button-account-setup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IContact {
   goToPrev: () => void;
@@ -36,6 +36,7 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: { location: '', phoneNumber: '', email: '' },
@@ -51,14 +52,24 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
     osm_id: number;
     address_detail: OSMAddress;
   }) => {
+    console.log('place', place);
     setPlace(place);
   };
+
+  useEffect(() => {
+    console.log('first', initValue.location?.commune);
+    reset({
+      location: `${initValue.location?.commune ?? ''}`,
+      phoneNumber: initValue.phoneNumber,
+      email: initValue.email,
+    });
+  }, [initValue]);
 
   const handleSubmitForm = (data: FormValues) => {
     goToNext({
       ...data,
       location: {
-        commune: place?.address_detail?.suburb ?? '',
+        commune: place?.display_name ?? '',
         provinceCity: place?.address_detail?.city ?? '',
         country: place?.address_detail?.country ?? '',
         latitude: place?.lat ?? 0,
@@ -72,14 +83,11 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
       <h1 className="text-[14px] mb-[8px]">Vị trí</h1>
       <Controller
         control={control}
+        disabled={hasInitData}
         name="location"
         render={({ field: { onChange, value } }) => (
           <LocationInputOSM
-            value={
-              !hasInitData
-                ? value
-                : `${initValue.location?.commune}, ${initValue.location?.provinceCity}, ${initValue.location?.country}`
-            }
+            value={value}
             onChange={onChange}
             onSelect={handleLocationSelect}
             error={errors.location?.message}
@@ -92,7 +100,11 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
         control={control}
         name="phoneNumber"
         render={({ field: { onChange, value } }) => (
-          <PhoneInput onChange={onChange} value={value || initValue.phoneNumber} />
+          <PhoneInput
+            onChange={onChange}
+            value={value || initValue.phoneNumber}
+            disabled={hasInitData}
+          />
         )}
       />
       {errors.phoneNumber?.message && (
@@ -110,6 +122,7 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
                 <IoMdMail className="text-primary text-[20px]" />
               </div>
               <Input
+                disabled={hasInitData}
                 placeholder="Email address"
                 className="border-none rounded-l-none"
                 onChange={onChange}

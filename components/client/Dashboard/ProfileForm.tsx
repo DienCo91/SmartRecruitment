@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants';
+import { ACCEPTED_IMAGE_TYPES, IMAGE_EMPTY, MAX_FILE_SIZE } from '@/constants';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -114,7 +114,7 @@ const ProfileForm: React.FC = () => {
           {roleEmployer && (
             <CustomImage
               key={previewBanner}
-              src={previewBanner ?? ''}
+              src={previewBanner ?? IMAGE_EMPTY}
               alt="avatar"
               className="w-full h-[200px]"
               classNameImage="object-cover"
@@ -128,7 +128,7 @@ const ProfileForm: React.FC = () => {
           >
             <AvatarUser
               className="w-30 h-30 rounded-full border"
-              src={preview ?? ''}
+              src={previewBanner ?? IMAGE_EMPTY}
               classNameImage="object-cover"
             />
 

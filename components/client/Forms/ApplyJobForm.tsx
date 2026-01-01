@@ -76,7 +76,8 @@ export function ApplyJobForm({ onClose, job, setJob }: Props) {
       toast.success('Apply job successfully!');
     } catch (error) {
       console.log('🚀 ~ handleSubmit ~ error:', error);
-      toast.error('Apply job failed');
+      const err = error as { response?: { data?: { message?: string } } } | undefined;
+      toast.error(err?.response?.data?.message);
     } finally {
       dispatch(setLoading(false));
     }

@@ -21,12 +21,6 @@ const INFO_CARD_CANDIDATE = [
     icon: <Bookmark className="text-orange-500" />,
     color: '#FFF6E6',
   },
-  {
-    title: 'Job Alerts',
-    value: 45,
-    icon: <BellRing className="text-green-600" />,
-    color: '#E7F6EA',
-  },
 ];
 
 const INFO_CARD_EMPLOYER = [
