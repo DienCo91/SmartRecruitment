@@ -1,3 +1,5 @@
+'use client';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import {
   Sidebar,
   SidebarContent,
@@ -11,36 +13,47 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { CalendarIcon, HomeIcon, InboxIcon, SearchIcon, SettingsIcon } from 'lucide-react';
+import { Router } from '@/constants';
+import { useLogout } from '@/hooks/useLogout';
+import {
+  BriefcaseBusiness,
+  Building2,
+  FileUser,
+  HomeIcon,
+  Library,
+  LogOutIcon,
+  Users,
+} from 'lucide-react';
+import Link from 'next/link';
 
 export function AppSidebar() {
+  const logout = useLogout();
   const items = [
     {
       title: 'Home',
-      url: '#',
+      url: Router.ADMIN,
       icon: HomeIcon,
     },
     {
-      title: 'Inbox',
-      url: '#',
-      icon: InboxIcon,
+      title: 'Companies',
+      url: Router.COMPANIES_MANAGER,
+      icon: Building2,
     },
     {
-      title: 'Calendar',
-      url: '#',
-      icon: CalendarIcon,
+      title: 'Candidates',
+      url: Router.CANDIDATE_MANAGER,
+      icon: Users,
     },
     {
-      title: 'Search',
-      url: '#',
-      icon: SearchIcon,
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: SettingsIcon,
+      title: 'Blogs',
+      url: Router.BLOG_MANAGER,
+      icon: Library,
     },
   ];
+
+  const onLogout = () => {
+    logout();
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -53,10 +66,10 @@ export function AppSidebar() {
               {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -64,7 +77,20 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <SidebarMenuButton onClick={onLogout} className="text-red-500">
+                <LogOutIcon />
+                <div>Logout</div>
+              </SidebarMenuButton>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );

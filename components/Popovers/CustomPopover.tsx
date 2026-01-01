@@ -1,7 +1,7 @@
-import { BaseProps } from '@/types';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { ReactNode, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { BaseProps } from '@/types';
+import { ReactNode } from 'react';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 interface Props extends BaseProps {
   trigger: ReactNode;

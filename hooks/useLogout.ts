@@ -18,7 +18,7 @@ export function useLogout() {
     dispatch(setCurrentUser(null));
     dispatch(setLoading(false));
 
-    router.replace(Router.AUTH.LOGIN);
+    router.replace(Router.AUTH.ADMIN_LOGIN);
   };
 
   return handleLogout;

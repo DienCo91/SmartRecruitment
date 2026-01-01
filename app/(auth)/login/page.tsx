@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Router } from '@/constants';
+import { ValidatorZod } from '@/helpers/zod/validator';
 import { setCurrentUser } from '@/lib/features/auth/authSlice';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { auth } from '@/lib/firebase';
@@ -32,13 +33,8 @@ import { toast } from 'sonner';
 import { z } from 'zod/v3';
 
 const formSchema = z.object({
-  email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'Invalid email address' }),
-  password: z
-    .string()
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
-      message:
-        'Password must be at least 8 chars, include uppercase, lowercase, number and special char',
-    }),
+  email: ValidatorZod.email,
+  password: ValidatorZod.password,
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -99,6 +95,9 @@ const LoginPage = () => {
       dispatch(setLoading(true));
       const res = await AuthService.oauth2(role);
       dispatch(setCurrentUser(res.data));
+      if (!res.data.companySetup && isEmployer(res.data.role)) {
+        return router.replace(Router.ACCOUNT_SETUP);
+      }
       router.replace(Router.HOME);
     } catch (error) {
       console.error(error);
@@ -117,6 +116,10 @@ const LoginPage = () => {
       const res = await AuthService.oauth2();
 
       dispatch(setCurrentUser(res.data));
+
+      if (!res.data.companySetup && isEmployer(res.data.role)) {
+        return router.replace(Router.ACCOUNT_SETUP);
+      }
       router.replace(Router.HOME);
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } } | undefined;

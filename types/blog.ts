@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { TagData } from '.';
 import { AuthorOfBlog } from './auth';
 
@@ -9,7 +10,11 @@ export interface ISpecificationParams {
   categoryIds?: number[];
   tagId?: number;
   location?: string;
+  status?: BlogStatus;
 }
+
+export interface ISpecificationBlogManageParams
+  extends Pick<ISpecificationParams, 'page' | 'keyword' | 'status' | 'limit'> {}
 
 export enum BlogStatus {
   DRAFT = 'DRAFT',

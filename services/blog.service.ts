@@ -21,6 +21,11 @@ export const BlogService = {
     return res.data;
   },
 
+  getBlogById: async (id: number) => {
+    const res = await http.get(`${endpointPrefix}/${id}`);
+    return res.data;
+  },
+
   getBlogCategories: async () => {
     const res = await http.get(`${endpointPrefix}/categories`);
     return res.data;

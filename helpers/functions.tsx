@@ -27,7 +27,6 @@ export function renderStatus(status: BlogStatus) {
     [BlogStatus.REQUESTED]: 'border-yellow-500 bg-yellow-500 text-white rounded-full w-[100px]',
     [BlogStatus.PUBLISHED]: 'border-green-500 bg-green-500 text-white rounded-full w-[100px]',
   };
-
   switch (status) {
     case BlogStatus.DRAFT:
       return <Badge className={colorMap[BlogStatus.DRAFT]}>{blogStatus[BlogStatus.DRAFT]}</Badge>;

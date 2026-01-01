@@ -8,9 +8,16 @@ interface Props {
   description?: ReactNode;
   onClose: () => void;
   onDelete: () => void;
+  textConfirm?: string;
 }
 
-export function ConfirmDeleteDialog({ title, description, onClose, onDelete }: Props) {
+export function ConfirmDeleteDialog({
+  title,
+  description,
+  onClose,
+  onDelete,
+  textConfirm = 'Xóa',
+}: Props) {
   const [processing, setProcessing] = useState(false);
 
   const handleDelete = useCallback(async () => {
@@ -20,7 +27,6 @@ export function ConfirmDeleteDialog({ title, description, onClose, onDelete }: P
       onClose();
     } catch (error) {
       console.error(error);
-      toast.error('Xóa thất bại');
     } finally {
       setProcessing(false);
     }
@@ -39,7 +45,7 @@ export function ConfirmDeleteDialog({ title, description, onClose, onDelete }: P
           </Button>
 
           <Button disabled={processing} onClick={handleDelete}>
-            Xóa
+            {textConfirm}
           </Button>
         </div>
       }

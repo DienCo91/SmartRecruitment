@@ -35,6 +35,7 @@ import TextField from '../../../components/hookFormCustom/TextField';
 import { Router } from '@/constants';
 import { GlassDialog } from '@/components/client/Dialogs/GlassDialog';
 import { ValidatorZod } from '@/helpers/zod/validator';
+import { isEmployer } from '@/utils';
 
 const formSchema = z
   .object({
@@ -101,6 +102,9 @@ const RegisterPage = () => {
       dispatch(setLoading(true));
       const res = await AuthService.oauth2(role);
       dispatch(setCurrentUser(res.data));
+      if (!res.data.companySetup && isEmployer(res.data.role)) {
+        return router.replace(Router.ACCOUNT_SETUP);
+      }
       router.replace(Router.HOME);
     } catch (error) {
       console.error(error);
@@ -119,6 +123,9 @@ const RegisterPage = () => {
       const res = await AuthService.oauth2();
 
       dispatch(setCurrentUser(res.data));
+      if (!res.data.companySetup && isEmployer(res.data.role)) {
+        return router.replace(Router.ACCOUNT_SETUP);
+      }
       router.replace(Router.HOME);
     } catch (error) {
       const err = error as { response?: { data?: { message?: string } } } | undefined;

@@ -61,3 +61,8 @@ export interface CompanyDetail {
   phone: string;
   isFavorite: boolean;
 }
+
+export type IEmployerDashboard = Pick<CompanyDetail, 'id' | 'name' | 'email' | 'logoUrl'> & {
+  isActive: boolean;
+  createdAt: string;
+};
