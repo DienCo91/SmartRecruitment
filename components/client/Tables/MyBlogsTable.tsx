@@ -58,7 +58,7 @@ export function MyBlogsTable() {
         return (
           <CustomImage
             src={blog.thumbnail}
-            fallback={AppImage.bgCompanyProfile.src}
+            fallback={AppImage.fallback.blogFallback.src}
             alt={blog.title}
             classNameImage="object-cover"
             className="h-full w-40 aspect-video"

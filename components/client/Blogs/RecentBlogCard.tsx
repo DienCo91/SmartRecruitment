@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomImage } from '../Images/CustomImage';
 import { Blog } from '@/types/blog';
+import { AppImage } from '@/common';
 
 interface Props {
   blog: Blog;
@@ -13,7 +14,12 @@ export function RecentBlogCard({ blog }: Props) {
   return (
     <GlassCard title="" action classContentName="px-0" className="mb-3">
       <div className="flex">
-        <CustomImage src={blog.thumbnail} alt={blog.title} className="h-[75px] w-[100px]" />
+        <CustomImage
+          src={blog.thumbnail}
+          fallback={AppImage.fallback.blogFallback.src}
+          alt={blog.title}
+          className="h-[75px] w-[100px]"
+        />
 
         <div className="flex flex-1 items-baseline pl-5">
           <div className="flex flex-col gap-2">

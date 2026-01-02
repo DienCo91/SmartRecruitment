@@ -6,22 +6,22 @@ import { PopularBlogTags } from '@/components/client/Blogs/PopularBlogTags';
 import { RecentBlogs } from '@/components/client/Blogs/RecentBlogs';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { CustomPagination } from '@/components/client/Paginations/CustomPagination';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { BlogCardPrimarySkeleton } from '@/components/client/Skeletons/BlogCardPrimary';
 import { QueryType } from '@/constants';
 import { BlogService } from '@/services/blog.service';
 import { Pagination } from '@/types';
 import { Blog } from '@/types/blog';
+import _, { range } from 'lodash';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import _ from 'lodash';
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const params = useSearchParams();
   const router = useRouter();
-  const [pagination, setPagination] = useState<Pagination>({});
+  const [pagination, setPagination] = useState<Pagination>({ limit: 5 });
 
   const fetchBlogs = useCallback(async () => {
     setLoading(true);
@@ -34,6 +34,7 @@ const BlogsPage = () => {
             : undefined,
           categoryIds: params.getAll(QueryType.QUERY_CATEGORY).map(Number),
           tagId: Number(params.get(QueryType.QUEY_TAG)) || undefined,
+          limit: pagination.limit,
         },
         _.isNil
       );
@@ -78,7 +79,11 @@ const BlogsPage = () => {
         }
       >
         {loading ? (
-          <LoadingCircle />
+          <>
+            {range(0, 5).map((_, key) => (
+              <BlogCardPrimarySkeleton key={key} />
+            ))}
+          </>
         ) : Boolean(blogs.length) ? (
           blogs.map(blog => <BlogCardPrimary key={blog.id} blog={blog} />)
         ) : (

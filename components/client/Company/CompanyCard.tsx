@@ -23,12 +23,12 @@ export function CompanyCard({ company }: Props) {
             </Link>
             <p className="text-gray-400 text-sm line-clamp-2">{company.industryType}</p>
           </div>
+          <p className="flex items-center mt-2 gap-1 text-xs text-neutral-300">
+            <BriefcaseBusinessIcon size={14} />
+            <span className="font-semibold">{company.numberOfJobs} việc làm</span>
+          </p>
         </div>
       </div>
-      <p className="flex items-center mt-2 gap-1 text-xs text-neutral-300">
-        <BriefcaseBusinessIcon size={14} />
-        <span className="font-semibold">{company.numberOfJobs} việc làm</span>
-      </p>
     </div>
   );
 }

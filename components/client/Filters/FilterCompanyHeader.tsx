@@ -55,7 +55,7 @@ export function FilterCompanyHeader({ handleSubmit, handleClearFilter }: IFilter
           if (typeof handleSubmit === 'function') handleSubmit(filters);
         }}
       >
-        Find Company
+        Tìm kiếm
       </Button>
       <Button
         variant="outline"

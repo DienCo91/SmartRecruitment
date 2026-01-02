@@ -4,10 +4,12 @@ import GlassCardBase from '@/components/client/Cards/GlassCardBase';
 import FilterCompany, { FilterCompanyRef } from '@/components/client/Filters/FilterCompany';
 import { FilterCompanyHeader } from '@/components/client/Filters/FilterCompanyHeader';
 import CompanyOpenPosition from '@/components/client/FindCompany/CompanyOpenPosition';
+import { CompanyOpenPositionSkeleton } from '@/components/client/Skeletons/CompanyOpenPositionSkeleton';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CompanyService } from '@/services/company.services';
 import { CompanyItem } from '@/types';
 import { getLabelLocationByValue } from '@/utils/common';
+import { range } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -106,7 +108,13 @@ const Company = () => {
             hasMore={hasMore}
             scrollableTarget="scrollableCompany"
             className="space-y-[16px]"
-            loader={<LoadingCircle className={`${!dataCompany.length && 'h-[40vh]'} `} />}
+            loader={
+              <>
+                {range(0, 10).map((_, key) => (
+                  <CompanyOpenPositionSkeleton key={key} />
+                ))}
+              </>
+            }
           >
             {dataCompany.map((item, index) => (
               <CompanyOpenPosition key={index} item={item} />

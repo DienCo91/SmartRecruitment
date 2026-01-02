@@ -23,7 +23,7 @@ export function CandidateDetailContent({
         /> */}
       </div>
       <div className="col-span-4 space-y-5">
-        <CandidateOverView />
+        <CandidateOverView candidateDetail={candidateDetail} />
         <DownloadCandidateResume />
         <CandidateContactInformation />
       </div>

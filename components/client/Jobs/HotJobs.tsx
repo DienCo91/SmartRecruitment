@@ -3,12 +3,13 @@ import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { useAppSelector } from '@/lib/hooks';
 import { JobServices } from '@/services/job.services';
 import { HotJob, Pagination } from '@/types';
-import * as _ from 'lodash';
+import _, { range } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomPagination } from '../Paginations/CustomPagination';
 import { JobCard } from './JobCard';
+import { JobCardSkeleton } from '../Skeletons/JobCardSkeleton';
 
 export function HotJobs() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,7 +18,7 @@ export function HotJobs() {
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
-    limit: 5,
+    limit: 6,
   });
 
   const fetchHotJobs = useCallback(async () => {
@@ -68,7 +69,11 @@ export function HotJobs() {
     >
       <div className="flex flex-col">
         {loading ? (
-          <LoadingCircle />
+          <>
+            {range(0, 6).map((_, key) => {
+              return <JobCardSkeleton key={key} />;
+            })}
+          </>
         ) : Boolean(jobs.length) ? (
           jobs.map(job => <JobCard key={job.id} job={job} />)
         ) : (

@@ -7,6 +7,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { Tag } from './Tag';
+import { range } from 'lodash';
+import { TagSkeleton } from '../Skeletons/TagSkeleton';
 
 export function PopularTags() {
   const [tags, setTags] = useState<TagData[]>([]);
@@ -44,7 +46,11 @@ export function PopularTags() {
       classContentName="flex flex-wrap p-0"
     >
       {loading ? (
-        <LoadingCircle />
+        <>
+          {range(0, 4).map((_, key) => (
+            <TagSkeleton key={key} />
+          ))}
+        </>
       ) : Boolean(tags.length) ? (
         tags.map(tag => (
           <Tag key={tag.id} content={tag.name} onClick={() => handleFilterTag(tag.id)} />

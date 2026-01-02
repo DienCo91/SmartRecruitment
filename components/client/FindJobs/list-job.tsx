@@ -12,6 +12,8 @@ import { LuDot } from 'react-icons/lu';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlassCardBase from '../Cards/GlassCardBase';
 import { CustomImage } from '../Images/CustomImage';
+import { AppImage } from '@/common';
+import { formatSalary } from '@/lib/utils';
 
 interface IListJob {
   items: JobItem[];
@@ -51,6 +53,7 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
                       <div className="flex items-center gap-2">
                         <CustomImage
                           src={job.companyLogoUrl || IMAGE_EMPTY}
+                          fallback={AppImage.fallback.companyFallback.src}
                           alt="thumbnail"
                           className=" h-[80px] w-[80px] border-0 shadow-none"
                           classNameImage="object-cover rounded-md"
@@ -68,9 +71,9 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
                     <h3 className="font-bold text-lg mb-2 line-clamp-2">{job.jobTitle}</h3>
                     <div className="flex items-center item opacity-80 ">
                       <div className="text-sm">{getLabelJobType(job.jobType)}</div>
-                      <LuDot className="mx-[4px]" />
+                      <LuDot className="mx-1" />
                       <div className="text-sm ">
-                        ${formatNumber(job.minSalary)} - ${formatNumber(job.maxSalary)}
+                        {formatSalary(+job.minSalary)} VND - {formatSalary(+job.maxSalary)} VND
                       </div>
                     </div>
                   </CardContent>

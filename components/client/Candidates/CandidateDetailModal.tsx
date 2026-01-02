@@ -22,7 +22,7 @@ const CandidateDetailModal: React.FC<ICandidateDetailModal> = ({
     try {
       setLoading(true);
       const res = await CandidateService.getCandidateDetail(candidateId);
-      setCandidateDetail(res.data || null);
+      setCandidateDetail(res.data);
     } catch (e) {
       console.error('Error fetching candidate detail:', e);
     } finally {
