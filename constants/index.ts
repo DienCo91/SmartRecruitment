@@ -2,6 +2,12 @@ export * from './router';
 export * from './auth';
 export * from './common';
 export * from './vacancies';
+export * from './company';
+export * from './dashboard';
+export * from './job';
+export * from './queryKey';
+export * from './tab';
+export * from './vacancies';
 
 export enum Size {
   XS = 'xs',
@@ -36,4 +42,10 @@ export enum TeamSize {
   FIVE_HUNDRED_ONE_TO_ONE_THOUSAND = '501-1000',
   ONE_THOUSAND_ONE_TO_FIVE_THOUSAND = '1001-5000',
   FIVE_THOUSAND_PLUS = '5000+',
+}
+
+// Gender
+export enum Gender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
 }

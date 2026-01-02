@@ -1,16 +1,35 @@
 import { format } from 'date-fns';
 import { GlassCard } from '../Cards/GlassCard';
 import { CandidateOverViewItems } from './CandidateOverViewItems';
+import { ICandidateDetail } from '@/types';
 
-export function CandidateOverView() {
+interface Props {
+  candidateDetail: ICandidateDetail | null;
+}
+
+export function CandidateOverView({ candidateDetail }: Props) {
+  if (!candidateDetail) return;
+
   return (
     <GlassCard title="" classContentName="grid grid-cols-2 gap-3">
-      <CandidateOverViewItems.BirthOfDate content={format(new Date('2003-08-07'), 'MMM, dd yyy')} />
-      <CandidateOverViewItems.National content={'Việt Nam'} />
-      <CandidateOverViewItems.MaritalStatus content={'Độc thân'} />
-      <CandidateOverViewItems.Gender content={'Nam'} />
-      <CandidateOverViewItems.Experience content={'1 Năm'} />
-      <CandidateOverViewItems.Education content={'Đã tốt nghiệp đại học'} />
+      {candidateDetail.dateOfBirth && (
+        <CandidateOverViewItems.BirthOfDate
+          content={format(new Date(candidateDetail.dateOfBirth), 'MMM, dd yyy')}
+        />
+      )}
+      {candidateDetail.nationality && (
+        <CandidateOverViewItems.National content={candidateDetail.nationality} />
+      )}
+      {candidateDetail.maritalStatus && (
+        <CandidateOverViewItems.MaritalStatus content={candidateDetail.maritalStatus} />
+      )}
+      {candidateDetail.gender && <CandidateOverViewItems.Gender content={candidateDetail.gender} />}
+      {candidateDetail.experienceLevel && (
+        <CandidateOverViewItems.Experience content={candidateDetail.experienceLevel} />
+      )}
+      {candidateDetail.educationLevel && (
+        <CandidateOverViewItems.Education content={candidateDetail.educationLevel} />
+      )}
     </GlassCard>
   );
 }
