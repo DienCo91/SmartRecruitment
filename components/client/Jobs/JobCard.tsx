@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { CustomImage } from '../Images/CustomImage';
+import { AppImage } from '@/common';
 
 interface Props {
   job: HotJob;
@@ -59,7 +60,12 @@ export function JobCard({ job }: Props) {
 
   return (
     <div className="flex mt-3 gap-3 bg-white/5 p-3 rounded-xl shadow-sm hover:bg-white/15 hover:shadow-lg">
-      <CustomImage src={job.companyLogoUrl} alt="" className="w-[80px]" />
+      <CustomImage
+        src={job.companyLogoUrl}
+        fallback={AppImage.fallback.companyFallback.src}
+        alt=""
+        className="w-[80px]"
+      />
 
       {/* Thông tin job */}
       <div className="flex-1 flex-col w-full">

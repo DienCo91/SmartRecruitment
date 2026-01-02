@@ -75,15 +75,17 @@ export const connectStomp = (
           body.relatedId !== currentConversationId
         ) {
           toast.custom(t => <CustomToast t={t} title={title} message={body?.content} icon="💬" />);
+          store.dispatch(setNotifications([body, ...state.notification.notifications]));
+          store.dispatch(setTotalUnread(state.notification.totalUnread + 1));
         } else if (body.type !== NotificationType.NEW_MESSAGE) {
           toast.custom(t => <CustomToast t={t} title={title} message={body?.content} />);
+          store.dispatch(setNotifications([body, ...state.notification.notifications]));
+          store.dispatch(setTotalUnread(state.notification.totalUnread + 1));
         } else {
-          toast.custom(t => (
-            <CustomToast t={t} title={title} message={body?.content} icon={<Info />} />
-          ));
+          // toast.custom(t => (
+          //   <CustomToast t={t} title={title} message={body?.content} icon={<Info />} />
+          // ));
         }
-        store.dispatch(setNotifications([body, ...state.notification.notifications]));
-        store.dispatch(setTotalUnread(state.notification.totalUnread + 1));
 
         onNotification?.(body);
       });

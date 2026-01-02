@@ -31,19 +31,18 @@ export interface Job {
   slug: string;
 }
 
-export interface HotJob
-  extends Pick<
-    Job,
-    | 'id'
-    | 'slug'
-    | 'salaryType'
-    | 'minSalary'
-    | 'maxSalary'
-    | 'jobType'
-    | 'jobTitle'
-    | 'expirationDate'
-    | 'experienceLevel'
-  > {
+export interface HotJob extends Pick<
+  Job,
+  | 'id'
+  | 'slug'
+  | 'salaryType'
+  | 'minSalary'
+  | 'maxSalary'
+  | 'jobType'
+  | 'jobTitle'
+  | 'expirationDate'
+  | 'experienceLevel'
+> {
   companyLogoUrl: string;
   companyName: string;
   provinceCity: string;
@@ -193,12 +192,10 @@ export interface ApplicationBriefResponse {
   appliedAt: string; // ISO datetime string
   resumeUrl: string;
   coverLetter: string | null;
-  score: {
-    source: string; // "0.0"
-    parsedValue: number; // 0
-  };
+  score: number;
   candidateEmail: string;
   status: string;
+  breakdownScore: string;
 }
 
 export interface DataFilter {
@@ -212,4 +209,13 @@ export interface UpdateData {
   status: JobApplicationStatus;
   applicationId: number;
   jobId: string;
+}
+
+export interface BreakdownScore {
+  hardSkillsScore?: number;
+  workExperienceTimeScore?: number;
+  responsibilitiesAchievementsScore?: number;
+  softSkillsScore?: number;
+  educationTrainingScore?: number;
+  additionalFactorsScore?: number;
 }

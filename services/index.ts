@@ -41,6 +41,7 @@ http.interceptors.response.use(
 
     //refresh token
     if (error.response?.status === 401 && !originalRequest._retry) {
+      console.log('=====error.response======', error.response);
       originalRequest._retry = true;
       try {
         const token = await auth.currentUser?.getIdToken(true); // force refresh
@@ -52,9 +53,9 @@ http.interceptors.response.use(
       } catch (err) {
         console.error('Refresh token failed:', err);
         store.dispatch(setCurrentUser(null));
-        if (typeof window !== 'undefined') {
-          window.location.href = Router.AUTH.LOGIN;
-        }
+        // if (typeof window !== 'undefined') {
+        window.location.href = Router.AUTH.LOGIN;
+        // }
       }
     }
 

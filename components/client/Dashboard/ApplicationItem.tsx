@@ -8,7 +8,7 @@ import { getLabelEducation, getLabelExperience } from '@/utils';
 import { downloadFile, formatDate, handleSendMail } from '@/utils/common';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { debounce } from 'lodash';
-import { Download, EllipsisVertical, Mail, VerifiedIcon } from 'lucide-react';
+import { Download, EllipsisVertical, Eye, Mail, VerifiedIcon } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useMemo } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
@@ -17,9 +17,14 @@ import GlassCardBase from '../Cards/GlassCardBase';
 interface IApplicationItem {
   item: ApplicationBriefResponse;
   handleUpdateStatus: (payload: UpdateData) => void;
+  onViewDetailApplication: (item: ApplicationBriefResponse) => void;
 }
 
-const ApplicationItem: React.FC<IApplicationItem> = ({ item, handleUpdateStatus }) => {
+const ApplicationItem: React.FC<IApplicationItem> = ({
+  item,
+  handleUpdateStatus,
+  onViewDetailApplication,
+}) => {
   const { id } = useParams();
 
   const info = [
@@ -115,7 +120,17 @@ const ApplicationItem: React.FC<IApplicationItem> = ({ item, handleUpdateStatus 
                          focus:outline-none focus:ring-0"
               >
                 <Mail className="w-4 h-4" />
-                <span>Send Mail</span>
+                <span>Gửi Mail</span>
+              </DropdownMenu.Item>
+
+              <DropdownMenu.Item
+                onClick={() => onViewDetailApplication(item)}
+                className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600
+                         hover:bg-blue-100 hover:text-blue-700
+                         focus:outline-none focus:ring-0"
+              >
+                <Eye className="w-4 h-4" />
+                <span>Xem Chi Tiết</span>
               </DropdownMenu.Item>
 
               {[JobApplicationStatus.REJECTED, JobApplicationStatus.PROCESSING].includes(
@@ -128,7 +143,7 @@ const ApplicationItem: React.FC<IApplicationItem> = ({ item, handleUpdateStatus 
                          focus:outline-none focus:ring-0"
                 >
                   <VerifiedIcon className="w-4 h-4" />
-                  <span>Accept</span>
+                  <span>Chấp Nhận</span>
                 </DropdownMenu.Item>
               )}
 
@@ -142,7 +157,7 @@ const ApplicationItem: React.FC<IApplicationItem> = ({ item, handleUpdateStatus 
                          focus:outline-none focus:ring-0"
                 >
                   <IoCloseCircle className="w-4 h-4" />
-                  <span>Reject</span>
+                  <span>Từ Chối</span>
                 </DropdownMenu.Item>
               )}
             </DropdownMenu.Content>

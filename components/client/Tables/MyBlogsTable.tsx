@@ -18,8 +18,10 @@ import { DataTable } from './DataTable';
 import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
 
-interface BlogColumns
-  extends Pick<Blog, 'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'slug'> {}
+interface BlogColumns extends Pick<
+  Blog,
+  'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'slug'
+> {}
 
 export function MyBlogsTable() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -58,7 +60,7 @@ export function MyBlogsTable() {
         return (
           <CustomImage
             src={blog.thumbnail}
-            fallback={AppImage.bgCompanyProfile.src}
+            fallback={AppImage.fallback.blogFallback.src}
             alt={blog.title}
             classNameImage="object-cover"
             className="h-full w-40 aspect-video"

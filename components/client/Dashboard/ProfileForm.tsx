@@ -128,7 +128,7 @@ const ProfileForm: React.FC = () => {
           >
             <AvatarUser
               className="w-30 h-30 rounded-full border"
-              src={previewBanner ?? IMAGE_EMPTY}
+              src={preview ?? previewBanner ?? IMAGE_EMPTY}
               classNameImage="object-cover"
             />
 

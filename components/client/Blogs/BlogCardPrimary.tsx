@@ -5,6 +5,7 @@ import { vi } from 'date-fns/locale';
 import { CustomImage } from '../Images/CustomImage';
 import Link from 'next/link';
 import { Blog } from '@/types/blog';
+import { AppImage } from '@/common';
 
 interface Props {
   blog: Blog;
@@ -14,7 +15,12 @@ export function BlogCardPrimary({ blog }: Props) {
   return (
     <GlassCard title="" action classContentName="px-0">
       <div className="flex">
-        <CustomImage src={blog.thumbnail} alt={blog.title} className="h-[152px] w-[217px]" />
+        <CustomImage
+          src={blog.thumbnail}
+          fallback={AppImage.fallback.blogFallback.src}
+          alt={blog.title}
+          className="h-[152px] w-[217px]"
+        />
 
         <div className="flex flex-1 items-baseline pl-5">
           <div className="flex flex-col gap-2">

@@ -9,6 +9,8 @@ import { GlassCard } from '../Cards/GlassCard';
 import { CustomPagination } from '../Paginations/CustomPagination';
 import { CompanyCard } from './CompanyCard';
 import { useAppSelector } from '@/lib/hooks';
+import _, { range } from 'lodash';
+import { CompanyCardSkeleton } from '../Skeletons/CompanyCardSkeleton';
 
 export function TopCompanies() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,6 +50,7 @@ export function TopCompanies() {
       icon="🕋"
       title="Top công ty"
       className="mt-5"
+      classContentName="grid grid-cols-2 gap-3"
       footer={
         !loading && (
           <>
@@ -64,13 +67,17 @@ export function TopCompanies() {
       }
     >
       {loading ? (
-        <LoadingCircle />
+        <>
+          {range(0, 4).map((_, key) => (
+            <CompanyCardSkeleton key={key} />
+          ))}
+        </>
       ) : Boolean(topCompanies.length) ? (
-        <div className="grid grid-cols-2 gap-3">
+        <>
           {topCompanies.map(company => (
             <CompanyCard key={company.id} company={company} />
           ))}
-        </div>
+        </>
       ) : (
         <p>Không có top công ty nào.</p>
       )}

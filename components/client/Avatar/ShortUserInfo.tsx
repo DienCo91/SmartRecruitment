@@ -29,16 +29,6 @@ export function ShortUserInfo() {
       label: 'Bài viết của tôi',
       route: Router.MY_BLOG,
     },
-    // {
-    //   icon: <BookMarkedIcon color="#c1c3c9" size={18} />,
-    //   label: 'Đã lưu',
-    //   route: Router.USER.SAVED_JOB,
-    // },
-    // {
-    //   icon: <FileUserIcon color="#c1c3c9" size={18} />,
-    //   label: 'Đã ứng tuyển',
-    //   route: Router.USER.APPLIED_JOB,
-    // },
   ];
 
   return (

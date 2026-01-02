@@ -1,3 +1,4 @@
+'use client';
 import { BlogManagerContext, BlogManagerContextProps } from '@/contexts';
 import { ISpecificationBlogManageParams } from '@/types/blog';
 import { PropsWithChildren, useMemo, useState } from 'react';

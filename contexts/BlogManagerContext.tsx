@@ -1,3 +1,4 @@
+'use client';
 import { ISpecificationBlogManageParams } from '@/types/blog';
 import { createContext, useContext } from 'react';
 

@@ -15,15 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Router } from '@/constants';
 import { useLogout } from '@/hooks/useLogout';
-import {
-  BriefcaseBusiness,
-  Building2,
-  FileUser,
-  HomeIcon,
-  Library,
-  LogOutIcon,
-  Users,
-} from 'lucide-react';
+import { Building2, HomeIcon, Library, LogOutIcon, Users } from 'lucide-react';
 import Link from 'next/link';
 
 export function AppSidebar() {

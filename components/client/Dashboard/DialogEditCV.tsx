@@ -13,6 +13,7 @@ import { GlassDialog } from '../Dialogs/GlassDialog';
 import { ICvItem } from './DashboardSettingPersonal';
 import { IoClose } from 'react-icons/io5';
 import { ApplicationServices } from '@/services/application.services';
+import { toast } from 'sonner';
 
 interface IDialogEditCV {
   isShow: boolean;
@@ -98,6 +99,8 @@ const DialogEditCV: React.FC<IDialogEditCV> = ({
       });
 
       onCloseDialog();
+
+      toast.success('Update Cv/Resume successfully');
     } catch (error) {
       console.log('error', error);
     } finally {

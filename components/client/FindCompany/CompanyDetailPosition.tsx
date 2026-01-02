@@ -47,7 +47,7 @@ const CompanyDetailPosition = ({ companyId }: { companyId: string | number }) =>
       <div id="open-position"></div>
       <GlassCard
         className="mt-10"
-        title={<h1 className="mb-[8px] text-[20px] font-bold">Open Positions</h1>}
+        title={<h1 className="mb-[8px] text-[20px] font-bold">Tuyển dụng</h1>}
         action
       >
         {jobs.length > 0 ? (
