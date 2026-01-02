@@ -4,7 +4,7 @@ import { SelectField } from '@/components/hookFormCustom/SelectField';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LinkIcon } from 'lucide-react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod/v3';
@@ -43,6 +43,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,6 +54,18 @@ const FoundingContent: React.FC<IFoundingContent> = ({
       companyWebsite: '',
     },
   });
+
+  useEffect(() => {
+    if (initValue.nameCompany) {
+      reset({
+        organizationType: initValue.organizationType,
+        industryTypes: initValue.industryTypes,
+        teamSize: initValue.teamSize,
+        yearOfEstablishment: initValue.yearOfEstablishment + '',
+        companyWebsite: initValue.companyWebsite,
+      });
+    }
+  }, [initValue]);
 
   const onSubmit = (data: FormData) => {
     if (editorRef.current?.getValue() && editorRef.current.getValue().length > 20) {
@@ -81,6 +94,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
           setValue={setValue}
           value={watch('organizationType') || initValue.organizationType}
           error={errors.organizationType}
+          disabled={hasInitData}
         />
 
         <SelectField
@@ -91,6 +105,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
           setValue={setValue}
           value={watch('industryTypes') || initValue.industryTypes}
           error={errors.industryTypes}
+          disabled={hasInitData}
         />
 
         <SelectField
@@ -101,6 +116,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
           value={watch('teamSize') || initValue.teamSize}
           setValue={setValue}
           error={errors.teamSize}
+          disabled={hasInitData}
         />
       </div>
 
@@ -111,13 +127,12 @@ const FoundingContent: React.FC<IFoundingContent> = ({
           </label>
           <div className="relative">
             <Input
-              type={watch('yearOfEstablishment') ? 'date' : 'number'}
+              type={'number'}
               id="yearOfEstablishment"
-              placeholder="dd/mm/yyyy"
-              value={
-                !hasInitData ? String(watch('yearOfEstablishment')) : initValue.yearOfEstablishment
-              }
+              placeholder="yyyy"
+              value={String(watch('yearOfEstablishment'))}
               {...register('yearOfEstablishment')}
+              disabled={hasInitData}
             />
           </div>
           {errors.yearOfEstablishment && (
@@ -137,6 +152,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
               value={watch('companyWebsite') || initValue.companyWebsite}
               {...register('companyWebsite')}
               className="pl-10"
+              disabled={hasInitData}
             />
             <LinkIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-blue-500" />
           </div>
@@ -148,7 +164,7 @@ const FoundingContent: React.FC<IFoundingContent> = ({
 
       <div className="mt-[20px]">
         <h1 className="mb-[8px] text-sm font-medium">Tầm nhìn công ty</h1>
-        <QuillCustom ref={editorRef} initValue={initValue.companyVision} />
+        <QuillCustom ref={editorRef} initValue={initValue.companyVision} readOnly={hasInitData} />
       </div>
 
       {!hasInitData && (

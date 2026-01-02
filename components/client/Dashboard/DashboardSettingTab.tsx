@@ -71,16 +71,16 @@ const DashboardSettingTabView = () => {
       </TabsList>
 
       <TabsContent forceMount value="personal" className="data-[state=inactive]:hidden">
-        <DashboardSettingPersonal data={data} />
+        <DashboardSettingPersonal data={data} setData={setData} />
       </TabsContent>
       <TabsContent forceMount value="profile" className="data-[state=inactive]:hidden">
-        <DashboardProfile data={data} />
+        <DashboardProfile data={data} setData={setData} />
       </TabsContent>
       <TabsContent forceMount value="social" className="data-[state=inactive]:hidden">
-        <DashboardSocialLink data={data} />
+        <DashboardSocialLink data={data} setData={setData} />
       </TabsContent>
       <TabsContent forceMount value="account-setting" className="data-[state=inactive]:hidden">
-        <DashboardAccountSetting data={data} />
+        <DashboardAccountSetting data={data} setData={setData} />
         {canChangePassword && (
           <>
             <Separator className="my-8 bg-gray-500" />

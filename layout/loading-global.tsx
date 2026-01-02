@@ -14,8 +14,6 @@ export default function LoadingOverlay() {
     setMounted(true);
   }, []);
 
-  console.log('isLoading', isLoading);
-
   if (!mounted) return null;
   if (!isLoading) return null;
   return <LoadingCustom />;

@@ -30,7 +30,7 @@ const MyJobItem: React.FC<IMyJobItem> = ({ item, onMakeItExpire }) => {
         <div>
           <span>{item.status}</span>
           <span> • </span>
-          <span>{item.daysRemaining} days remaining</span>
+          <span>{Math.max(+item.daysRemaining, 0)} days remaining</span>
         </div>
       </div>
       <div className="flex items-center">

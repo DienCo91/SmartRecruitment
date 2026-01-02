@@ -101,4 +101,5 @@ export const ROUTER_EMPLOYER = [
   Router.BLOG,
   Router.MY_BLOG,
   Router.CONGRATULATIONS,
+  '/test',
 ];

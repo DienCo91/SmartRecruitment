@@ -23,7 +23,7 @@ export function NotificationCard({
         </div>
       )}
       {/* <AvatarUser className="size-8" src="" /> */}
-      <span className="line-clamp-2 px-3 py-1 text-neutral-300 pr-[50px] ">{item.content}</span>
+      <span className="px-3 py-1 text-neutral-300 pr-[50px] ">{item.content}</span>
       <span className=" text-[12px] text-gray-400 ">{relative}</span>
     </div>
   );

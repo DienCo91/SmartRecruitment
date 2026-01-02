@@ -73,3 +73,9 @@ export const jobCategories = [
   { id: 3, name: 'AI / Machine Learning' },
   { id: 4, name: 'Data Analyst / Data Engineer' },
 ];
+
+export enum JobApplicationStatus {
+  PROCESSING = 'PROCESSING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+}

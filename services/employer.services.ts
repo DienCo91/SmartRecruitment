@@ -1,4 +1,4 @@
-import { CreateJob, UpdateCompanyInfo } from '@/types';
+import { CreateJob, DataFilter, UpdateCompanyInfo } from '@/types';
 import http from '.';
 
 const endpointPrefix = '/api/employer';
@@ -47,8 +47,8 @@ export const EmployerService = {
     return res.data;
   },
 
-  async getAllCvByJob(page: number, size: number, jobId: string) {
-    const params: Record<string, string | number> = { page, size, jobId };
+  async getAllCvByJob(page: number, size: number, jobId: string, payload?: DataFilter) {
+    const params: Record<string, string | number> = { page, size, jobId, ...payload };
 
     const res = await http.get(`${endpointPrefix}/job/${jobId}/applications`, { params });
     return res.data;

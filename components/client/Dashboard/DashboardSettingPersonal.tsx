@@ -3,6 +3,7 @@ import { SelectField } from '@/components/hookFormCustom/SelectField';
 import TextField from '@/components/hookFormCustom/TextField';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { Skeleton } from '@/components/ui/skeleton';
 import { educations, experiences } from '@/constants/mockedData';
 import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -12,15 +13,13 @@ import { CandidateService } from '@/services/candidate.services';
 import { ICandidateDetail } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CirclePlus, Link } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod/v3';
 import GlassCardBase from '../Cards/GlassCardBase';
 import CvItem from './CvItem';
 import DialogAddCV from './DialogAddCV';
-import { fi, is } from 'date-fns/locale';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const formSchema = z.object({
   experience: z.string().nonempty('Experience is required'),
@@ -53,7 +52,13 @@ export interface ICvItem {
   id: string;
 }
 
-const DashboardSettingPersonal = ({ data }: { data: ICandidateDetail | null }) => {
+const DashboardSettingPersonal = ({
+  data,
+  setData,
+}: {
+  data: ICandidateDetail | null;
+  setData: Dispatch<SetStateAction<ICandidateDetail | null>>;
+}) => {
   const dispatch = useAppDispatch();
   const [isShowDialogAddCV, setIsShowDialogAddCV] = useState<boolean>(false);
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
@@ -92,15 +97,15 @@ const DashboardSettingPersonal = ({ data }: { data: ICandidateDetail | null }) =
   const onSubmit = async (data: FormData) => {
     try {
       dispatch(setLoading(true));
-      const res = await CandidateService.updateBasicInfo({
+      await CandidateService.updateBasicInfo({
         headline: data.headline,
         experienceLevel: data.experience,
         educationLevel: data.education,
         personalWebsite: data.personalWebsite,
         fullName: data.fullName,
       });
+      setData(prev => ({ ...prev, ...data }) as ICandidateDetail);
       toast.success('Update basic info successfully');
-      console.log('res', res);
     } catch (error) {
       console.log(error);
       toast.error('Update basic info failed');

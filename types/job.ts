@@ -1,4 +1,11 @@
-import { EducationLevel, ExperienceLevel, JobType, SalaryType, StatusJob } from '@/constants/job';
+import {
+  EducationLevel,
+  ExperienceLevel,
+  JobApplicationStatus,
+  JobType,
+  SalaryType,
+  StatusJob,
+} from '@/constants/job';
 import { Company } from './company';
 
 export interface Job {
@@ -190,5 +197,19 @@ export interface ApplicationBriefResponse {
     source: string; // "0.0"
     parsedValue: number; // 0
   };
-  email: string;
+  candidateEmail: string;
+  status: string;
+}
+
+export interface DataFilter {
+  appropriate: number;
+  gender: string;
+  ageRange: string;
+  language: string;
+}
+
+export interface UpdateData {
+  status: JobApplicationStatus;
+  applicationId: number;
+  jobId: string;
 }

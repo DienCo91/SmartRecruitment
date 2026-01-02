@@ -29,11 +29,6 @@ export const CANDIDATE_DASHBOARD = {
       icon: <Heart />,
     },
     {
-      title: 'Job Alert',
-      link: Router.DASHBOARD.JOB_ALERT,
-      icon: <Bell />,
-    },
-    {
       title: 'Setting',
       link: Router.DASHBOARD.SETTING,
       icon: <Settings />,
