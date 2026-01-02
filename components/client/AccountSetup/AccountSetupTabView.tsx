@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Router } from '@/constants';
 import { useProgressAccountSetup } from '@/contexts';
@@ -16,7 +17,6 @@ import CompanyInfo from './company-infor';
 import Contact from './contact';
 import FoundingContent from './founding-content';
 import SocialMediaProfile from './social-media-profile';
-import { Button } from '@/components/ui/button';
 
 export interface DataSubmitFormProps {
   nameCompany: string;
@@ -170,10 +170,18 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
     }
   };
 
-  const handleActiveUpdate = () => {
-    setDataSubmitForm(initData);
+  const handleActiveUpdate = async () => {
+    if (typeof dataSubmitForm.logo === 'string') {
+      setDataSubmitForm(prev => ({
+        ...prev,
+        logo: '',
+        banner: '',
+      }));
+    }
+
     setHasInitData(false);
   };
+
   return (
     <div className="mt-[10px]">
       {hasInitData && (

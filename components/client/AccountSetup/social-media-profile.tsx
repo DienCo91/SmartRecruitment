@@ -97,7 +97,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({
                 name={`socialLinks.${index}.platformName` as const}
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <Select onValueChange={onChange} value={value}>
+                  <Select onValueChange={onChange} value={value} disabled={hasInitData}>
                     <SelectTrigger className="w-[180px] border-0 shadow-none">
                       <SelectValue placeholder="Select Social" />
                     </SelectTrigger>
@@ -129,6 +129,7 @@ const SocialMediaProfile: React.FC<ISocialMediaProfile> = ({
                     type="text"
                     placeholder="Profile link/url..."
                     className="border-0 shadow-none focus-visible:ring-0"
+                    disabled={hasInitData}
                   />
                 )}
               />

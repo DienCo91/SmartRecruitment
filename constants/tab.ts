@@ -15,10 +15,7 @@ export const LIST_TAB_HEADER_MAIN = [
     title: 'Dashboard',
     link: '/dashboard',
   },
-  {
-    title: 'Job Alert',
-    link: '/job-alert',
-  },
+
   {
     title: 'Customer Supports',
     link: '/customer-supports',

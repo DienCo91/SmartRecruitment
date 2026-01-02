@@ -17,6 +17,7 @@ import { CandidateService } from '@/services/candidate.services';
 import { ICandidateDetail } from '@/types';
 import { getIconSocialLink } from '@/utils/common';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Dispatch, SetStateAction } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { IoMdAddCircleOutline, IoMdCloseCircleOutline } from 'react-icons/io';
 import { toast } from 'sonner';
@@ -59,7 +60,13 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const DashboardSocialLink = ({ data }: { data: ICandidateDetail | null }) => {
+const DashboardSocialLink = ({
+  data,
+  setData,
+}: {
+  data: ICandidateDetail | null;
+  setData: Dispatch<SetStateAction<ICandidateDetail | null>>;
+}) => {
   const dispatch = useAppDispatch();
 
   const {
@@ -89,9 +96,9 @@ const DashboardSocialLink = ({ data }: { data: ICandidateDetail | null }) => {
   const onSubmit = async (data: FormValues) => {
     try {
       dispatch(setLoading(true));
-      const res = await CandidateService.updateSocialLinks(data);
+      await CandidateService.updateSocialLinks(data);
       toast.success('Update social links successfully');
-      console.log('res', res);
+      setData(prev => ({ ...prev, socialLinks: data.socialLinks }) as unknown as ICandidateDetail);
     } catch (error) {
       console.log('error', error);
       toast.error('Update social links failed');

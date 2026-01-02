@@ -4,7 +4,7 @@ import QuillCustom, { QuillCustomRef } from '@/components/quill';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Separator } from '@radix-ui/react-separator';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod/v3';
 import ButtonAccountSetup from './button-account-setup';
@@ -12,6 +12,7 @@ import UploadInfo from './upload-info';
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants';
 import { toast } from 'sonner';
 import { DataSubmitFormProps } from './AccountSetupTabView';
+import { urlToFile } from '@/utils/common';
 
 interface ICompanyInfo {
   goToNext: (values?: Partial<DataSubmitFormProps>) => void;
@@ -50,6 +51,16 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
     },
   });
 
+  useEffect(() => {
+    if (initValue.nameCompany) {
+      form.reset({
+        nameCompany: initValue.nameCompany,
+        banner: form.getValues('banner'),
+        logo: form.getValues('logo'),
+      });
+    }
+  }, [initValue]);
+
   const onSubmit = (data: FormValues) => {
     if (editorRef.current?.getValue() && editorRef.current.getValue().length > 20) {
       goToNext({
@@ -63,7 +74,6 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
     }
   };
 
-  console.log('description', initValue.description);
   return (
     <div className="mt-[32px]">
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -81,6 +91,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
                   classNameDropWrap="border-[2px] border-dashed"
                   onChange={file => field.onChange(file)}
                   value={field.value}
+                  disabled={hasInitData}
                 />
                 {form.formState.errors.logo && (
                   <span className="text-[12px] text-red-500">
@@ -101,6 +112,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
                   desc="Banner images 1520x400. Supported JPEG, PNG. Max 5 MB."
                   onChange={file => field.onChange(file)}
                   value={field.value}
+                  disabled={hasInitData}
                 />
                 {form.formState.errors.banner && (
                   <span className="text-[12px] text-red-500">
@@ -117,10 +129,10 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
           <h1>Tên công ty</h1>
           <Input
             type="text"
-            value={form.watch('nameCompany') || initValue.nameCompany}
             placeholder="Company name ..."
             className="rounded-[6px] p-[8px] mt-[8px]"
             {...form.register('nameCompany')}
+            disabled={hasInitData}
           />
           <span className="text-[12px] text-[#FF0000]">
             {form.formState.errors.nameCompany?.message}
@@ -129,7 +141,7 @@ const CompanyInfo: React.FC<ICompanyInfo> = ({ goToNext, initValue, hasInitData 
 
         <div className="mt-[20px]">
           <h1 className="mb-[8px]">Về chúng tôi</h1>
-          <QuillCustom ref={editorRef} initValue={initValue.description} />
+          <QuillCustom ref={editorRef} initValue={initValue.description} readOnly={hasInitData} />
         </div>
 
         {!hasInitData && <ButtonAccountSetup title="Save & Next" type="submit" />}

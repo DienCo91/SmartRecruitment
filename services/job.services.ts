@@ -1,3 +1,4 @@
+import { JobApplicationStatus } from '@/constants/job';
 import http from '.';
 
 const endpointPrefix = '/api';
@@ -62,6 +63,22 @@ export const JobServices = {
 
   async getPopularTags() {
     const res = await http.get(`${endpointPrefix}/jobs/popular-tags`);
+    return res.data;
+  },
+
+  async updateApplication({
+    jobId,
+    applicationId,
+    status,
+  }: {
+    jobId: string;
+    applicationId: number;
+    status: JobApplicationStatus;
+  }) {
+    const res = await http.put(
+      `${endpointPrefix}/employer/job/${jobId}/application/${applicationId}/status`,
+      { status }
+    );
     return res.data;
   },
 };

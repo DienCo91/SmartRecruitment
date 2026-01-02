@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -40,6 +40,10 @@ export type QuillCustomRef = {
 const QuillCustom = forwardRef<QuillCustomRef, Props>((props, ref) => {
   const [value, setValue] = useState(props.initValue || '');
 
+  useEffect(() => {
+    setValue(props.initValue || '');
+  }, [props.initValue]);
+
   useImperativeHandle(ref, () => ({
     getValue: () => value,
     setValue: (v: string) => setValue(v),
@@ -48,6 +52,7 @@ const QuillCustom = forwardRef<QuillCustomRef, Props>((props, ref) => {
   return (
     <div spellCheck={false}>
       <ReactQuill
+        {...props}
         theme="snow"
         value={value || props.initValue}
         onChange={setValue}

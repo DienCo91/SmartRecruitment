@@ -12,4 +12,8 @@ export const QueryKey = {
     listWithParams: (params: ISpecificationBlogManageParams) =>
       [...QueryKey.blogManage.all, params] as const,
   },
+  application: {
+    allCV: 'allCV',
+    filterCV: 'filterCV',
+  },
 };

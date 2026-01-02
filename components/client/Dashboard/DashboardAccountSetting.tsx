@@ -7,7 +7,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
 import { ICandidateDetail, IPlace, OSMAddress } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod/v3';
@@ -24,7 +24,13 @@ const accountSettingSchema = z.object({
 
 type FormValues = z.infer<typeof accountSettingSchema>;
 
-const DashboardAccountSetting = ({ data }: { data: ICandidateDetail | null }) => {
+const DashboardAccountSetting = ({
+  data,
+  setData,
+}: {
+  data: ICandidateDetail | null;
+  setData: Dispatch<SetStateAction<ICandidateDetail | null>>;
+}) => {
   const dispatch = useAppDispatch();
   const {
     control,
@@ -55,18 +61,22 @@ const DashboardAccountSetting = ({ data }: { data: ICandidateDetail | null }) =>
     if (!place && !formData.location) return;
     try {
       dispatch(setLoading(true));
-      const res = CandidateService.updateContactInfo({
+
+      const payload = {
         location: {
-          commune: place?.address_detail?.suburb ?? (data?.location?.commune || ''),
+          commune: place?.display_name ?? (data?.location?.commune || ''),
           provinceCity: place?.address_detail?.city ?? (data?.location?.provinceCity || ''),
           country: place?.address_detail?.country ?? (data?.location?.country || ''),
           latitude: place?.lat ?? (data?.location?.latitude || 0) ?? 0,
           longitude: place?.lng ?? (data?.location?.longitude || 0) ?? 0,
         },
         phone: formData.phone,
-      });
+      };
+
+      console.log('payload', payload);
+      CandidateService.updateContactInfo(payload);
       toast.success('Update contact info successfully');
-      console.log('res', res);
+      setData(prev => ({ ...prev, ...payload }) as unknown as ICandidateDetail);
     } catch (error) {
       console.log('error', error);
       toast.error('Update contact info failed');
