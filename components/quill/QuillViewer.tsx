@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; // Hoặc bubble.css
+import { Quill } from 'react-quill-new';
 
 interface Props {
   content: string;
