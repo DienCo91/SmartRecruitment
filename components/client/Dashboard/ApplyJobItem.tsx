@@ -74,7 +74,9 @@ const ApplyJobItem: React.FC<IApplyJobItem> = ({ item }) => {
         </div>
 
         <ButtonDashboard
-          title="View Details"
+          disabled={item.jobStatus !== 'ACTIVE'}
+          className={item.jobStatus !== 'ACTIVE' ? 'pointer-events-none text-red-600' : ''}
+          title={item.jobStatus !== 'ACTIVE' ? 'Đã hết hạn' : 'Xem chi tiết'}
           onClick={() => router.push(Router.JOB.DETAIL(item.slug))}
         />
       </CardContent>

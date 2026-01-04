@@ -66,8 +66,6 @@ export const connectStomp = (
         const state = store.getState();
         const currentConversationId = state.chat.conversationCurrent?.conversationId;
 
-        console.log('body.relatedId', body.relatedId, currentConversationId);
-
         const title = getTitle(body.type);
 
         if (

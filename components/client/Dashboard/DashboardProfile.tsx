@@ -50,13 +50,14 @@ const DashboardProfile = ({
   const onSubmit = async (data: FormValues) => {
     try {
       dispatch(setLoading(true));
-      await CandidateService.updateDetailInfo({
+      const payload = {
         biography: editorRef.current?.getValue() || '',
         dateOfBirth: data.dateOfBirth,
         gender: data.gender,
         nationality: data.nationality.toUpperCase(),
-      });
-      setData(prev => ({ ...prev, ...data }) as unknown as ICandidateDetail);
+      };
+      await CandidateService.updateDetailInfo(payload);
+      setData(prev => ({ ...prev, ...payload }) as unknown as ICandidateDetail);
       toast.success('Update detail info successfully');
     } catch (error) {
       toast.error('Update detail info failed');

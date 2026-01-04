@@ -32,7 +32,7 @@ interface SelectFieldProps<TFieldValues extends FieldValues> {
   error?: FieldError;
   className?: string;
   classNameInput?: string;
-  value: string;
+  value?: string;
   disabled?: boolean;
 }
 

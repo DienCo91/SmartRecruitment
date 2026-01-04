@@ -95,25 +95,26 @@ const DashboardSettingPersonal = ({
     },
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (dataForm: FormData) => {
     try {
       dispatch(setLoading(true));
-      await CandidateService.updateBasicInfo({
-        headline: data.headline,
-        experienceLevel: data.experience,
-        educationLevel: data.education,
-        personalWebsite: data.personalWebsite,
-        fullName: data.fullName,
+      const payload = {
+        headline: dataForm.headline,
+        experienceLevel: dataForm.experience,
+        educationLevel: dataForm.education,
+        personalWebsite: dataForm.personalWebsite,
+        fullName: dataForm.fullName,
+      };
+      await CandidateService.updateBasicInfo(payload);
+      setData(prev => {
+        return { ...prev, ...payload } as unknown as ICandidateDetail;
       });
-      setData(prev => ({ ...prev, ...data }) as ICandidateDetail);
       toast.success('Update basic info successfully');
     } catch (error) {
       console.log(error);
       toast.error('Update basic info failed');
     } finally {
       dispatch(setLoading(false));
-
-      console.log('done');
     }
   };
 
