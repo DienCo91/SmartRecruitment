@@ -126,16 +126,21 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
       >
         <div className="space-y-2 mb-5">
           <p className="font-semibold text-lg">Tiêu đề</p>
-          <CustomInput value={form.title} onChange={e => handleChange('title', e.target.value)} />
+          <CustomInput
+            value={form.title}
+            onChange={e => handleChange('title', e.target.value)}
+            placeholder="Nhập tiêu đề blog"
+          />
         </div>
 
         <div className="space-y-2 mb-5">
           <p className="font-semibold text-lg">Mô tả</p>
           <Textarea
-            className="bg-white/20 min-h-[10rem] resize-none"
+            className="bg-white/20 min-h-[10rem] resize-none placeholder:text-gray-400"
             maxLength={500}
             value={form.description}
             onChange={e => handleChange('description', e.target.value)}
+            placeholder="Nhập mô tả ngắn"
           />
         </div>
 
@@ -144,7 +149,11 @@ export function UpdateOrCreateBlogFrom({ blog }: Props) {
           <p className="font-semibold text-lg text-center uppercase bg-white/10 rounded-md">
             Nội dung
           </p>
-          <QuillCustom ref={contentRef} initValue={form.content} />
+          <QuillCustom
+            ref={contentRef}
+            initValue={form.content}
+            placeholder="Nhập nội dung bài blog"
+          />
         </div>
       </GlassCard>
 

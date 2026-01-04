@@ -6,7 +6,7 @@ import { CustomToast } from '@/components/toast/custom-toast';
 import { store } from './store';
 import { setLastMessageStomp, updateLastMessage } from './features/chat/chatSlice';
 import { setNotifications, setTotalUnread } from './features/notification/notificationSlice';
-import { Info } from 'lucide-react';
+import { API_URL } from '@/constants';
 
 let stompClient: Client | null = null;
 
@@ -36,7 +36,7 @@ export const connectStomp = (
   onNotification?: (msg: NotificationMessage) => void
 ) => {
   stompClient = new Client({
-    webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+    webSocketFactory: () => new SockJS(`${API_URL}/ws`),
 
     connectHeaders: {
       Authorization: `Bearer ${token}`,

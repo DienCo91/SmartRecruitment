@@ -9,7 +9,7 @@ import { Pagination } from '@/types';
 import { Blog, BlogStatus } from '@/types/blog';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { ArrowUpDownIcon, SquarePenIcon, TrashIcon } from 'lucide-react';
+import { ArrowUpDownIcon, EyeIcon, SquarePenIcon, TrashIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { ConfirmDeleteDialog } from '../Dialogs/ConfirmDeleteDialog';
@@ -117,12 +117,18 @@ export function MyBlogsTable() {
         const blog = row.original;
         return (
           <div className="flex items-center">
-            <Button
-              variant="ghost"
-              onClick={() => router.push(`${Router.MY_BLOG}/edit/${blog.slug}`)}
-            >
-              <SquarePenIcon size={18} />
-            </Button>
+            {blog.status != BlogStatus.PUBLISHED ? (
+              <Button
+                variant="ghost"
+                onClick={() => router.push(`${Router.MY_BLOG}/edit/${blog.slug}`)}
+              >
+                <SquarePenIcon size={18} />
+              </Button>
+            ) : (
+              <Button variant="ghost" onClick={() => router.push(`${Router.BLOGS}/${blog.slug}`)}>
+                <EyeIcon size={18} />
+              </Button>
+            )}
             <Button
               variant="ghost"
               onClick={() => {

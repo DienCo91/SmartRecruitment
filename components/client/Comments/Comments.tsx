@@ -4,12 +4,13 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useCommentActions } from '@/hooks/useCommentActions';
 import { Comment } from '@/types/comment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LetterICanvas } from '../Canvas/LetterICanvas';
 import { CommentCard } from './CommentCard';
 
 interface Props {
   entityId: number;
+  onCountComment?: (count: number) => void;
 }
 
 const treeComments = (comments: Comment[], parentId: number | null): Comment[] => {
@@ -30,7 +31,7 @@ const CommentTree = (comments: Comment[], entityId: number) => {
   ));
 };
 
-export function Comments({ entityId }: Props) {
+export function Comments({ entityId, onCountComment }: Props) {
   const [content, setContent] = useState<string>('');
 
   const { useCommentQuery, useCreateCommentMutation } = useCommentActions(entityId);
@@ -45,6 +46,10 @@ export function Comments({ entityId }: Props) {
     setContent('');
   };
 
+  useEffect(() => {
+    if (onCountComment && comments) onCountComment(comments.length);
+  }, [comments, onCountComment]);
+
   return (
     <div className="w-2/3 space-y-2">
       <h3 className="font-semibold text-lg">Bình luận về bài viết</h3>
@@ -52,7 +57,7 @@ export function Comments({ entityId }: Props) {
         value={content}
         onChange={e => setContent(e.target.value)}
         placeholder="Chia sẻ suy nghĩ của bạn về bài viết."
-        className="resize-none focus-visible:ring-0 w-full bg-white/10"
+        className="resize-none focus-visible:ring-0 w-full bg-white/10 placeholder:text-gray-400"
         onKeyDown={e => {
           if (e.ctrlKey && e.key === 'Enter') handleCreateComment();
         }}

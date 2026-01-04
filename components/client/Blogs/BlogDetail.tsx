@@ -9,14 +9,15 @@ import { DecorateContent } from '../Jobs/DecorateContent';
 
 interface Props {
   blog: Blog;
+  countComment?: number;
 }
 
-export function BlogDetail({ blog }: Props) {
+export function BlogDetail({ blog, countComment }: Props) {
   return (
     <div className="flex flex-col gap-2">
       <h3 className="text-xl font-semibold">{blog.title}</h3>
       <div className="flex items-center gap-5 text-sm font-normal">
-        <AvatarUser src="" />
+        <AvatarUser src={blog.author.avatar} />
         <span>{blog.author.email}</span>
         <div className="flex items-center gap-1 capitalize">
           <CalendarIcon size={16} />
@@ -24,11 +25,10 @@ export function BlogDetail({ blog }: Props) {
         </div>
         <div className="flex items-center gap-1">
           <MessageCircleMoreIcon size={16} />
-          <span>{25} Bình luận</span>
+          <span>{countComment} Bình luận</span>
         </div>
       </div>
       <DecorateContent content={blog.content} />
-      {/* <QuillViewer content={blog.content} /> */}
     </div>
   );
 }

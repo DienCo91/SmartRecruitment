@@ -8,6 +8,7 @@ export * from './job';
 export * from './queryKey';
 export * from './tab';
 export * from './vacancies';
+export * from './environment';
 
 export enum Size {
   XS = 'xs',
@@ -49,3 +50,8 @@ export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
 }
+
+export const gender = {
+  [Gender.MALE]: 'Nam',
+  [Gender.FEMALE]: 'Nữ',
+};

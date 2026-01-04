@@ -1,18 +1,31 @@
 import { Separator } from '@/components/ui/separator';
 import { GlassCard } from '../Cards/GlassCard';
 import { CandidateContactInformationItems } from './CandidateContactInformationItems';
+import { ICandidateDetail } from '@/types';
 
-export function CandidateContactInformation() {
+interface Props {
+  candidateDetail: ICandidateDetail;
+}
+
+export function CandidateContactInformation({ candidateDetail }: Props) {
   return (
     <GlassCard title={<p className="text-base">Thông tin liên hệ</p>} action>
       <div className="flex flex-col">
-        <CandidateContactInformationItems.Website content="http://localhost:3000" />
+        {candidateDetail.personalWebsite && (
+          <CandidateContactInformationItems.Website content={candidateDetail.personalWebsite} />
+        )}
         <Separator className="my-2 bg-gray-500" />
-        <CandidateContactInformationItems.Location content="Số 10 Nguyễn Trãi, Hà Đông, Hà Nội" />
+        <CandidateContactInformationItems.Location
+          content={`${candidateDetail.location.provinceCity}, ${candidateDetail.location.country}`}
+        />
         <Separator className="my-2 bg-gray-500" />
-        <CandidateContactInformationItems.Phone content="0345678910" />
+        {candidateDetail.phone && (
+          <CandidateContactInformationItems.Phone content={candidateDetail.phone} />
+        )}
         <Separator className="my-2 bg-gray-500" />
-        <CandidateContactInformationItems.Email content="minhkhuong782k3@gmail.com" />
+        {candidateDetail.email && (
+          <CandidateContactInformationItems.Email content={candidateDetail.email} />
+        )}
       </div>
     </GlassCard>
   );

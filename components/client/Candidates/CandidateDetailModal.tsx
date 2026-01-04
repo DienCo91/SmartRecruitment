@@ -15,7 +15,7 @@ const CandidateDetailModal: React.FC<ICandidateDetailModal> = ({
   setShowDetailUserModel,
   candidateId,
 }) => {
-  const [candidateDetail, setCandidateDetail] = useState<ICandidateDetail | null>(null);
+  const [candidateDetail, setCandidateDetail] = useState<ICandidateDetail>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const getDetailCandidate = async () => {
@@ -39,7 +39,13 @@ const CandidateDetailModal: React.FC<ICandidateDetailModal> = ({
       size="xl"
       open
       onClose={() => setShowDetailUserModel(false)}
-      title={<>{!loading && <CandidateDetailHeader candidateDetail={candidateDetail} />}</>}
+      title={
+        <>
+          {!loading && candidateDetail && (
+            <CandidateDetailHeader candidateDetail={candidateDetail} />
+          )}
+        </>
+      }
     >
       <div className="w-full min-h-[400px]">
         {loading ? (
