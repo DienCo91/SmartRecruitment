@@ -80,7 +80,7 @@ const ApplicationFilter = forwardRef<ApplicationFilterInputSearchRef, IApplicati
           <div className="grid gap-4">
             <h4 className="leading-none font-medium ">Lọc CV</h4>
             <div className="grid gap-4">
-              <Label htmlFor="width">Mức độ phù hợp</Label>
+              <Label htmlFor="width">% Đạt yêu cầu trở lên</Label>
               <div className="flex space-x-[8px] items-center">
                 <Slider
                   value={[dataFilter.appropriate]}
@@ -104,7 +104,7 @@ const ApplicationFilter = forwardRef<ApplicationFilterInputSearchRef, IApplicati
                   onValueChange={val => updateFilter('gender', val)}
                 >
                   <SelectTrigger className="w-[120px]">
-                    <SelectValue />
+                    <SelectValue placeholder="Giới tính" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>

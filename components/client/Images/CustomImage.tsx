@@ -21,6 +21,7 @@ export function CustomImage({
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    console.log('!error && src', !error && src);
     setError(false);
   }, [src]);
 

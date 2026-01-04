@@ -50,6 +50,7 @@ export interface ICvItem {
   title: string;
   size: number;
   id: string;
+  url: string;
 }
 
 const DashboardSettingPersonal = ({
@@ -202,6 +203,7 @@ const DashboardSettingPersonal = ({
               id={item.id}
               onDelete={() => onDelete(item.id)}
               setListCv={setListCv}
+              url={item.url}
             />
           ))}
         {!loadingLocal && (

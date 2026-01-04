@@ -147,7 +147,7 @@ const CompanyPositionDetail = (props: PageProps<'/company/[id]'>) => {
               className="flex bg-[#c5defb] text-blue-primary hover:bg-blue-primary hover:text-white"
             >
               <Link href={'#open-position'}>
-                <span className="mr-[12px]">View Open Position</span>
+                <span className="mr-[12px]">Xem vị trí tuyển dụng</span>
                 <FaArrowRight />
               </Link>
             </Button>

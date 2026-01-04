@@ -1,22 +1,26 @@
 'use client';
 
+import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import LoadingCustom from '@/components/ui/loading-custom';
+import { QueryKey } from '@/constants/queryKey';
 import useFilterCVAction from '@/hooks/useFilterCVAction';
 import { ApplicationBriefResponse, DataFilter, UpdateData } from '@/types';
 import { useParams } from 'next/navigation';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlassCardBase from '../Cards/GlassCardBase';
 import ApplicationItem from './ApplicationItem';
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
-import { QueryKey } from '@/constants/queryKey';
-import { toast } from 'sonner';
 
 interface IApplicationList {
   title: string;
   params?: DataFilter;
+  onViewDetailApplication: (item: ApplicationBriefResponse) => void;
 }
 
-export const ApplicationList: React.FC<IApplicationList> = ({ title, params }) => {
+export const ApplicationList: React.FC<IApplicationList> = ({
+  title,
+  params,
+  onViewDetailApplication,
+}) => {
   const { id } = useParams();
   const jobId = id as string;
 
@@ -57,6 +61,7 @@ export const ApplicationList: React.FC<IApplicationList> = ({ title, params }) =
                   key={item.candidateId}
                   item={item}
                   handleUpdateStatus={handleUpdateStatus}
+                  onViewDetailApplication={onViewDetailApplication}
                 />
               ))
             )}

@@ -1,7 +1,7 @@
 'use client';
 import { ApplicationServices } from '@/services/application.services';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { Ellipsis, FileText, Pencil, Trash2 } from 'lucide-react';
+import { Ellipsis, Eye, FileText, Pencil, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 import GlassCardBase from '../Cards/GlassCardBase';
 import { GlassDialog } from '../Dialogs/GlassDialog';
@@ -15,11 +15,12 @@ interface ICvItemProps {
   title: string;
   size: string;
   id: string;
+  url: string;
   onDelete: () => void;
   setListCv: React.Dispatch<React.SetStateAction<ICvItem[]>>;
 }
 
-const CvItem: React.FC<ICvItemProps> = ({ title, size, id, onDelete, setListCv }) => {
+const CvItem: React.FC<ICvItemProps> = ({ title, size, id, onDelete, setListCv, url }) => {
   const [isShowDialog, setIsShowDialog] = useState(false);
   const [isShowDialogEditCV, setIsShowDialogEditCV] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ const CvItem: React.FC<ICvItemProps> = ({ title, size, id, onDelete, setListCv }
 
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-0">
+          <button className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-0 transition-all ease-in duration-200">
             <Ellipsis size={20} />
           </button>
         </DropdownMenu.Trigger>
@@ -61,13 +62,13 @@ const CvItem: React.FC<ICvItemProps> = ({ title, size, id, onDelete, setListCv }
             className="z-50 w-40 rounded-md bg-white shadow-md overflow-hidden cursor-pointer"
           >
             <DropdownMenu.Item
-              onSelect={() => setIsShowDialog(true)}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 
-                         hover:bg-red-100 hover:text-red-700 
+              onSelect={() => window.open(url, '_blank')}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-blue-600 
+                         hover:bg-blue-100 hover:text-blue-700 
                          focus:outline-none focus:ring-0"
             >
-              <Trash2 className="w-4 h-4" />
-              <span>Delete</span>
+              <Eye className="w-4 h-4" />
+              <span>View Detail</span>
             </DropdownMenu.Item>
             <DropdownMenu.Item
               onSelect={() => setIsShowDialogEditCV(true)}
@@ -77,6 +78,15 @@ const CvItem: React.FC<ICvItemProps> = ({ title, size, id, onDelete, setListCv }
             >
               <Pencil className="w-4 h-4" />
               <span>Update CV</span>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              onSelect={() => setIsShowDialog(true)}
+              className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 
+                         hover:bg-red-100 hover:text-red-700 
+                         focus:outline-none focus:ring-0"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Delete</span>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>

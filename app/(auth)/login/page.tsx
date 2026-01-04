@@ -23,7 +23,12 @@ import { useAppDispatch } from '@/lib/hooks';
 import { AuthService } from '@/services/auth.service';
 import { isEmployer } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -68,6 +73,7 @@ const LoginPage = () => {
       const user = userCredential.user;
 
       if (!user.emailVerified) {
+        await sendEmailVerification(user);
         router.push(Router.VERIFY_EMAIL);
         return;
       }

@@ -1,12 +1,15 @@
 'use client';
 
+import ApplicationDialogDetail, {
+  ApplicationDialogDetailRef,
+} from '@/components/client/Dashboard/ApplicationDialogDetail';
 import ApplicationFilter, {
   ApplicationFilterInputSearchRef,
 } from '@/components/client/Dashboard/ApplicationFilter';
 import { ApplicationList } from '@/components/client/Dashboard/ApplicationList';
 import DashboardHeader from '@/components/client/Dashboard/DashboardHeader';
 import { Button } from '@/components/ui/button';
-import { DataFilter } from '@/types';
+import { ApplicationBriefResponse, DataFilter } from '@/types';
 import { MoveRight } from 'lucide-react';
 import { useRef, useState } from 'react';
 
@@ -14,9 +17,11 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
   const [dataFilter, setDataFilter] = useState<DataFilter | undefined>({
     appropriate: 0,
     gender: '',
-    ageRange: '',
+    ageRange: '0-100',
     language: '',
   });
+
+  const dialogRef = useRef<ApplicationDialogDetailRef>(null);
 
   const filterOptionRef = useRef<ApplicationFilterInputSearchRef | null>(null);
 
@@ -25,6 +30,10 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
   };
   const handleApply = () => {
     setDataFilter(filterOptionRef.current?.getValue());
+  };
+
+  const onViewDetailApplication = (item: ApplicationBriefResponse) => {
+    dialogRef.current?.setValue(item);
   };
 
   return (
@@ -42,7 +51,7 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
         </div>
       </DashboardHeader>
       <div className="flex space-x-[32px] items-center">
-        <ApplicationList title="Đơn đã nộp" />
+        <ApplicationList title="Đơn đã nộp" onViewDetailApplication={onViewDetailApplication} />
         <div>
           <Button
             size="lg"
@@ -54,8 +63,13 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
           </Button>
           <br />
         </div>
-        <ApplicationList title="Đơn đã lọc" params={dataFilter} />
+        <ApplicationList
+          title="Đơn đã lọc"
+          params={dataFilter}
+          onViewDetailApplication={onViewDetailApplication}
+        />
       </div>
+      <ApplicationDialogDetail ref={dialogRef} />
     </>
   );
 };

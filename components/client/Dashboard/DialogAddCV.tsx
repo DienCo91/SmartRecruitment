@@ -54,9 +54,9 @@ const DialogAddCV: React.FC<IDialogAddCV> = ({ isShow, setIsShow, setListCv }) =
     try {
       const res = await ApplicationServices.addCV({ resumeFile: data.file, title: data.name });
       form.reset();
-      toast.success('Add Cv/Resume successfully');
       setIsShow(false);
       setListCv(prev => [...prev, res.data]);
+      toast.success('Add Cv/Resume successfully');
     } catch (error: unknown) {
       console.log('error', error);
       const err = error as { response?: { data?: { message?: string } } };
