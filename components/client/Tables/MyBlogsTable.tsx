@@ -18,10 +18,8 @@ import { DataTable } from './DataTable';
 import { useRouter } from 'next/navigation';
 import { Router } from '@/constants';
 
-interface BlogColumns extends Pick<
-  Blog,
-  'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'slug'
-> {}
+interface BlogColumns
+  extends Pick<Blog, 'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'slug'> {}
 
 export function MyBlogsTable() {
   const [blogs, setBlogs] = useState<Blog[]>([]);

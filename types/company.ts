@@ -21,10 +21,8 @@ export interface Company {
   location: Location;
 }
 
-export interface TopCompany extends Pick<
-  Company,
-  'id' | 'name' | 'logoUrl' | 'location' | 'industryType'
-> {
+export interface TopCompany
+  extends Pick<Company, 'id' | 'name' | 'logoUrl' | 'location' | 'industryType'> {
   numberOfJobs: number;
 }
 
