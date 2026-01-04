@@ -42,6 +42,7 @@ export interface Blog {
   createdAt?: Date;
   updatedAt?: Date;
   author: AuthorOfBlog;
+  commentCount?: number;
 }
 
 export interface DetailBlog extends Blog {
