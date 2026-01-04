@@ -29,7 +29,7 @@ export function RecentBlogCard({ blog }: Props) {
               </div>
               <span className="rounded-full size-1 bg-gray-300" />
               <div className="flex items-center gap-1">
-                <span>{25} Bình luận</span>
+                <span>{blog.commentCount} Bình luận</span>
               </div>
             </div>
 

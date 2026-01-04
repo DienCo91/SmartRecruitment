@@ -31,7 +31,9 @@ export function BlogCardPrimary({ blog }: Props) {
               </div>
               <div className="flex items-center gap-1">
                 <MessageCircleMoreIcon size={16} />
-                <span>{25} Bình luận</span>
+                <span>
+                  {blog.commentCount == 0 ? 'Chưa có bình luận' : `${blog.commentCount} Bình luận`}
+                </span>
               </div>
             </div>
 
