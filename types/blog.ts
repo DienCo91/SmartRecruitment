@@ -13,10 +13,8 @@ export interface ISpecificationParams {
   status?: BlogStatus;
 }
 
-export interface ISpecificationBlogManageParams extends Pick<
-  ISpecificationParams,
-  'page' | 'keyword' | 'status' | 'limit'
-> {}
+export interface ISpecificationBlogManageParams
+  extends Pick<ISpecificationParams, 'page' | 'keyword' | 'status' | 'limit'> {}
 
 export enum BlogStatus {
   DRAFT = 'DRAFT',
