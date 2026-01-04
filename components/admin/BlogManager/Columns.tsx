@@ -13,10 +13,8 @@ import { DetailBlogAction } from './DetailBlogAction';
 import { FilterStatusHeader } from './FilterStatusHeader';
 import { PublishBlogAction } from './PublishBlogAction';
 
-export interface AdminBlogColumns extends Pick<
-  Blog,
-  'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'author'
-> {}
+export interface AdminBlogColumns
+  extends Pick<Blog, 'id' | 'thumbnail' | 'title' | 'createdAt' | 'status' | 'author'> {}
 
 export const columnsAdminBlog = (
   filter: ISpecificationBlogManageParams

@@ -158,7 +158,9 @@ export function Notifications() {
 
         <TabsContent value="all" className="h-[400px]">
           {!notifications || (notifications.length === 0 && !hasMore) ? (
-            <div className="flex justify-center mt-4 text-[14px]">Không có đoạn chat nào</div>
+            <div className="flex justify-center mt-4 text-[14px] text-gray-400">
+              Không có đoạn chat nào
+            </div>
           ) : (
             <div id="scrollableAllNoti" className="h-[400px] overflow-y-auto ">
               <InfiniteScroll
@@ -178,7 +180,9 @@ export function Notifications() {
         </TabsContent>
         <TabsContent value="unread">
           {!notifications || (notifications.length === 0 && !hasMore) ? (
-            <div className="flex justify-center mt-4 text-[14px] ">Không có đoạn chat nào</div>
+            <div className="flex justify-center mt-4 text-[14px] text-gray-400">
+              Không có đoạn chat nào
+            </div>
           ) : (
             <div id="scrollableUnreadNoti" className="h-[400px] overflow-y-auto">
               <InfiniteScroll

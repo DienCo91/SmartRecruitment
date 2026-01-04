@@ -40,7 +40,11 @@ const ChatList: React.FC<IChatList> = ({ hasMore, fetchMoreData, data, setData }
   };
 
   if (!data || (data.length === 0 && !hasMore)) {
-    return <div className="flex justify-center mt-4 text-[14px]">Không có đoạn chat nào</div>;
+    return (
+      <div className="flex justify-center mt-4 text-[14px] text-gray-400">
+        Không có đoạn chat nào
+      </div>
+    );
   }
 
   return (

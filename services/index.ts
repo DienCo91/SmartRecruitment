@@ -1,11 +1,11 @@
-import { Router } from '@/constants';
+import { API_URL, Router } from '@/constants';
 import { setCurrentUser } from '@/lib/features/auth/authSlice';
 import { auth, authReady } from '@/lib/firebase';
 import { store } from '@/lib/store';
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },

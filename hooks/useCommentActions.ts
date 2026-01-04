@@ -12,7 +12,7 @@ export function useCommentActions(blogId: number) {
   const currentUser = useAppSelector(state => state.auth.currentUser);
   const key = QueryKey.comment.blog(blogId);
 
-  const useCommentQuery = useQuery({
+  const useCommentQuery = useQuery<Comment[]>({
     queryKey: key,
     queryFn: async () => (await BlogService.getComments(blogId)).data,
     ...QueryOptions,

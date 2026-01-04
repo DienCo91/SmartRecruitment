@@ -232,3 +232,149 @@
   scrollbar-width: thin;
   scrollbar-color: var(--sidebar) transparent;
 } */
+
+/* Custom css Quill */
+
+.quill-render {
+  @apply text-sm leading-6 text-zinc-200;
+}
+
+.quill-render h1 {
+  @apply text-2xl font-semibold mt-6 mb-3;
+}
+.quill-render h2 {
+  @apply text-xl font-semibold mt-5 mb-3;
+}
+.quill-render h3 {
+  @apply text-lg font-semibold mt-4 mb-2;
+}
+.quill-render h4 {
+  @apply text-base font-semibold mt-4 mb-2;
+}
+.quill-render h5,
+.quill-render h6 {
+  @apply text-sm font-semibold mt-3 mb-2;
+}
+
+.quill-render p {
+  @apply my-0 leading-5;
+}
+
+.quill-render a {
+  @apply text-blue-400 underline underline-offset-2 hover:text-blue-300;
+}
+
+.quill-render strong {
+  @apply font-semibold text-zinc-100;
+}
+.quill-render em {
+  @apply italic;
+}
+
+.quill-render ul {
+  @apply list-disc pl-6 my-3;
+}
+.quill-render ol {
+  @apply list-decimal pl-6 my-3;
+}
+.quill-render li {
+  @apply my-1;
+}
+.quill-render li::marker {
+  @apply text-zinc-400;
+}
+
+.quill-render blockquote {
+  @apply border-l-4 border-blue-400 pl-4 py-2 my-4
+         text-zinc-300 italic bg-zinc-900/50 rounded-r;
+}
+
+.quill-render img {
+  @apply max-w-full rounded-lg my-4;
+}
+
+.quill-render table {
+  @apply w-full border border-white my-4 text-sm;
+}
+.quill-render th {
+  @apply border border-white bg-zinc-800 px-3 py-2 text-left font-semibold;
+}
+.quill-render td {
+  @apply border border-white px-3 py-2;
+}
+
+.quill-render .ql-align-center {
+  @apply text-center;
+}
+.quill-render .ql-align-right {
+  @apply text-right;
+}
+.quill-render .ql-align-left {
+  @apply text-left;
+}
+.quill-render .ql-align-justify {
+  @apply text-justify;
+}
+
+.quill-render .ql-indent-1 {
+  @apply ml-6;
+}
+.quill-render .ql-indent-2 {
+  @apply ml-12;
+}
+.quill-render .ql-indent-3 {
+  @apply ml-20;
+}
+
+.quill-render .ql-size-small {
+  @apply text-xs;
+}
+.quill-render .ql-size-large {
+  @apply text-lg;
+}
+.quill-render .ql-size-huge {
+  @apply text-2xl;
+}
+
+.quill-render .ql-color-red {
+  @apply text-red-400;
+}
+.quill-render .ql-color-blue {
+  @apply text-blue-400;
+}
+.quill-render .ql-color-green {
+  @apply text-green-400;
+}
+
+.quill-render .ql-bg-yellow {
+  @apply bg-yellow-400/20 px-1 rounded;
+}
+
+.quill-render code {
+  @apply bg-zinc-800 text-zinc-100 px-1 py-0.5 rounded text-xs font-mono;
+}
+
+.quill-render .ql-code-block-container {
+  @apply my-4 rounded-lg bg-zinc-900 overflow-hidden;
+}
+
+.quill-render .ql-code-block {
+  @apply font-mono text-sm text-zinc-100 px-4 py-1 leading-relaxed;
+}
+
+.quill-render .ql-code-block:first-child {
+  @apply pt-3;
+}
+
+.quill-render .ql-code-block:last-child {
+  @apply pb-3;
+}
+
+.quill-render hr {
+  @apply my-6 border-zinc-700;
+}
+
+.quill-render iframe,
+.quill-render video {
+  @apply max-w-full rounded-lg my-4;
+}

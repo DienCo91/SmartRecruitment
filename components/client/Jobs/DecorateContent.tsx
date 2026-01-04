@@ -11,7 +11,7 @@ export function DecorateContent({ title, content, className }: Props) {
     <div className={cn('mt-3 mr-2', className)}>
       {title && <h3 className="mb-2 font-semibold">{title}</h3>}
       <div
-        className="text-sm prose prose-invert max-w-none"
+        className="max-w-none whitespace-normal break-words quill-render"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     </div>

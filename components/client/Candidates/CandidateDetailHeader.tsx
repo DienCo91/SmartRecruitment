@@ -1,26 +1,22 @@
 'use client';
 
 import { CustomButton } from '@/components/Buttons/CustomButton';
-import { HeartIcon, MailIcon, MessageCircleMore } from 'lucide-react';
-import { AvatarUser } from '../Avatar/AvatarUser';
-import { ICandidateDetail } from '@/types';
-import { GlassDialog } from '../Dialogs/GlassDialog';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-import { useAppDispatch } from '@/lib/hooks';
-import { setLoading } from '@/lib/features/common/commonSlice';
-import { toast } from 'sonner';
-import { ChatServices } from '@/services/chat.services';
+import { Input } from '@/components/ui/input';
 import { Router } from '@/constants';
+import { setLoading } from '@/lib/features/common/commonSlice';
+import { useAppDispatch } from '@/lib/hooks';
+import { ChatServices } from '@/services/chat.services';
+import { ICandidateDetail } from '@/types';
+import { handleSendMail } from '@/utils/common';
+import { HeartIcon, MailIcon, MessageCircleMore } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { AvatarUser } from '../Avatar/AvatarUser';
+import { GlassDialog } from '../Dialogs/GlassDialog';
 
-export function CandidateDetailHeader({
-  candidateDetail,
-}: {
-  candidateDetail: ICandidateDetail | null;
-}) {
+export function CandidateDetailHeader({ candidateDetail }: { candidateDetail: ICandidateDetail }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
@@ -67,10 +63,10 @@ export function CandidateDetailHeader({
           <span className="text-gray-400 text-sm">{candidateDetail?.headline}</span>
         </div>
         <div className="flex col-span-3 items-center">
-          <CustomButton className="hover:bg-transparent hover:text-red-500">
-            <HeartIcon className="size-6" fill="red" />
-          </CustomButton>
-          <CustomButton className="bg-blue-600 text-white hover:bg-blue-700 hover:text-gray-200">
+          <CustomButton
+            className="bg-blue-600 text-white hover:bg-blue-700 hover:text-gray-200"
+            onClick={() => handleSendMail(candidateDetail.email!)}
+          >
             <MailIcon size={16} />
             Gửi Mail
           </CustomButton>

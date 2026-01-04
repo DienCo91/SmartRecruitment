@@ -7,6 +7,7 @@ import { RecentBlogs } from '@/components/client/Blogs/RecentBlogs';
 import { GlassCard } from '@/components/client/Cards/GlassCard';
 import { Comments } from '@/components/client/Comments/Comments';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { useCommentActions } from '@/hooks/useCommentActions';
 import { BlogService } from '@/services/blog.service';
 import { Blog } from '@/types/blog';
 import { useParams } from 'next/navigation';
@@ -16,6 +17,8 @@ const BlogDetailPage = () => {
   const { slug } = useParams();
   const [blog, setBlog] = useState<Blog>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [countComment, setCountComment] = useState<number>(0);
+
   const fetchBlog = useCallback(async () => {
     try {
       setLoading(true);
@@ -32,13 +35,18 @@ const BlogDetailPage = () => {
     fetchBlog();
   }, [fetchBlog]);
   return (
-    <GlassCard className="mt-10" title="" action footer={blog && <Comments entityId={blog.id} />}>
+    <GlassCard
+      className="mt-10"
+      title=""
+      action
+      footer={blog && <Comments entityId={blog.id} onCountComment={setCountComment} />}
+    >
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-8">
           {loading ? (
             <LoadingCircle />
           ) : blog ? (
-            <BlogDetail blog={blog} />
+            <BlogDetail blog={blog} countComment={countComment} />
           ) : (
             <p>Không tìm thấy blog.</p>
           )}
