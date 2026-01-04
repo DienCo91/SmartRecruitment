@@ -15,6 +15,7 @@ import { JOB_TYPE } from '@/constants/company';
 
 interface IFilterJob {
   handleSubmit?: (value: IFilter) => void;
+  isActiveCategory?: boolean;
 }
 
 export interface IFilter {
@@ -27,7 +28,7 @@ export interface IFilter {
   education: string[];
 }
 
-export function FilterJob({ handleSubmit }: IFilterJob) {
+export function FilterJob({ handleSubmit, isActiveCategory = true }: IFilterJob) {
   const initFilter = {
     search: '',
     location: '',
@@ -64,14 +65,18 @@ export function FilterJob({ handleSubmit }: IFilterJob) {
         placeholder="Chọn địa điểm"
       />
       <Separator orientation="vertical" />
-      <Combobox
-        options={categories}
-        value={filters.categories}
-        onChange={val => handleFilter('categories', val)}
-        startIcon={<LayersIcon size={18} />}
-        placeholder="Chọn danh mục"
-      />
-      <Separator orientation="vertical" />
+      {isActiveCategory && (
+        <>
+          <Combobox
+            options={categories}
+            value={filters.categories}
+            onChange={val => handleFilter('categories', val)}
+            startIcon={<LayersIcon size={18} />}
+            placeholder="Chọn danh mục"
+          />
+          <Separator orientation="vertical" />
+        </>
+      )}
 
       <CustomPopover
         trigger={

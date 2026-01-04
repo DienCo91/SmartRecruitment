@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { ACCEPTED_IMAGE_TYPES, IMAGE_EMPTY, MAX_FILE_SIZE } from '@/constants';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Camera } from 'lucide-react';
@@ -17,6 +17,8 @@ import { EmployerService } from '@/services/employer.services';
 import { CustomImage } from '../Images/CustomImage';
 import { cn } from '@/lib/utils';
 import { isEmployer } from '@/utils';
+import { AppImage } from '@/common';
+import { updateUser } from '@/lib/features/auth/authSlice';
 
 const profileSchema = z.object({
   email: z.string().nonempty('Email is required').email('Invalid email address'),
@@ -34,6 +36,8 @@ const profileSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 const ProfileForm: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const [isEditing, setIsEditing] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
@@ -58,6 +62,7 @@ const ProfileForm: React.FC = () => {
       if (res.data) {
         setPreview(res.data.logoUrl);
         setPreviewBanner(res.data.bannerUrl);
+        dispatch(updateUser({ avatar: res.data.logoUrl }));
       }
     } catch (error) {
       console.log('error', error);
@@ -70,6 +75,7 @@ const ProfileForm: React.FC = () => {
     try {
       const res = await CandidateService.getMyProfile();
       setPreview(res.data.avatarUrl);
+      dispatch(updateUser({ avatar: res.data.avatarUrl }));
     } catch (error) {
       console.log('e', error);
     }
@@ -89,7 +95,9 @@ const ProfileForm: React.FC = () => {
         return toast.error('Vui lòng chọn ảnh trước khi lưu');
       }
       await CandidateService.uploadAvatar(data.avatar);
+
       toast.success('Cập nhật ảnh đại diện thành công');
+      getMyProfile();
       setIsEditing(false);
     } catch (error) {
       console.error('Upload avatar error:', error);
@@ -128,7 +136,7 @@ const ProfileForm: React.FC = () => {
           >
             <AvatarUser
               className="w-30 h-30 rounded-full border"
-              src={preview ?? previewBanner ?? IMAGE_EMPTY}
+              src={preview ?? previewBanner ?? AppImage.avatarFallback.src}
               classNameImage="object-cover"
             />
 

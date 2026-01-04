@@ -1,8 +1,10 @@
-import { JobApplicationStatus } from '@/constants/job';
+import { QueryKey as QueryKeyConstants } from '@/constants';
 import { EmployerService } from '@/services/employer.services';
 import { JobServices } from '@/services/job.services';
-import { DataFilter, UpdateData } from '@/types';
+import { ApplicationBriefResponse, DataFilter, UpdateData } from '@/types';
 import {
+  InfiniteData,
+  keepPreviousData,
   QueryFunctionContext,
   QueryKey,
   useInfiniteQuery,
@@ -39,6 +41,7 @@ const useFilterCVAction = ({
     getNextPageParam: (lastPage, pages) =>
       lastPage.length < PAGE_SIZE ? undefined : pages.length + 1,
     enabled: !!jobId,
+    placeholderData: prev => prev,
   });
 
   //update status
@@ -50,11 +53,46 @@ const useFilterCVAction = ({
         status: data.status,
       });
     },
-    onSuccess: () => {
+    onSuccess: (_res, variables) => {
       toast.success('Update status successfully');
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [key, { jobId, params }] });
+
+      // Update ALL CV list
+      queryClient.setQueriesData<InfiniteData<ApplicationBriefResponse[]>>(
+        { queryKey: [QueryKeyConstants.application.allCV] },
+        oldData => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map(page =>
+              page.map(item =>
+                item.applicationId === variables.applicationId
+                  ? { ...item, status: variables.status }
+                  : item
+              )
+            ),
+          };
+        }
+      );
+
+      //  Update FILTER CV list
+      queryClient.setQueriesData<InfiniteData<ApplicationBriefResponse[]>>(
+        { queryKey: [QueryKeyConstants.application.filterCV] },
+        oldData => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map(page =>
+              page.map(item =>
+                item.applicationId === variables.applicationId
+                  ? { ...item, status: variables.status }
+                  : item
+              )
+            ),
+          };
+        }
+      );
     },
   });
 
