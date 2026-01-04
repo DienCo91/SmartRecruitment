@@ -39,7 +39,11 @@ export function ShortUserInfo() {
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <AvatarUser src={currentUser?.avatar} className="size-8 hover:cursor-pointer" />
+          <AvatarUser
+            src={currentUser?.avatar}
+            className="size-8 hover:cursor-pointer "
+            classNameImage="object-cover"
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"

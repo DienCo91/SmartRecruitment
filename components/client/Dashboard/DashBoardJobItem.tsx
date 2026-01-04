@@ -71,11 +71,15 @@ const DashBoardJobItem: React.FC<IDashBoardJobItem> = ({ onDeleteById, item }) =
         <GlassCardBase className="p-[12px] hover:translate-y-[0px]">
           <HeartIcon className={'size-4 border-0 text-red-500 fill-red-500'} />
         </GlassCardBase>
-        {item.daysRemaining > 0 && (
+        {item.daysRemaining > 0 ? (
           <ButtonDashboard
-            title="View Detail"
+            title="Xem chi tiết"
             onClick={() => router.push(Router.JOB.DETAIL(item.slug))}
           />
+        ) : (
+          <div className="text-red-600 bg-white p-2 px-4 rounded-sm text-[14px] font-semibold">
+            Đã hết hạn
+          </div>
         )}
       </div>
 

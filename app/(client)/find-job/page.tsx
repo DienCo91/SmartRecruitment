@@ -63,7 +63,7 @@ const FindJob = () => {
 
   return (
     <div>
-      <FilterJob handleSubmit={handleSubmit} />
+      <FilterJob handleSubmit={handleSubmit} isActiveCategory={false} />
       <ListJob items={items} hasMore={hasMore} fetchMoreData={fetchMoreData} />
     </div>
   );

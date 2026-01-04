@@ -14,7 +14,6 @@ interface IFavoriteJobsList {
   handleSearch: (value: string) => void;
   loading?: boolean;
   total: number;
-  isEditing?: boolean;
 }
 
 const FavoriteJobsList: React.FC<IFavoriteJobsList> = ({
@@ -24,7 +23,6 @@ const FavoriteJobsList: React.FC<IFavoriteJobsList> = ({
   handleSearch,
   loading,
   total,
-  isEditing,
 }) => {
   const searchRef = useRef<InputSearchRef>(null);
 

@@ -1,6 +1,8 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
 import { TabsContent } from '@/components/ui/tabs';
+import { updateUser } from '@/lib/features/auth/authSlice';
+import { setLoading } from '@/lib/features/common/commonSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { CandidateService } from '@/services/candidate.services';
 import { ICandidateDetail } from '@/types';
@@ -13,7 +15,6 @@ import DashboardChangePassword from './DashboardChangePassword';
 import DashboardProfile from './DashboardProfile';
 import DashboardSettingPersonal from './DashboardSettingPersonal';
 import DashboardSocialLink from './DashboardSocialLink';
-import { setLoading } from '@/lib/features/common/commonSlice';
 
 const tabs = [
   { value: 'personal', label: 'Cá nhân', icon: User },
@@ -34,6 +35,7 @@ const DashboardSettingTabView = () => {
       dispatch(setLoading(true));
       const res = await CandidateService.getMyProfile();
       setData(res.data);
+      dispatch(updateUser({ avatar: res.data.avatarUrl }));
     } catch (error) {
       console.log('e', error);
     } finally {
