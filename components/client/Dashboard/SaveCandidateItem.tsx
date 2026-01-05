@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { Candidate } from '@/types';
+import { Candidate, ICandidateDetail } from '@/types';
 import { handleSendMail } from '@/utils/common';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { ArrowDownToLine, ArrowRight, Bookmark, EllipsisVertical, Mail } from 'lucide-react';
+import { ArrowRight, Bookmark, EllipsisVertical, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { CandidateDetailContent } from '../Candidates/CandidateDetailContent';
@@ -90,9 +90,9 @@ const SaveCandidateItem = ({ item, removeItem }: { item: Candidate; removeItem: 
           size="xl"
           open
           onClose={() => setShowDetailUserModel(false)}
-          title={<CandidateDetailHeader candidateDetail={null} />}
+          title={<CandidateDetailHeader candidateDetail={item as ICandidateDetail} />}
         >
-          <CandidateDetailContent candidateDetail={null} />
+          <CandidateDetailContent candidateDetail={item as ICandidateDetail} />
         </GlassDialog>
       )}
     </>
