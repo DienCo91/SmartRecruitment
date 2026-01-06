@@ -135,7 +135,7 @@ const JobDetailPage = () => {
               )}
             </div>
           )}
-          <p className="text-sm mt-3">
+          <p className="text-sm mt-3 min-w-[200px]">
             Ngày hết hạn:{' '}
             <span
               className={cn(

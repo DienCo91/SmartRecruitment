@@ -1,3 +1,5 @@
+import { NotificationType } from '@/lib/stompClient';
+
 export interface ChatMessage {
   content: string;
   recipientId: number;
@@ -12,7 +14,7 @@ export interface NotificationMessage {
   senderAvatarUrl: string;
   senderId: number;
   senderName: string;
-  type: string;
+  type: NotificationType;
 }
 
 export interface Conversation {
