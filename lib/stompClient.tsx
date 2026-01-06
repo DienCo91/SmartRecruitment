@@ -7,11 +7,13 @@ import { store } from './store';
 import { setLastMessageStomp, updateLastMessage } from './features/chat/chatSlice';
 import { setNotifications, setTotalUnread } from './features/notification/notificationSlice';
 import { API_URL } from '@/constants';
+import { MessageSquareMoreIcon } from 'lucide-react';
 
 let stompClient: Client | null = null;
 
 export enum NotificationType {
   NEW_MESSAGE = 'NEW_MESSAGE',
+  NEW_COMMENT = 'NEW_COMMENT',
   JOB_APPLICATION = 'JOB_APPLICATION',
   APPLICATION_STATUS_CHANGE = 'APPLICATION_STATUS_CHANGE',
   SYSTEM_ALERT = 'SYSTEM_ALERT',
@@ -68,7 +70,18 @@ export const connectStomp = (
 
         const title = getTitle(body.type);
 
-        if (
+        if (body.type === NotificationType.NEW_COMMENT) {
+          toast.custom(t => (
+            <CustomToast
+              t={t}
+              title={title}
+              message={body?.content}
+              icon={<MessageSquareMoreIcon />}
+            />
+          ));
+          store.dispatch(setNotifications([body, ...state.notification.notifications]));
+          store.dispatch(setTotalUnread(state.notification.totalUnread + 1));
+        } else if (
           body.type === NotificationType.NEW_MESSAGE &&
           body.relatedId !== currentConversationId
         ) {
