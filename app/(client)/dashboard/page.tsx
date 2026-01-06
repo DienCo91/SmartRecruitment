@@ -9,8 +9,6 @@ import { CandidateService } from '@/services/candidate.services';
 import { EmployerService } from '@/services/employer.services';
 import { isEmployer, isLoginWithOAuth2 } from '@/utils';
 import { getStatCandidate, getStatEmployer } from '@/utils/common';
-import { get } from 'lodash';
-import { Bell, Bookmark, UserIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface DataStat {
@@ -31,13 +29,13 @@ const DashBoardOverView = () => {
       let data: DataStat[] = [];
 
       if (isEmployer(currentUser?.role)) {
-        const res = await EmployerService.getEmployerStatistic({ id: String(currentUser?.id) });
+        const res = await EmployerService.getEmployerStatistic();
         data = getStatEmployer({
           totalFollow: res.data.numberOfFollowedCandidates || 0,
           totalJob: res.data.numberOfOpenJobs || 0,
         });
       } else {
-        const res = await CandidateService.getCandidateStat({ id: String(currentUser?.id) });
+        const res = await CandidateService.getCandidateStat();
         data = getStatCandidate({
           totalApplied: res.data.numberOfAppliedJobs || 0,
           totalFavJob: res.data.numberOfFavoriteJobs || 0,

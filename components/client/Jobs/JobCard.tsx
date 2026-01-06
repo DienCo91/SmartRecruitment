@@ -60,19 +60,20 @@ export function JobCard({ job }: Props) {
 
   return (
     <div className="flex mt-3 gap-3 bg-white/5 p-3 rounded-xl shadow-sm hover:bg-white/15 hover:shadow-lg">
-      <CustomImage
-        src={job.companyLogoUrl}
-        fallback={AppImage.fallback.companyFallback.src}
-        alt=""
-        className="w-[80px] hidden lg:block"
-      />
+      <div className="w-[80px]">
+        <CustomImage
+          src={job.companyLogoUrl}
+          fallback={AppImage.fallback.companyFallback.src}
+          alt=""
+        />
+      </div>
 
       {/* Thông tin job */}
-      <div className="flex-1 flex-col w-full">
-        <div className="flex relative justify-between items-center flex-wrap">
+      <div className="flex-1 flex-col">
+        <div className="flex relative justify-between items-center flex-wrap md:flex-nowrap">
           <Link
             href={Router.JOB.DETAIL(job.slug)}
-            className="font-semibold text-neutral-300 hover:text-blue-400 hover:cursor-pointer w-[550px] line-clamp-2"
+            className="font-semibold text-neutral-300  hover:text-blue-400 hover:cursor-pointer line-clamp-2"
           >
             {job.jobTitle}
           </Link>
