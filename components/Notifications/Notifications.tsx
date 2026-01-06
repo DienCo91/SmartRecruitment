@@ -17,10 +17,11 @@ import {
   setTotalUnread,
   updateNotificationsRead,
 } from '@/lib/features/notification/notificationSlice';
+import { cn } from '@/lib/utils';
 
 const SIZE = 20;
 
-export function Notifications() {
+export function Notifications({ className, title }: { className?: string; title?: string }) {
   const dispatch = useAppDispatch();
   const totalUnread = useAppSelector(state => state.notification.totalUnread);
   const notifications = useAppSelector(state => state.notification.notifications);
@@ -101,10 +102,14 @@ export function Notifications() {
   const trigger = (
     <Button
       variant="ghost"
-      className="text-neutral-400 hover:bg-transparent hover:text-neutral-100 cursor-pointer"
+      className={cn(
+        'text-neutral-400 hover:bg-transparent hover:text-neutral-100 cursor-pointer',
+        className
+      )}
     >
       <div className="relative ">
         <NotificationIcon size={100} />
+
         {totalUnread > 0 && (
           <Badge
             variant="destructive"
@@ -114,6 +119,7 @@ export function Notifications() {
           </Badge>
         )}
       </div>
+      {title}
     </Button>
   );
 

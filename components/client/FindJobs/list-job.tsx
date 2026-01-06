@@ -1,19 +1,18 @@
 'use client';
 
+import { AppImage } from '@/common';
 import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
 import { CardContent } from '@/components/ui/card';
 import { IMAGE_EMPTY, Router } from '@/constants';
+import { formatSalary } from '@/lib/utils';
 import { JobItem } from '@/types';
 import { getLabelJobType } from '@/utils';
-import { formatNumber } from '@/utils/common';
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { LuDot } from 'react-icons/lu';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GlassCardBase from '../Cards/GlassCardBase';
 import { CustomImage } from '../Images/CustomImage';
-import { AppImage } from '@/common';
-import { formatSalary } from '@/lib/utils';
 
 interface IListJob {
   items: JobItem[];
@@ -24,7 +23,9 @@ interface IListJob {
 const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
   return (
     <div className="mt-[30px] hover:translate-y-[0px] ">
-      <GlassCardBase className="text-white font-bold text-[20px] mb-[20px]">Việc Làm</GlassCardBase>
+      <GlassCardBase className="text-white font-bold mb-[20px] text-[1rem] mx-4">
+        Việc Làm
+      </GlassCardBase>
 
       {!hasMore && items && items.length === 0 && (
         <div className="flex flex-col justify-center items-center py-20 text-gray-400">
@@ -37,7 +38,7 @@ const ListJob = ({ items = [], hasMore, fetchMoreData }: IListJob) => {
         style={{ height: 'calc(100vh - 240px)' }}
       >
         <InfiniteScroll
-          className="pt-[8px]"
+          className="pt-[8px] mx-4"
           dataLength={items?.length}
           next={fetchMoreData}
           scrollableTarget="scrollableDiv"

@@ -32,7 +32,7 @@ export function FilterCompanyHeader({ handleSubmit, handleClearFilter }: IFilter
   };
 
   return (
-    <div className="mt-[40px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
+    <div className="mt-[40px] flex lg:items-center bg-[#283564] shadow rounded-sm flex-col lg:flex-row ">
       <CustomInput
         startIcon={<SearchIcon size={18} />}
         placeholder="Vị trí tuyển dụng, tên công ty"
@@ -59,7 +59,7 @@ export function FilterCompanyHeader({ handleSubmit, handleClearFilter }: IFilter
       </Button>
       <Button
         variant="outline"
-        className="rounded-l-none text-white h-full cursor-pointer"
+        className="rounded-none lg:rounded-r-md text-white h-full cursor-pointer"
         onClick={handleClear}
       >
         Clear filter

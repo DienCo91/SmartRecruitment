@@ -24,7 +24,7 @@ export function BlogCardPrimary({ blog }: Props) {
 
         <div className="flex flex-1 items-baseline pl-5">
           <div className="flex flex-col gap-2">
-            <div className="flex gap-5 text-sm font-normal">
+            <div className="flex gap-5 text-sm font-normal flex-wrap">
               <div className="flex items-center gap-1 capitalize">
                 <CalendarIcon size={16} />
                 <span>{format(blog.publishedAt!, 'dd MMM, yyyy', { locale: vi })}</span>

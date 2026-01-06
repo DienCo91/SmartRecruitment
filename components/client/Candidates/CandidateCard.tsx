@@ -48,11 +48,11 @@ export function CandidateCard({ candidate }: { candidate: Candidate }) {
 
   return (
     <GlassCard title="" classContentName="px-0" className="my-4 bg-transparent">
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <AvatarUser className="size-16" src={avatarUrl || AppImage.avatarFallback.src} />
 
         <div className="grid grid-cols-12 w-full">
-          <div className="col-span-9">
+          <div className="col-span-12 sm:col-span-9">
             <h3 className="font-semibold text-neutral-300 capitalize">
               {fullName || 'Chưa cập nhật tên'}
             </h3>
@@ -76,7 +76,7 @@ export function CandidateCard({ candidate }: { candidate: Candidate }) {
             </div>
           </div>
 
-          <div className="flex col-span-3 items-center justify-end">
+          <div className="flex col-span-12 sm:col-span-3 items-center justify-end">
             <button onClick={handleToggleSaveCandidate} className="focus:outline-none">
               <Bookmark
                 fill={follow ? 'white' : 'transparent'}

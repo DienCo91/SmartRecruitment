@@ -57,7 +57,6 @@ const Contact: React.FC<IContact> = ({ goToPrev, goToNext, initValue, hasInitDat
   };
 
   useEffect(() => {
-    console.log('first', initValue.location?.commune);
     reset({
       location: `${initValue.location?.commune ?? ''}`,
       phoneNumber: initValue.phoneNumber,

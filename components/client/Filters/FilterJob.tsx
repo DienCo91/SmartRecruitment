@@ -48,11 +48,11 @@ export function FilterJob({ handleSubmit, isActiveCategory = true }: IFilterJob)
   const handleClear = () => setFilters(initFilter);
 
   return (
-    <div className="mt-[40px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
+    <div className="mt-[40px] flex lg:items-center  bg-[#283564] shadow rounded-sm flex-col lg:flex-row mx-[16px] xl:mx-0">
       <CustomInput
         startIcon={<SearchIcon size={18} />}
         placeholder="Vị trí tuyển dụng, tên công ty"
-        className="focus-within:ring-0 border-0 rounded-none bg-transparent shadow-none"
+        className="focus-within:ring-0 border-0 rounded-none bg-transparent shadow-none "
         value={filters.search}
         onChange={e => handleFilter('search', e.target.value)}
       />
@@ -89,9 +89,9 @@ export function FilterJob({ handleSubmit, isActiveCategory = true }: IFilterJob)
           </CustomButton>
         }
         align="end"
-        className="w-[800px] text-neutral-300 shadow-md"
+        className="ml-[16px] w-[200px] md:w-[800px] text-neutral-300 shadow-md"
       >
-        <div className="flex justify-between gap-3">
+        <div className="flex justify-between gap-3 flex-col md:flex-row ">
           <div className="">
             <span className="text-sm">Kinh nghiệm</span>
             <Separator className="my-2" />
@@ -144,7 +144,7 @@ export function FilterJob({ handleSubmit, isActiveCategory = true }: IFilterJob)
       </Button>
       <Button
         variant="outline"
-        className="rounded-l-none text-white h-full cursor-pointer"
+        className="rounded-none lg:rounded-r-md text-white h-full cursor-pointer"
         onClick={handleClear}
       >
         Clear filter

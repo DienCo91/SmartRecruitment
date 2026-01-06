@@ -34,14 +34,14 @@ const HomePage = () => {
   return (
     <div className="relative">
       <FilterJob handleSubmit={handleSubmit} />
-      <div className="grid grid-cols-12 mt-[40px]">
+      <div className="grid grid-cols-12 mt-[40px] mx-[16px] xl:mx-0">
         {/* Left card */}
-        <div className="col-span-8 mr-3">
+        <div className="col-span-12 lg:col-span-8 lg:mr-3">
           <HotJobs />
           <TopCompanies />
         </div>
         {/* Right card */}
-        <div className="col-span-4">
+        <div className="col-span-12 lg:col-span-4">
           <PopularTags />
           <Ads />
           <Blogs />

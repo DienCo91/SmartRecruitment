@@ -1,4 +1,5 @@
 import { locations } from '@/constants/mockedData';
+import { Bell, Bookmark, UserIcon } from 'lucide-react';
 import {
   FaGithub,
   FaGitlab,
@@ -100,11 +101,57 @@ export const isDateExpired = (dateString: string) => {
   return date.getTime() < now.getTime();
 };
 
-export async function urlToFile(url: string, filename: string, mimeType?: string): Promise<File> {
+export async function urlToFile(url: string, filename: string): Promise<File> {
   const res = await fetch(url);
   const blob = await res.blob();
 
   return new File([blob], filename, {
-    type: mimeType || blob.type,
+    type: blob.type,
   });
 }
+
+export const getStatEmployer = ({
+  totalJob,
+  totalFollow,
+}: {
+  totalJob: number;
+  totalFollow: number;
+}) => {
+  return [
+    {
+      title: 'Job đang mở',
+      value: totalJob,
+      icon: <Bell className="text-blue-600" />,
+      color: '#E7F0FA',
+    },
+    {
+      title: 'Ứng viên Follow',
+      value: totalFollow,
+      icon: <UserIcon className="text-orange-500" />,
+      color: '#FFF6E6',
+    },
+  ];
+};
+
+export const getStatCandidate = ({
+  totalApplied,
+  totalFavJob,
+}: {
+  totalApplied: number;
+  totalFavJob: number;
+}) => {
+  return [
+    {
+      title: 'Công Việc đã Nộp',
+      value: totalApplied,
+      icon: <Bell className="text-blue-600" />,
+      color: '#E7F0FA',
+    },
+    {
+      title: 'Công việc yêu thích',
+      value: totalFavJob,
+      icon: <Bookmark className="text-orange-500" />,
+      color: '#FFF6E6',
+    },
+  ];
+};

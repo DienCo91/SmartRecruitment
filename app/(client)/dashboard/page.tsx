@@ -5,46 +5,56 @@ import ProfileForm from '@/components/client/Dashboard/ProfileForm';
 import { Separator } from '@/components/ui/separator';
 import { useAppSelector } from '@/lib/hooks';
 import { RootState } from '@/lib/store';
+import { CandidateService } from '@/services/candidate.services';
+import { EmployerService } from '@/services/employer.services';
 import { isEmployer, isLoginWithOAuth2 } from '@/utils';
-import { Bell, BellRing, Bookmark, UserIcon } from 'lucide-react';
+import { getStatCandidate, getStatEmployer } from '@/utils/common';
+import { get } from 'lodash';
+import { Bell, Bookmark, UserIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-const INFO_CARD_CANDIDATE = [
-  {
-    title: 'Applied Jobs',
-    value: 598,
-    icon: <Bell className="text-blue-600" />,
-    color: '#E7F0FA',
-  },
-  {
-    title: 'Favorite jobs',
-    value: 238,
-    icon: <Bookmark className="text-orange-500" />,
-    color: '#FFF6E6',
-  },
-];
-
-const INFO_CARD_EMPLOYER = [
-  {
-    title: 'Job đang mở',
-    value: 10,
-    icon: <Bell className="text-blue-600" />,
-    color: '#E7F0FA',
-  },
-  {
-    title: 'Ứng viên apply',
-    value: 238,
-    icon: <UserIcon className="text-orange-500" />,
-    color: '#FFF6E6',
-  },
-];
+interface DataStat {
+  title: string;
+  value: number;
+  icon: React.ReactNode;
+  color: string;
+}
 
 const DashBoardOverView = () => {
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
   const canChangePassword = !isLoginWithOAuth2();
 
-  if (!currentUser) return null;
+  const [dataStat, setDataStat] = useState<DataStat[]>([]);
 
-  const data = isEmployer(currentUser.role) ? INFO_CARD_EMPLOYER : INFO_CARD_CANDIDATE;
+  const getDataStat = async () => {
+    try {
+      let data: DataStat[] = [];
+
+      if (isEmployer(currentUser?.role)) {
+        const res = await EmployerService.getEmployerStatistic({ id: String(currentUser?.id) });
+        data = getStatEmployer({
+          totalFollow: res.data.numberOfFollowedCandidates || 0,
+          totalJob: res.data.numberOfOpenJobs || 0,
+        });
+      } else {
+        const res = await CandidateService.getCandidateStat({ id: String(currentUser?.id) });
+        data = getStatCandidate({
+          totalApplied: res.data.numberOfAppliedJobs || 0,
+          totalFavJob: res.data.numberOfFavoriteJobs || 0,
+        });
+      }
+      setDataStat(data as DataStat[]);
+    } catch (e) {
+      console.log('e', e);
+    } finally {
+    }
+  };
+
+  useEffect(() => {
+    getDataStat();
+  }, []);
+
+  if (!currentUser) return null;
 
   return (
     <>
@@ -54,10 +64,10 @@ const DashBoardOverView = () => {
       </span>
 
       <div className="grid grid-cols-3 gap-4 my-[24px]">
-        {data.map((item, index) => (
+        {dataStat.map((item, index) => (
           <div
             key={index}
-            className="flex p-[24px] rounded-lg justify-between items-center text-black"
+            className="flex flex-wrap p-[24px] rounded-lg justify-between items-center text-black"
             style={{ backgroundColor: item.color }}
           >
             <div>

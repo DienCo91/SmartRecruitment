@@ -27,7 +27,7 @@ export function FilterCandidate({ handleClearFilter }: { handleClearFilter?: () 
   };
 
   return (
-    <div className="mt-[40px] flex items-center h-10 bg-[#283564] shadow rounded-sm">
+    <div className="mt-[40px] flex lg:items-center  bg-[#283564] flex-col lg:flex-row mx-[16px] shadow rounded-sm">
       <CustomInput
         startIcon={<SearchIcon size={18} />}
         placeholder="Nhập tên hoặc email ứng viên"
@@ -58,7 +58,7 @@ export function FilterCandidate({ handleClearFilter }: { handleClearFilter?: () 
       </Button>
       <Button
         variant="outline"
-        className="rounded-l-none text-white h-full cursor-pointer"
+        className="rounded-none lg:rounded-r-md h-full cursor-pointer"
         onClick={handleClear}
       >
         Clear filter
