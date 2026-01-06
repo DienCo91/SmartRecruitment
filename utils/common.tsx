@@ -1,5 +1,5 @@
 import { locations } from '@/constants/mockedData';
-import { Bell, Bookmark, UserIcon } from 'lucide-react';
+import { Bell, Bookmark, Heart, UserIcon } from 'lucide-react';
 import {
   FaGithub,
   FaGitlab,
@@ -142,7 +142,7 @@ export const getStatCandidate = ({
 }) => {
   return [
     {
-      title: 'Công Việc đã Nộp',
+      title: 'Công việc đã nộp',
       value: totalApplied,
       icon: <Bell className="text-blue-600" />,
       color: '#E7F0FA',
@@ -150,7 +150,7 @@ export const getStatCandidate = ({
     {
       title: 'Công việc yêu thích',
       value: totalFavJob,
-      icon: <Bookmark className="text-orange-500" />,
+      icon: <Heart className="text-orange-500" />,
       color: '#FFF6E6',
     },
   ];

@@ -99,8 +99,8 @@ export const CandidateService = {
     return res.data;
   },
 
-  async getCandidateStat({ id }: { id: string }) {
-    const res = await http.get(`${endpointPrefix}/profile/${id}/stat`);
+  async getCandidateStat() {
+    const res = await http.get(`${endpointPrefix}/profile/stat`);
     return res.data;
   },
 };
