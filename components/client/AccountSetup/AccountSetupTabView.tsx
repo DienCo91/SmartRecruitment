@@ -17,6 +17,7 @@ import CompanyInfo from './company-infor';
 import Contact from './contact';
 import FoundingContent from './founding-content';
 import SocialMediaProfile from './social-media-profile';
+import { urlToFile } from '@/utils/common';
 
 export interface DataSubmitFormProps {
   nameCompany: string;
@@ -171,13 +172,17 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
   };
 
   const handleActiveUpdate = async () => {
-    if (typeof dataSubmitForm.logo === 'string') {
-      setDataSubmitForm(prev => ({
-        ...prev,
-        logo: '',
-        banner: '',
-      }));
-    }
+    // const bannerFile = await urlToFile(dataSubmitForm.banner, 'banner.jpg');
+
+    // const logoFile = await urlToFile(dataSubmitForm.logo, 'logo.png');
+
+    // console.log('======first', bannerFile, logoFile);
+
+    setDataSubmitForm(prev => ({
+      ...prev,
+      logo: '',
+      banner: '',
+    }));
 
     setHasInitData(false);
   };
@@ -208,14 +213,14 @@ const AccountSetupTabView: React.FC<IAccountSetupTabView> = ({
               value={tab.value}
               style={{ boxShadow: 'none' }}
               className={cn(
-                `flex border-0 mb-[-3px]  rounded-none items-center gap-2  py-3 text-sm font-medium border-b-2
+                `flex border-0 mb-[-3px]  rounded-none items-center gap-4  py-3 text-sm font-medium border-b-2
              border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 text-gray-500
-            hover:text-gray-600 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default `,
+            hover:text-gray-600 focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default`,
                 classNameTabTrigger
               )}
             >
               <tab.icon className="w-4 h-4" />
-              {tab.label}
+              <span className="hidden md:inline truncate">{tab.label}</span>
             </TabsTrigger>
           ))}
         </TabsList>

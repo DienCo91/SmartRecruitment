@@ -37,7 +37,7 @@ export const ApplicationList: React.FC<IApplicationList> = ({
   };
 
   return (
-    <GlassCardBase className="mt-[32px] w-full">
+    <GlassCardBase className="w-full">
       <div className="w-full">
         <h1 className="font-bold text-[16px] mb-[20px]">{title}</h1>
 

@@ -98,4 +98,9 @@ export const CandidateService = {
     const res = await http.get(`${endpointPrefix}/profile/me`);
     return res.data;
   },
+
+  async getCandidateStat({ id }: { id: string }) {
+    const res = await http.get(`${endpointPrefix}/profile/${id}/stat`);
+    return res.data;
+  },
 };

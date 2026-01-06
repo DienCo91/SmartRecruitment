@@ -38,7 +38,7 @@ export function GlassCard({
       {title !== '' && (
         <CardHeader className="gap-0 p-0">
           <div className="flex justify-between">
-            <CardTitle className="text-lg ml-0 ư-full">
+            <CardTitle className="text-lg ml-0 w-full">
               {icon && <span className="mr-2">{icon}</span>}
               {title}
             </CardTitle>

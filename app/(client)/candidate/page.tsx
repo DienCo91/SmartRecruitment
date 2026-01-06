@@ -82,7 +82,7 @@ const CandidatePage = () => {
       <FilterCandidate handleClearFilter={handleClearFilter} />
       <GlassCard title="" className="mt-[60px]">
         <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-4 mt-3">
+          <div className="col-span-12 md:col-span-4 mt-3">
             <GlassCard title="" classContentName="p-0" className="col-span-4 hover:bg-transparent ">
               {/* Experiences */}
               <CustomCollapsible
@@ -136,7 +136,10 @@ const CandidatePage = () => {
             </GlassCard>
           </div>
 
-          <div id="scrollable-candidates" className="col-span-8 h-[1000px] overflow-y-auto">
+          <div
+            id="scrollable-candidates"
+            className="col-span-12 md:col-span-8 h-[1000px] overflow-y-auto"
+          >
             {loading ? (
               <LoadingCircle />
             ) : !Boolean(candidates.length) ? (

@@ -43,6 +43,7 @@ export function PopularTags() {
     <GlassCard
       icon={<span className="text-violet-400 font-bold">#</span>}
       title="Tag phổ biến"
+      className="mt-[16px] lg:mt-0"
       classContentName="flex flex-wrap p-0"
     >
       {loading ? (

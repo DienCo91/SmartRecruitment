@@ -67,7 +67,7 @@ export function HotJobs() {
         </>
       }
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         {loading ? (
           <>
             {range(0, 6).map((_, key) => {

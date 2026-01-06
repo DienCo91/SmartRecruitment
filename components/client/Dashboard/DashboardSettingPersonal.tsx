@@ -189,7 +189,7 @@ const DashboardSettingPersonal = ({
       </Form>
       <h1 className="text-[18px] font-[500] mt-[32px] mb-[18px]">CV của bạn</h1>
 
-      <div className="grid grid-cols-2 2xl:grid-cols-3 gap-[16px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-[16px]">
         {loadingLocal &&
           Array.from({ length: 2 }).map((_, index) => (
             <Skeleton key={index} className="h-[78px] rounded-xl bg-white/60 backdrop-blur-lg" />

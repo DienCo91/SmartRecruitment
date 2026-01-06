@@ -47,22 +47,22 @@ export const EMPLOYER_DASHBOARD = {
     {
       title: 'Đăng tin tuyển dụng',
       link: Router.DASHBOARD.POST_A_JOB,
-      icon: <CirclePlus />,
+      icon: <CirclePlus size={22} />,
     },
     {
       title: 'Job đã đăng tải',
       link: Router.DASHBOARD.MY_JOBS,
-      icon: <Bell />,
+      icon: <Bell size={22} />,
     },
     {
       title: 'Ứng viên đã lưu',
       link: Router.DASHBOARD.SAVE_CANDIDATES,
-      icon: <Bookmark />,
+      icon: <Bookmark size={22} />,
     },
     {
       title: 'Cài đặt',
       link: Router.DASHBOARD.SETTING,
-      icon: <Settings />,
+      icon: <Settings size={22} />,
     },
   ],
 };

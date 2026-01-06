@@ -29,14 +29,14 @@ const DashboardSidebar = () => {
             <Link
               href={item.link}
               key={item.title}
-              className={`flex space-x-[20px] py-[12px] px-[20px] cursor-pointer hover:bg-white/10 border-l-[4px]  transition-all duration-100 ease-in-out hover:font-bold ${
+              className={`flex md:space-x-[20px] py-[12px] px-[20px] cursor-pointer hover:bg-white/10 border-l-[4px] justify-center md:justify-start  transition-all duration-100 ease-in-out hover:font-bold ${
                 isActive
                   ? 'bg-white/10 border-blue-primary font-bold  border-l-[4px]'
                   : 'border-transparent'
               }`}
             >
-              {item.icon}
-              <span className="ml-[16px] tex-[14px]">{item.title}</span>
+              <div className="h-[20px] w-[20px]"> {item.icon}</div>
+              <span className="ml-[16px] tex-[14px] hidden md:block truncate">{item.title}</span>
             </Link>
           );
         })}

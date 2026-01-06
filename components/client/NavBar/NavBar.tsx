@@ -13,17 +13,28 @@ import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { ShortUserInfo } from '../Avatar/ShortUserInfo';
 import { Theme, useTheme } from '@/contexts/theme';
+import {
+  BriefcaseBusiness,
+  Building2,
+  House,
+  LayersIcon,
+  LibraryBig,
+  Menu,
+  MessageSquareMore,
+  Users,
+} from 'lucide-react';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 const reload = () => window.location.reload();
 
 const SiteAll = [
-  { name: 'Trang chủ', path: Router.HOME },
-  { name: 'Tìm Kiếm Công Việc', path: Router.FIND_JOB },
-  { name: 'Công ty', path: Router.FIND_COMPANY.LIST },
-  { name: 'Ứng viên', path: Router.FIND_CANDIDATE.LIST },
-  { name: 'Bài viết', path: Router.BLOGS },
-  { name: 'Tin Nhắn', path: Router.CHATTING },
-  { name: 'Tổng Quan', path: Router.DASHBOARD.OVERVIEW },
+  { name: 'Trang chủ', path: Router.HOME, icon: <House /> },
+  { name: 'Tìm Kiếm Công Việc', path: Router.FIND_JOB, icon: <BriefcaseBusiness /> },
+  { name: 'Công ty', path: Router.FIND_COMPANY.LIST, icon: <Building2 /> },
+  { name: 'Ứng viên', path: Router.FIND_CANDIDATE.LIST, icon: <Users /> },
+  { name: 'Bài viết', path: Router.BLOGS, icon: <LibraryBig /> },
+  { name: 'Tin Nhắn', path: Router.CHATTING, icon: <MessageSquareMore /> },
+  { name: 'Tổng Quan', path: Router.DASHBOARD.OVERVIEW, icon: <LayersIcon /> },
 ];
 
 export function NavBar() {
@@ -59,11 +70,16 @@ export function NavBar() {
   return (
     <div
       className="flex sticky top-0 left-0 w-full items-center justify-between h-13 
-                  font-semibold text-sm bg-[#1d2954] shadow-xl z-[10] text-neutral-200"
+                  font-semibold text-sm bg-[#1d2954] shadow-xl z-[10] text-neutral-200 px-[16px]"
     >
       <div className="flex w-full max-w-7xl mx-auto items-center justify-between">
-        <div className="flex gap-5 items-center">
-          <Image src={AppImage.logo} alt="Logo" className="size-10" onClick={reload} />
+        <div className="flex gap-0 md:gap-2 lg:gap-5 items-center">
+          <Image
+            src={AppImage.logo}
+            alt="Logo"
+            className="size-10 md:block hidden"
+            onClick={reload}
+          />
           {sites.map((site, index) => {
             const isActive = site.path === '/' ? pathName === '/' : pathName.startsWith(site.path);
 
@@ -78,7 +94,8 @@ export function NavBar() {
                       : ''
                   )}
                 >
-                  {site.name}
+                  <div>{site.icon}</div>
+                  <span className="hidden lg:block">{site.name}</span>
                 </Button>
               </Link>
             );
@@ -86,16 +103,49 @@ export function NavBar() {
         </div>
 
         {currentUser?.role ? (
-          <div className="flex gap-3">
-            <Button
-              size={'sm'}
-              onClick={handleChangeTheme}
-              className="rounded-full border px-2 text-sm bg-white/30 dark:bg-gray-900 hover:dark:bg-gray-800 hover:bg-gray-200"
-            >
-              {theme === Theme.DARK ? '🌙' : '☀️'}
-            </Button>
-            <Notifications />
-            <ShortUserInfo />
+          <div className="flex items-center gap-3">
+            {/* Desktop */}
+            <div className="hidden xl:flex gap-3">
+              <Button
+                size="sm"
+                onClick={handleChangeTheme}
+                className="rounded-full border px-2 text-sm bg-white/30 dark:bg-gray-900"
+              >
+                {theme === Theme.DARK ? '🌙' : '☀️'}
+              </Button>
+              <Notifications />
+              <ShortUserInfo />
+            </div>
+
+            {/* Mobile */}
+            <div className="xl:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <SheetTitle>
+                    <div className="px-[16px] text-white hover:opacity-70 transition-all duration-150 ease-in-out cursor-pointer">
+                      <Menu size={24} />
+                    </div>
+                  </SheetTitle>
+                </SheetTrigger>
+
+                <SheetContent side="right" className="w-64 pt-[60px]">
+                  <div className="space-y-4">
+                    <div
+                      onClick={handleChangeTheme}
+                      className="w-full justify-start px-[16px] hover:bg-blue-primary hover:text-white cursor-pointer py-[8px]"
+                    >
+                      {theme === Theme.DARK ? '🌙 Dark' : '☀️ Light'}
+                    </div>
+
+                    <Notifications
+                      title="Thông Báo"
+                      className="hover:bg-blue-primary hover:text-white cursor-pointer py-[16px] w-full justify-start rounded-none ring-0 text-foreground"
+                    />
+                    <ShortUserInfo className="mx-[16px] mt-[24px]" />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         ) : (
           <div className="flex items-center ">

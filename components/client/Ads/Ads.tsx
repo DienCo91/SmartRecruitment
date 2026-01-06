@@ -22,7 +22,7 @@ export function Ads() {
     },
   ];
   return (
-    <GlassCard title="" className="mt-5">
+    <GlassCard title="" className="mt-5 hidden lg:block">
       <Carousel
         opts={{
           loop: true,

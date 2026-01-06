@@ -101,7 +101,7 @@ const ChatContainer = () => {
   };
 
   return (
-    <GlassCardBase className="mr-[16px] w-[300px] hover:translate-y-[0px] px-0">
+    <GlassCardBase className="mr-[16px] w-full lg:w-[300px] h-full hover:translate-y-[0px] px-0">
       <h1 className="font-bold text-[18px] px-4">Đoạn chat</h1>
       <CustomInput
         startIcon={<SearchIcon size={14} />}

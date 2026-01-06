@@ -64,19 +64,19 @@ export function JobCard({ job }: Props) {
         src={job.companyLogoUrl}
         fallback={AppImage.fallback.companyFallback.src}
         alt=""
-        className="w-[80px]"
+        className="w-[80px] hidden lg:block"
       />
 
       {/* Thông tin job */}
       <div className="flex-1 flex-col w-full">
-        <div className="flex relative justify-between items-center">
+        <div className="flex relative justify-between items-center flex-wrap">
           <Link
             href={Router.JOB.DETAIL(job.slug)}
             className="font-semibold text-neutral-300 hover:text-blue-400 hover:cursor-pointer w-[550px] line-clamp-2"
           >
             {job.jobTitle}
           </Link>
-          <div className="absolute flex gap-1 right-0">
+          <div className="flex gap-1 right-0">
             <Badge variant="destructive" className="bg-red-800 block">
               Nổi bật
             </Badge>
@@ -86,7 +86,7 @@ export function JobCard({ job }: Props) {
           </div>
         </div>
         <span className="text-gray-400 text-sm">{job.companyName}</span>
-        <div className="flex gap-2 text-xs text-gray-400 mt-1">
+        <div className="flex gap-2 text-xs text-gray-400 mt-1 flex-wrap">
           <span className="flex items-center gap-1">
             <MapPinIcon size={14} />
             {job.provinceCity}
@@ -101,7 +101,7 @@ export function JobCard({ job }: Props) {
           </span>
         </div>
         <hr className="my-2" />
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
           <div>
             <Label className="text-xs inline">Yêu cầu: </Label>
             <Badge
@@ -124,7 +124,7 @@ export function JobCard({ job }: Props) {
                 />
               </CustomButton>
               <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
-                Ứng tuyển ngay
+                <span className="truncate">Ứng tuyển ngay</span>
                 <ArrowRightIcon />
               </CustomButton>
             </div>

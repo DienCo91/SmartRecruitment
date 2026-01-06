@@ -39,7 +39,7 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
   return (
     <>
       <DashboardHeader title="Danh sách đơn xin việc">
-        <div className="space-x-4">
+        <div className="space-y-4 space-x-4">
           <ApplicationFilter ref={filterOptionRef} />
           <Button
             variant="outline"
@@ -50,19 +50,17 @@ const ViewApplication = (props: PageProps<'/dashboard/view-applications/[id]'>) 
           </Button>
         </div>
       </DashboardHeader>
-      <div className="flex space-x-[32px] items-center">
+      <div className="flex flex-wrap lg:flex-nowrap items-center mt-[32px]">
         <ApplicationList title="Đơn đã nộp" onViewDetailApplication={onViewDetailApplication} />
-        <div>
-          <Button
-            size="lg"
-            onClick={handleApply}
-            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <span>Áp dụng bộ lọc</span>
-            <MoveRight className="w-4 h-4" />
-          </Button>
-          <br />
-        </div>
+        <Button
+          size="lg"
+          onClick={handleApply}
+          className="flex items-center mx-0 lg:mx-4 my-4 bg-blue-600 hover:bg-blue-700 text-white w-full lg:w-auto"
+        >
+          <span>Áp dụng bộ lọc</span>
+          <MoveRight className="w-4 h-4" />
+        </Button>
+        <br />
         <ApplicationList
           title="Đơn đã lọc"
           params={dataFilter}

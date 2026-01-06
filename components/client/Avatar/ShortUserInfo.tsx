@@ -12,8 +12,9 @@ import { RootState } from '@/lib/store';
 import { BookIcon, LogOutIcon, SquareUserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { AvatarUser } from './AvatarUser';
+import { cn } from '@/lib/utils';
 
-export function ShortUserInfo() {
+export function ShortUserInfo({ className }: { className?: string }) {
   const router = useRouter();
   const logout = useLogout();
   const currentUser = useAppSelector((state: RootState) => state.auth.currentUser);
@@ -32,8 +33,13 @@ export function ShortUserInfo() {
   ];
 
   return (
-    <div className="flex gap-2 items-center inset-shadow-sm rounded-full pl-3 shadow-xl ring-1 ring-blue-500/50">
-      <div className="flex flex-col font-normal text-right text-xs">
+    <div
+      className={cn(
+        'flex gap-2 items-center inset-shadow-sm rounded-full pl-3 shadow-xl ring-1 ring-blue-500/50',
+        className
+      )}
+    >
+      <div className="flex flex-col font-normal text-right text-xs ">
         <span>{currentUser?.userName}</span>
         <span>{currentUser?.email}</span>
       </div>

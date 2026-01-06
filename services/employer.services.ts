@@ -65,4 +65,8 @@ export const EmployerService = {
     const res = await http.patch(`${endpointPrefix}/job/${jobId}/expire`);
     return res.data;
   },
+  async getEmployerStatistic({ id }: { id: string }) {
+    const res = await http.get(`${endpointPrefix}/company/${id}/stat`);
+    return res.data;
+  },
 };

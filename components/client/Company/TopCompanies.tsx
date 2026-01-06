@@ -1,16 +1,15 @@
 'use client';
 
-import { LoadingCircle } from '@/components/Loadings/LoadingCircle';
+import { useAppSelector } from '@/lib/hooks';
 import { CompanyService } from '@/services/company.services';
 import { Pagination, TopCompany } from '@/types';
+import { range } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { GlassCard } from '../Cards/GlassCard';
 import { CustomPagination } from '../Paginations/CustomPagination';
-import { CompanyCard } from './CompanyCard';
-import { useAppSelector } from '@/lib/hooks';
-import _, { range } from 'lodash';
 import { CompanyCardSkeleton } from '../Skeletons/CompanyCardSkeleton';
+import { CompanyCard } from './CompanyCard';
 
 export function TopCompanies() {
   const [loading, setLoading] = useState<boolean>(false);

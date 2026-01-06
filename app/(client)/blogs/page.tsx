@@ -54,14 +54,14 @@ const BlogsPage = () => {
 
   return (
     <div className="grid grid-cols-12 gap-3 mt-[60px]">
-      <div className="col-span-4 flex flex-col gap-5">
+      <div className="col-span-12 lg:col-span-4 flex flex-col gap-5">
         <FilterBlog />
         <RecentBlogs />
         <PopularBlogTags />
       </div>
       <GlassCard
         title=""
-        className="col-span-8"
+        className="lg:col-span-8 col-span-12"
         classContentName="flex flex-col gap-3 flex-1"
         footer={
           Boolean(blogs.length) && (

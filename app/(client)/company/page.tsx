@@ -88,13 +88,13 @@ const Company = () => {
       <FilterCompanyHeader handleSubmit={handleSubmit} handleClearFilter={handleClearFilter} />
 
       <GlassCardBase className="grid grid-cols-12 mt-[60px]">
-        <div className="col-span-3 mr-3">
+        <div className="col-span-12 lg:col-span-3 mr-3">
           <FilterCompany ref={refFilterCompany} />
         </div>
 
         <div
           id="scrollableCompany"
-          className="col-span-9 space-y-[16px] h-[80vh] overflow-auto pr-2"
+          className="col-span-12 lg:col-span-9 space-y-[16px] h-[80vh] overflow-auto pr-2"
         >
           {!isFirstLoad && dataCompany.length === 0 && (
             <div className="flex flex-col justify-center items-center py-20 text-gray-400">

@@ -67,7 +67,7 @@ const DashboardSettingTabView = () => {
             hover:text-[#ffffffaa] focus:outline-none transition-colors disabled:opacity-100 disabled:cursor-default"
           >
             <tab.icon className="w-4 h-4" />
-            {tab.label}
+            <span className="hidden md:inline truncate">{tab.label}</span>
           </TabsTrigger>
         ))}
       </TabsList>

@@ -12,7 +12,7 @@ import { AppImage } from '@/common';
 
 const CompanyOpenPosition = ({ item }: { item: CompanyItem }) => {
   return (
-    <div className="flex backdrop-blur-md rounded-xl items-center overflow-hidden p-[16px] bg-white/10 shadow-md hover:bg-white/15 hover:shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-2px]">
+    <div className="flex flex-wrap gap-2 backdrop-blur-md rounded-xl items-center overflow-hidden p-[16px] bg-white/10 shadow-md hover:bg-white/15 hover:shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-2px]">
       <CustomImage
         src={item?.logoUrl}
         fallback={AppImage.fallback.companyFallback.src}
