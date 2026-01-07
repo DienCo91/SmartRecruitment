@@ -55,10 +55,10 @@ export function TopCompanies() {
           <>
             <CustomPagination
               className="w-full"
-              curPage={pagination.page ?? 1}
+              curPage={pagination.page || 1}
               totalPage={pagination.totalPages ?? 6}
               onPageChange={page => {
-                setPagination(prev => ({ ...prev, current: page }));
+                setPagination(prev => ({ ...prev, page }));
               }}
             />
           </>
