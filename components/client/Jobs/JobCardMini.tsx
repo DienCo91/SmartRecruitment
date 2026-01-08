@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { CompanyJobPageResponse } from '@/types';
 import { GlassCard } from '../Cards/GlassCard';
 import { getLabelJobType } from '@/utils';
-import { formatNumber } from '@/utils/common';
+import { formatSalary } from '@/lib/utils';
 
 export function JobCardMini({ job }: { job: CompanyJobPageResponse }) {
   if (!job) return null;
@@ -35,7 +35,7 @@ export function JobCardMini({ job }: { job: CompanyJobPageResponse }) {
         <span>{getLabelJobType(job?.jobType)}</span>
         <span className="size-1 inline-block rounded-full border bg-white mx-2" />
         <span>
-          ${formatNumber(job.minSalary)} - ${formatNumber(job.maxSalary)}
+          {formatSalary(job.minSalary)} VND - {formatSalary(job.maxSalary)} VND
         </span>
       </div>
     </GlassCard>

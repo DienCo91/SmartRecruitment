@@ -14,7 +14,12 @@ export function NotificationCard({
   return (
     <div
       onClick={onRead}
-      className="relative flex items-start rounded-xs my-2 p-2 text-xs bg-white/5 hover:cursor-pointer hover:bg-white/10"
+      className={`
+      relative flex gap-3 rounded-lg p-3 my-2
+      text-sm transition
+      hover:cursor-pointer hover:bg-white/10
+      ${!item.read ? 'bg-white/5' : 'bg-transparent'}
+    `}
     >
       {!item.read && (
         <div className="w-[10px] h-[10px] absolute top-[-2px] left-[8px]">
@@ -22,9 +27,11 @@ export function NotificationCard({
           <div className=" bg-red-500 rounded-full w-[10px] h-[10px]" />
         </div>
       )}
-      {/* <AvatarUser className="size-8" src="" /> */}
-      <span className="px-3 py-1 text-neutral-300 pr-[50px] ">{item.content}</span>
-      <span className=" text-[12px] text-gray-400 ">{relative}</span>
+
+      <div className="flex-1 min-w-0">
+        <p className="text-neutral-200 leading-snug line-clamp-2">{item.content}</p>
+        <span className="mt-1 block text-[11px] text-gray-400">{relative}</span>
+      </div>
     </div>
   );
 }

@@ -16,12 +16,14 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { CustomImage } from '../Images/CustomImage';
 import { AppImage } from '@/common';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   job: HotJob;
 }
 
 export function JobCard({ job }: Props) {
+  const router = useRouter();
   const { jobIds: favoriteJobIds } = useAppSelector(state => state.favoriteJobs);
   const isFavorited = favoriteJobIds.includes(job.id);
 
@@ -124,7 +126,10 @@ export function JobCard({ job }: Props) {
                   className={cn('size-6 border-0', isFavorited ? 'text-red-500 fill-red-500' : '')}
                 />
               </CustomButton>
-              <CustomButton className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200">
+              <CustomButton
+                onClick={() => router.push(Router.JOB.DETAIL(job.slug) as string)}
+                className="bg-white/30 text-white hover:bg-white/20 hover:text-gray-200"
+              >
                 <span className="truncate">Ứng tuyển ngay</span>
                 <ArrowRightIcon />
               </CustomButton>
