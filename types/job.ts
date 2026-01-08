@@ -31,19 +31,18 @@ export interface Job {
   slug: string;
 }
 
-export interface HotJob
-  extends Pick<
-    Job,
-    | 'id'
-    | 'slug'
-    | 'salaryType'
-    | 'minSalary'
-    | 'maxSalary'
-    | 'jobType'
-    | 'jobTitle'
-    | 'expirationDate'
-    | 'experienceLevel'
-  > {
+export interface HotJob extends Pick<
+  Job,
+  | 'id'
+  | 'slug'
+  | 'salaryType'
+  | 'minSalary'
+  | 'maxSalary'
+  | 'jobType'
+  | 'jobTitle'
+  | 'expirationDate'
+  | 'experienceLevel'
+> {
   companyLogoUrl: string;
   companyName: string;
   provinceCity: string;
