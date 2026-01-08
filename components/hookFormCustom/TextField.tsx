@@ -6,8 +6,10 @@ import { cn } from '@/lib/utils';
 import { Eye, EyeOff } from 'lucide-react';
 import React from 'react';
 
-interface TextFieldProps<T extends FieldValues>
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name'> {
+interface TextFieldProps<T extends FieldValues> extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'name'
+> {
   control: Control<T>;
   name: Path<T>;
   label?: string;
